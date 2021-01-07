@@ -1,0 +1,52 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>ke
+
+</help_text><element><id>UMLClass</id><coordinates><x>730</x><y>70</y><w>210</w><h>140</h></coordinates><panel_attributes>Board
+--
+height = int
+--
+load_cars()
+do_move()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>50</y><w>210</w><h>190</h></coordinates><panel_attributes>_Cars_
+--
+id = String
+Horizontal = Bool
+location = ()
+length = int
+redcar = Bool
+--
+move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>220</x><y>40</y><w>490</w><h>380</h></coordinates><panel_attributes>key points
+TODO
+checken rood printen
+
+
+INLADEN AUTO'S
+lokatie auto -&gt; lokatie bord
+op die plek zetten we ipv '_' 'car_id' en in de horizonatal/vertical direction
+
+vanuit startpunt lengte - 1 tellen in de richting van de auto/vrachtwagen
+m.a.w.  verticaal y + lengte -1 en horizontaal x + lengte - 1
+verticaal gaat van boven naar beneden, horizontaal van links naar rechts  
+
+HET SPEL
+
+while true
+PRINT BORD
+ga alle lokaties/lengtes/orientaties langs
+
+vraag move -&gt; auto + richting
+
+CHECK MOVE:
+auto's kunnen alleen bewegen naar de lege vakjes in juiste orientatie
+illegale move als er een auto op de plek staat waar al een auto staat of buiten board
+ALS illegaal print foute move + continue
+
+DO MOVE
+lokatie updaten ((horizontaal x +/-1, verticaal y +-1) + lengte - 1)
+
+
+if won (rode auto lokatie + lengte -1 = 6):
+break
+
+
+
+
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element></diagram>
