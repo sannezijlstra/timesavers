@@ -1,6 +1,9 @@
 from code.classes import board, cars
 import csv
 
+# TODO GET_INT
+size = 6
+
 if __name__ == "__main__":
 
     # create empty list to fill with cars
@@ -13,6 +16,26 @@ if __name__ == "__main__":
             new_car = cars.Car(line['car'], line['orientation'],line['row'],line['col'],line['length'])
             cars_list.append(new_car)
     
-    new_board = board.Board(6, cars_list)
+    new_board = board.Board(size, cars_list)
+    while True:
 
-    new_board.print_board()
+
+        new_board.print_board()
+        command = input("> select car and direction (Up, Down, Left, Right) ").upper()
+        command = command.split()
+
+        for car in cars_list:
+            if car.car_id == command[0]:
+                car_to_move = car
+        direction = command[1]
+        
+        if new_board.check_move(car_to_move, direction):
+            new_board.do_move()
+        else:
+            print('illegal move')
+            continue
+
+        if new_board.is_won(cars_list, size):
+            break
+
+    print('congrats you won')

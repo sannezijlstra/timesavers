@@ -1,7 +1,6 @@
 import csv
 
 
-
 class Car():
     def __init__(self, car_id, orientation, x, y, length):
         self.car_id = car_id
@@ -10,8 +9,8 @@ class Car():
         else:
             self.horizontal = False
 
-        self.location = (int(x), int(y))
-        self.length = length
+        self.location = (int(x) - 1, int(y) - 1)
+        self.length = int(length)
 
         if self.car_id == 'X':
             self.redcar = True
