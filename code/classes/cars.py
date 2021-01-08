@@ -9,7 +9,7 @@ class Car():
         else:
             self.horizontal = False
 
-        self.location = (int(x) - 1, int(y) - 1)
+        self.location = [int(x) - 1, int(y) - 1]
         self.length = int(length)
 
         if self.car_id == 'X':

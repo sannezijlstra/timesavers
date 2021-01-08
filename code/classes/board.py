@@ -29,28 +29,34 @@ class Board():
                 if car.length > 2:
                     self.board[car.location[1]+ 2][car.location[0]] = car.car_id
 
-    def check_move(self, direction, car):
+    def move(self, direction, car):
         if car.horizontal == True and direction not in HORIZONTAL_MOVES:
-            return False 
+            return False
         elif car.horizontal == False  and direction not in VERTICAL_MOVES:
             return False
         
-        if direction == UP and self.board[car.location[1] - 1 ][car.location[0]] == EMPTY:
-            return True
-        elif direction == DOWN and self.board[car.location[1] + length -1][car.location[0]] == EMPTY:
-            return True
-        elif direction == LEFT and self.board[car.location[1]][car.location[0] - 1] == EMPTY:
-            return True 
-        elif direction == RIGHT and self.board[car.location[1]][car.location[0] + length - 1] == EMPTY:
-            return True
-            
-
-
+        try:
+            if direction == 'UP' and self.board[car.location[1] - 1 ][car.location[0]] == EMPTY:
+                car.location[1] -= 1
+                return True
+            elif direction == 'DOWN' and self.board[car.location[1] + car.length][car.location[0]] == EMPTY:
+                car.location[1] += 1
+                return True
+            elif direction == 'LEFT' and self.board[car.location[1]][car.location[0] - 1] == EMPTY:
+                car.location[0] -= 1
+                return True 
+            elif direction == 'RIGHT' and self.board[car.location[1]][car.location[0] + car.length] == EMPTY:
+                car.location[0] += 1
+                return True
+            return False
+        except IndexError:
+            return False
 
     def do_move(self):
         pass
     
     def is_won(self, size, cars_list):
+        print(f'cars_list: {cars_list}')
         for car in cars_list:
             if car.redcar == True and car.location[0] == size - 1:
                 return True

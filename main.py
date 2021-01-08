@@ -29,13 +29,13 @@ if __name__ == "__main__":
                 car_to_move = car
         direction = command[1]
         
-        if new_board.check_move(car_to_move, direction):
-            new_board.do_move()
-        else:
+        if not new_board.move(direction, car_to_move):
             print('illegal move')
             continue
 
-        if new_board.is_won(cars_list, size):
+        new_board = board.Board(size, cars_list)
+
+        if new_board.is_won(size, cars_list):
             break
 
     print('congrats you won')
