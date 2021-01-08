@@ -2,6 +2,11 @@ EMPTY = '_'
 HORIZONTAL_MOVES = ['LEFT', 'RIGHT']
 VERTICAL_MOVES = ['UP', 'DOWN']
 
+CBLUE = '\033[94m'
+
+CRED = '\033[91m'
+CEND = '\033[0m'
+
 class Board():
     """
         class for supporting the game of rush hour
@@ -51,18 +56,22 @@ class Board():
             return False
         except IndexError:
             return False
-
-    def do_move(self):
-        pass
     
     def is_won(self, size, cars_list):
-        print(f'cars_list: {cars_list}')
         for car in cars_list:
-            if car.redcar == True and car.location[0] == size - 1:
+            if car.redcar == True and car.location[0] + 1 == size - 1:
                 return True
         return False
 
     def print_board(self):
+        #print('\x1b[6;31;41m' + 'X' + '\x1b[0m')
         for i in self.board:
-            print(i)
+            for j in i:
+                if j == 'X':
+                    print( f'{CRED}{j}{CEND}', end="")
+                elif j != '_':
+                    print( f'{CBLUE}{j}{CEND}', end="")
+                else:
+                    print(j , end="")
+            print()
         
