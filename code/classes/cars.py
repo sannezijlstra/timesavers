@@ -35,19 +35,3 @@ class Car():
 
     def __repr__ (self):
         return self.car_id
-
-    # def load_description(self, cars_list):
-    #     colour_count = 0
-
-    #     # iterate over the cars in the list and create a coloured description for each car
-    #     for car in cars_list:
-    #         # skip number 1 because the colour red is reserved for the main car
-    #         if colour_count % 7 == 1:
-    #             colour_count += 1
-            
-    #         # assign colour red if the current car is the main car
-    #         if car.car_id == 'X':
-    #             car.description = f'{CRED}X{CEND}'
-    #         else:
-    #             # dynamicly assign colour to the current car
-    #             car.description = f'{CBASE}{str(colour_count % 7)}m{car.car_id}{CEND}'
