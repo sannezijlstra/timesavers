@@ -2,8 +2,6 @@ EMPTY = '_'
 HORIZONTAL_MOVES = ['LEFT', 'RIGHT']
 VERTICAL_MOVES = ['UP', 'DOWN']
 
-CBLUE = '\033[94m'
-
 CRED = '\033[91m'
 CEND = '\033[0m'
 
@@ -19,20 +17,26 @@ class Board():
     def __repr__ (self):
         return str(self.board)
 
+    
+
     def load_cars(self, cars_list):
         """
             function to load a cars into the game field, fills in the car id letters into the grid
         """
         for car in cars_list:
-            self.board[car.location[1]][car.location[0]] = car.car_id 
+            
+            # load the board with the car description
+            self.board[car.location[1]][car.location[0]] = car.description 
+
+
             if car.horizontal == True:
-                self.board[car.location[1]][car.location[0]+ 1] = car.car_id
+                self.board[car.location[1]][car.location[0]+ 1] = car.description
                 if car.length > 2:
-                    self.board[car.location[1]][car.location[0]+2] = car.car_id
+                    self.board[car.location[1]][car.location[0]+2] = car.description
             else:
-                self.board[car.location[1]+1][car.location[0]] = car.car_id
+                self.board[car.location[1]+1][car.location[0]] = car.description
                 if car.length > 2:
-                    self.board[car.location[1]+ 2][car.location[0]] = car.car_id
+                    self.board[car.location[1]+ 2][car.location[0]] = car.description
 
     def move(self, direction, car):
         if car.horizontal == True and direction not in HORIZONTAL_MOVES:
@@ -65,13 +69,8 @@ class Board():
 
     def print_board(self):
         #print('\x1b[6;31;41m' + 'X' + '\x1b[0m')
-        for i in self.board:
-            for j in i:
-                if j == 'X':
-                    print( f'{CRED}{j}{CEND}', end="")
-                elif j != '_':
-                    print( f'{CBLUE}{j}{CEND}', end="")
-                else:
-                    print(j , end="")
+        for row in self.board:
+            for item in row:
+               print(f'{item} ', end="")
             print()
         
