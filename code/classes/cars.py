@@ -1,7 +1,5 @@
 import csv
 
-
-
 class Car():
     def __init__(self, car_id, orientation, x, y, length):
         self.car_id = car_id
