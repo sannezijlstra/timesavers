@@ -13,7 +13,7 @@ location = ()
 length = int
 redcar = Bool
 --
-move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>220</x><y>40</y><w>490</w><h>380</h></coordinates><panel_attributes>key points
+move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>220</x><y>40</y><w>490</w><h>550</h></coordinates><panel_attributes>key points
 TODO
 checken rood printen
 
@@ -43,10 +43,14 @@ DO MOVE
 lokatie updaten ((horizontaal x +/-1, verticaal y +-1) + lengte - 1)
 
 
-if won (rode auto lokatie + lengte -1 = 6):
+if won (rode auto lokatie + lengte -1 = size grid):
 break
 
 
 
 
-bg=blue</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>730</x><y>230</y><w>380</w><h>350</h></coordinates><panel_attributes>Verbeterpunten: 
+
+Board.py: load_cars functie 
+
+Efficientere manier om auto te selecteren uit de grid </panel_attributes><additional_attributes></additional_attributes></element></diagram>
