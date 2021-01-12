@@ -1,11 +1,14 @@
 import csv
 import random
 
+<<<<<<< HEAD
+=======
 COLOURS = [x for x in range(8) if x != 1]
 CBASE = '\033[9'
 CRED = '\033[91m'
 CEND = '\033[0m'
 
+>>>>>>> b39af9eb14bb7f9dd1d24855459445340157d395
 class Car():
     def __init__(self, car_id, orientation, x, y, length):
         self.car_id = car_id
