@@ -1,4 +1,5 @@
 from code.classes import board, cars
+from code.algorithms import randomize
 import csv
 import random
 import os
@@ -49,24 +50,17 @@ if __name__ == "__main__":
 
         new_board.print_board()
 
-        command = input("> select car and direction (Up, Down, Left, Right) ").upper()
-        command = command.split()
-
-        if len(command) != 2:
-            print('invalid command')
-            continue
-
         # select car from list of cars using the user input
         for car in cars_list:
-            if car.car_id == command[0]:
-                car_to_move = car
-
-        direction = command[1]
+            new_board.can_move(car, size)
         
-        # move car if possible 
-        if not new_board.move(direction, car_to_move):
-            print('illegal move')
-            continue
+        randomize.random_move(new_board, cars_list)
+       
+        
+        # move car if possible -> waarschijnlijk in random.py
+        # if not new_board.do_move(direction, car_to_move):
+        #     print('illegal move')
+        #     continue
 
         # if game is won break out of loop
         if new_board.is_won():
@@ -76,6 +70,5 @@ if __name__ == "__main__":
 
         # reload the board
         new_board = board.Board(size, cars_list)
-
 
     print('congrats you won')

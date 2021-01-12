@@ -1,11 +1,11 @@
 <diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>ke
 
-</help_text><element><id>UMLClass</id><coordinates><x>730</x><y>70</y><w>210</w><h>140</h></coordinates><panel_attributes>Board
+a</help_text><element><id>UMLClass</id><coordinates><x>906</x><y>30</y><w>210</w><h>140</h></coordinates><panel_attributes>Board
 --
 height = int
 --
 load_cars()
-do_move()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>50</y><w>210</w><h>190</h></coordinates><panel_attributes>_Cars_
+do_move()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>66</x><y>10</y><w>210</w><h>190</h></coordinates><panel_attributes>_Cars_
 --
 id = String
 Horizontal = Bool
@@ -13,7 +13,7 @@ location = ()
 length = int
 redcar = Bool
 --
-move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>220</x><y>40</y><w>490</w><h>550</h></coordinates><panel_attributes>key points
+move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>446</x><y>0</y><w>430</w><h>500</h></coordinates><panel_attributes>key points
 TODO
 checken rood printen
 
@@ -49,8 +49,33 @@ break
 
 
 
-bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>730</x><y>230</y><w>380</w><h>350</h></coordinates><panel_attributes>Verbeterpunten: 
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>906</x><y>190</y><w>380</w><h>350</h></coordinates><panel_attributes>Verbeterpunten: 
 
 Board.py: load_cars functie 
 
-Efficientere manier om auto te selecteren uit de grid </panel_attributes><additional_attributes></additional_attributes></element></diagram>
+Efficientere manier om auto te selecteren uit de grid 
+
+
+TODO
+key/value dictionary voor locaties</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>9</x><y>220</y><w>400</w><h>430</h></coordinates><panel_attributes>Random algoritme 
+--
+Randomize.py 
+
+kiest auto uit auto's die kunnen bewegen,
+stuurt random auto met random direction (uit twee) naar board.py
+
+--
+Board.py check_move functie:
+bekijkt voor een individuele auto of deze een legitieme move heeft
+
+do_move functie:
+krijgt een auto met een legitieme move en voert deze uit
+
+--
+main.py: 
+lijst auto's updaten elke ronde in de while True
+
+
+can_move functie: een lijst maken en oude functie terug pakken, en dan bij can move, als er True uit komt voeg je de richting toe aan een lijst. 
+Deze lijst zit gekoppeld aan een auto, en wordt steeds geupdate
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
