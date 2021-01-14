@@ -40,40 +40,6 @@ class Board():
                 if car.length > 2:
                     self.board[car.location[1]+ 2][car.location[0]] = car.description
 
-    def can_move(self, car, size):
-        """
-            checks if move suggested is possible depending on orientation and space in the grid
-            if move is possible make the move by updating the car object location
-        """
-        #print(f'car {car} locatino:x:{car.location[0]}, y:{car.location[1]},')
-        # moving a car is only possible in 4 directions and the field in grid has to be empty
-        if not car.horizontal and  car.location[1] >= 0 and car.location[1] + car.length - 1 <= size - 1 : # not omdraaien?
-            if self.board[car.location[1] - 1 ][car.location[0]] == EMPTY or self.board[car.location[1] + car.length - 1][car.location[0]] == EMPTY:
-                car.can_move = True 
-
-        elif car.horizontal and  car.location[0]  >= 0 and car.location[0] + car.length - 1 <= size - 1:
-            if self.board[car.location[0] - 1 ][car.location[1]] == EMPTY or self.board[car.location[0] + car.length - 1][car.location[1]] == EMPTY:
-                car.can_move = True 
-
-        else: 
-            # direction is illegal or another object is blocking the path
-            car.can_move = False
-
-            # moving out of bounds generates an index error so return false
-            # TODO GAAT MISSCHIEN PROBLEMEN OPLEVEREN
-
-
-    def do_move(self, car, direction):
-        if direction == 'UP':
-            car.location[1] -= 1
-        elif direction == 'DOWN':
-            car.location[1] += 1
-        elif direction == 'LEFT':
-            car.location[0] -= 1
-        elif direction == 'RIGHT':
-            car.location[0] += 1
-            if car.redcar and car.location[0] + 1 == self.size - 1:
-                self.won = True
 
     def is_won(self):
         """
@@ -89,4 +55,7 @@ class Board():
             for item in row:
                print(f'{item} ', end="")
             print()
-        
+    
+
+     
+
