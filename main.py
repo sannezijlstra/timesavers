@@ -1,5 +1,6 @@
 from code.classes import board, cars
 from code.algorithms import randomise
+from code import helpers
 import csv
 import random
 import os
@@ -55,23 +56,17 @@ if __name__ == "__main__":
     while True:
         new_board.print_board()
 
-        cars_that_can = {}
-        # select car from list of cars using the user input
-        for car in cars_list:
-            result = car.can_move(new_board, size)
-            if result:
-                cars_that_can[car] = result
-            
+        cars_that_can = helpers.find_cars_that_can(cars_list, count)
 
-        if not First_move:
+        if count > 0:
             if len(cars_that_can[reversed_move[0]]) == 2:
                 cars_that_can[reversed_move[0]].remove(reversed_move[1])
             else:
                 del cars_that_can[reversed_move[0]]
-
+                
         last_move = randomise.random_move(new_board, cars_that_can)
         
-        reversed_move = [last_move[0], randomise.reverse_move(last_move[1])]
+        reversed_move = [last_move[0], helpers.reverse_move(last_move[1])]
         
         
         # move car if possible -> waarschijnlijk in random.py
@@ -93,6 +88,5 @@ if __name__ == "__main__":
         count += 1
         if count == 1000000:
             break
-        First_move = False
     
     print(f'Bord: {for_6}')

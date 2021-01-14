@@ -80,11 +80,8 @@ class Car():
                 move_options.append('DOWN')
 
         return move_options
-            
     
-
-            
-
+    
     def do_move(self, board, direction):
         if direction == 'UP':
             self.location[1] -= 1

@@ -1,11 +1,11 @@
 <diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>ke
 
-a</help_text><element><id>UMLClass</id><coordinates><x>906</x><y>30</y><w>210</w><h>140</h></coordinates><panel_attributes>Board
+a</help_text><element><id>UMLClass</id><coordinates><x>897</x><y>30</y><w>210</w><h>140</h></coordinates><panel_attributes>Board
 --
 height = int
 --
 load_cars()
-do_move()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>66</x><y>10</y><w>210</w><h>190</h></coordinates><panel_attributes>_Cars_
+do_move()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>57</x><y>10</y><w>210</w><h>190</h></coordinates><panel_attributes>_Cars_
 --
 id = String
 Horizontal = Bool
@@ -13,7 +13,7 @@ location = ()
 length = int
 redcar = Bool
 --
-move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>446</x><y>0</y><w>430</w><h>500</h></coordinates><panel_attributes>key points
+move</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>437</x><y>0</y><w>430</w><h>500</h></coordinates><panel_attributes>key points
 TODO
 checken rood printen
 
@@ -49,7 +49,7 @@ break
 
 
 
-bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>906</x><y>190</y><w>380</w><h>350</h></coordinates><panel_attributes>Verbeterpunten: 
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>1127</x><y>20</y><w>380</w><h>220</h></coordinates><panel_attributes>Verbeterpunten: 
 
 Board.py: load_cars functie 
 
@@ -57,7 +57,7 @@ Efficientere manier om auto te selecteren uit de grid
 
 
 TODO
-key/value dictionary voor locaties</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>9</x><y>220</y><w>400</w><h>430</h></coordinates><panel_attributes>Random algoritme 
+key/value dictionary voor locaties</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>0</x><y>220</y><w>430</w><h>430</h></coordinates><panel_attributes>Random algoritme 
 --
 Randomize.py 
 
@@ -76,6 +76,32 @@ main.py:
 lijst auto's updaten elke ronde in de while True
 
 
-can_move functie: een lijst maken en oude functie terug pakken, en dan bij can move, als er True uit komt voeg je de richting toe aan een lijst. 
+can_move functie: een lijst maken en oude functie terug pakken, 
+en dan bij can move, als er True uit komt voeg je de richting toe aan een lijst. 
 Deze lijst zit gekoppeld aan een auto, en wordt steeds geupdate
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>900</x><y>250</y><w>570</w><h>350</h></coordinates><panel_attributes>Breadth First Algoritme
+--
+
+# get current time
+
+# initialize board 
+
+# put intial gameboard in queue
+
+ # add initial gameboard to archive
+
+ # pop new board and path
+
+ # if board is solved, return result
+
+ # else add all possible boards to queue, if they're not in archive
+
+cars_list  - &gt; cars_that_can
+voor elke item cars_that_can do move -&gt; lijst met cars_listen -&gt; voor elke cars_list -&gt; newboard(cars_list) 
+check of newboard in archief staat
+zo nee:
+new_board -&gt; archiveren
+newboard appenden aan queue
+
+
 </panel_attributes><additional_attributes></additional_attributes></element></diagram>
