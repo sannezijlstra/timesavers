@@ -72,7 +72,6 @@ class Car():
                 move_options.append('LEFT')
             if self.can_move_right(board, size):
                 move_options.append('RIGHT')
-        
         else: 
             if self.can_move_up(board):
                 move_options.append('UP')
@@ -80,9 +79,8 @@ class Car():
                 move_options.append('DOWN')
 
         return move_options
-    
-    
-    def do_move(self, board, direction):
+
+    def do_move(self, direction):
         if direction == 'UP':
             self.location[1] -= 1
         elif direction == 'DOWN':
@@ -91,6 +89,5 @@ class Car():
             self.location[0] -= 1
         elif direction == 'RIGHT':
             self.location[0] += 1
-            if self.redcar and self.location[0] + 1 == board.size - 1:
-                board.won = True
+
 
