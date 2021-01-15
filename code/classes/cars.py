@@ -9,6 +9,8 @@ CEND = '\033[0m'
 class Car():
     def __init__(self, car_id, orientation, x, y, length):
         self.car_id = car_id
+        # self.orientation = orientation 
+        
 
         # create car descriptions with colour codes with red reserved for main car
         if self.car_id != 'X':
