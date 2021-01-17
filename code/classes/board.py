@@ -28,6 +28,7 @@ class Board():
         self.random = random
         self.won = False
         self.empty = [] # of variabele aan car toevoegen van is_movable, waarbij we checken na de move of er nog een vakje is
+        # self.valid_move = False 
 
     def __repr__ (self):
         return str(self.board)
@@ -61,9 +62,65 @@ class Board():
 
     # def load_board()
     # plaats dit object op positie 0,0 en 0,1 bijv. 
+    # for i in range(size):
+    # load board with car_objects?
+    # dit is de parent staat van het bord, de staat vanuit waar het algoritme zijn werk gaat doen. 
 
+    # def check_move_up (self, cars_list):
+    # if car.orientation == 'H' and 
+
+    def check_move_up(self, board):
+        # kunnen we hier gebruik maken van de car_object?
+        if car.location[1] - 1 < 0:
+            return False 
+        if board.board[car.location[1] - 1 ][car.location[0]] == EMPTY:
+            return True
+        return False
+        
+    def check_move_down(self, board, size):
+        if car.location[1] + car.length > size - 1:
+            return False 
+        if board.board[car.location[1] + car.length][car.location[0]] == EMPTY:
+            return True
+        return False
+
+
+    def check_move_right(self, board, size):
+        if car.location[0] + car.length > size - 1:
+            return False
+        if board.board[car.location[1]][car.location[0] + car.length] == EMPTY:
+            return True
+        return False
+
+    def check_move_left(self, board):
+        if car.location[0] - 1 < 0:
+            return False
+        if board.board[car.location[1]][car.location[0] - 1] == EMPTY:
+            return True
+        return False
+
+    def move (self, board, size):
+        move_options = []
+        
+        if car.orientation == 'H':
+            if car.check_move_left(board):
+                move_options.append('LEFT')
+            if car.check_move_right(board, size):
+                move_options.append('RIGHT')
+        else: 
+            if car.check_move_up(board):
+                move_options.append('UP')
+            if car.check_move_down(board, size):
+                move_options.append('DOWN')
+        
+        # if move in move_options: 
+        # self.valid_move = True 
+        return move_options
 
     def move(self, cars_list):
+        # IF MOVE IN MOVE_OPTIONS: MOVE = VALID
+
+
         # kopie van het huidige bord maken en met move 1 aanpassing maken
         # move moet een nieuwe instantie aanmaken in plaats van zichzelf aanpassen
         # kijken naar het bord ipv naar de auto's
@@ -75,10 +132,10 @@ class Board():
         # het bord waar je mee bezig bent is parent, en children opslaan in list van parent 
         # begin staat van bord: bord is parent
         # op basis van heuristiek ga je alle bordjes aanmaken
-        # eerst alle auto's 1 plek, daarna naar links, daarna zo veel mogelijk 
+        # voorbeelden: eerst alle auto's 1 plek, daarna naar links, daarna zo veel mogelijk 
         # sla alle borden op in queue 
         # je maakt alle staten van het bord aan, elk object heeft eigen locatie, maar omdat het string is zijn het geen echte objecten: representatie van bord in woorden 
-        # pas bij het uitpakken van een string verander je pas echt de locaties ad hand van de string en gooi je de parent weg 
+        # pas bij het echt uitpakken van een string verander je pas echt de locaties ad hand van de string en gooi je de parent weg 
         # auto A heeft nu locatie x,y 
         # voor auto in string: 
         # auto objecten aangepast naar staat van het bord 

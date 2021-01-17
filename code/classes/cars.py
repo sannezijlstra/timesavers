@@ -20,10 +20,12 @@ class Car():
             self.description = f'{CRED}X{CEND}'
 
         # create orientation boolean for the car
-        if orientation == 'H':
-            self.horizontal = True
-        else:
-            self.horizontal = False
+        # DIT KAN WEG TOCH? 
+
+        # if orientation == 'H':
+        #     self.horizontal = True
+        # else:
+        #     self.horizontal = False
 
         self.location = [int(x) - 1, int(y) - 1]
         self.length = int(length)
@@ -37,6 +39,7 @@ class Car():
     def __repr__ (self):
         return self.car_id
 
+    # ONDERSTAANDE WEG HALEN TOT DO_MOVE?
     def can_move_up(self, board):
         if self.location[1] - 1 < 0:
             return False 
@@ -83,6 +86,7 @@ class Car():
         return move_options
 
     def do_move(self, direction):
+        # if self.valid_move
         if direction == 'UP':
             self.location[1] -= 1
         elif direction == 'DOWN':
