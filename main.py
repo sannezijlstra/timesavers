@@ -43,14 +43,13 @@ if __name__ == "__main__":
             car_file = csv.DictReader(in_file)
             for line in car_file:
                 # create new car object and append it to list
-                new_car = cars.Car(line['car'], line['orientation'],line['row'],line['col'],line['length'])
+                new_car = cars.Car(line['car'], line['orientation'], int(line['row']) - 1, int(line['col']) - 1, line['length'])
                 cars_list.append(new_car)
     else:
         sys.exit("data file is empty or does not exist")
 
-    First_move = True
     # create initial board 
-    
+    new_board = board.Board(size, cars_list)
 
 ############################# RANDOM #############################
     # new_board = board.Board(size, cars_list, True)
@@ -58,6 +57,6 @@ if __name__ == "__main__":
     # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 ############################# BREADTH FIRST #############################
-    new_board = board.Board(size, cars_list)
-    breadth = breadth_first.BreadthFirst(new_board, cars_list)
-    breadth.run()
+    # new_board = board.Board(size, cars_list)
+    # breadth = breadth_first.BreadthFirst(new_board, cars_list)
+    # breadth.run()

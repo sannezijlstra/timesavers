@@ -1,3 +1,5 @@
+from . import cars
+
 EMPTY = '_'
 HORIZONTAL_MOVES = ['LEFT', 'RIGHT']
 VERTICAL_MOVES = ['UP', 'DOWN']
@@ -21,46 +23,58 @@ class Board():
 
 
         self.board = [list(EMPTY * size) for i in range(size)]
-        self.cars = cars_list
+
+        self.cars_dict = {}
         # cars_list een dictionary waarin je kan zoeken, elke auto uniek
         self.load_cars(cars_list)
+        self.load_board(cars_dict)
         self.size = size
         self.random = random
         self.won = False
         self.empty = [] # of variabele aan car toevoegen van is_movable, waarbij we checken na de move of er nog een vakje is
         # self.valid_move = False 
 
+    # SOURCE: https://github.com/KaKariki02/rushHour/blob/master/RushClass.py
     def __repr__ (self):
-        return str(self.board)
+        self.printboard = '\n\n'.join(['      '.join(['{}'.format(item) for item in row]) for row in self.board])
+        return self.printboard
+    
+    def __hash__(self):
+        return hash(self.__repr__())
+    
+    def __eq__(self, other):
+        return hash(self) == hash(other)
 
-    def load_cars(self, cars_list):
+    def load_cars_dict(self, cars_list):
+        for car in cars_list:
+            self.car[car.id] = car
+
+    def load_cars(self, cars_dict):
         """
             function to load a cars into the game field, fills in the car id letters into the grid
         """
-        
-        
-        for car in cars_list:
+        for car in cars_dict.values():
             if self.random:
                 car_object = car.description
             else:
-                car_object = car.car_id
+                car_object = car.id
 
             # load the board with description on initial car location
-            self.board[car.location[1]][car.location[0]] = car_object
+            self.board[car.y_location][car.x_location] = car_object
 
             # load the rest of the car object in horizontal or vertical direction
-            if car.horizontal:
-                self.board[car.location[1]][car.location[0]+ 1] = car_object
+            if car.horizontal():
+                self.board[car.y_location][car.x_location + 1] = car_object
                 # if car is a truck load another space in grid with object
                 if car.length > 2:
-                    self.board[car.location[1]][car.location[0]+2] = car_object
+                    self.board[car.y_location][car.x_location + 2] = car_object
             else:
-                self.board[car.location[1]+1][car.location[0]] = car_object
+                self.board[car.y_location + 1][car.x_location] = car_object
                 # if car is a truck load another space in grid with object
                 if car.length > 2:
-                    self.board[car.location[1]+ 2][car.location[0]] = car_object
+                    self.board[car.y_location + 2][car.x_location] = car_object
 
-    # def load_board()
+
     # plaats dit object op positie 0,0 en 0,1 bijv. 
     # for i in range(size):
     # load board with car_objects?
@@ -69,55 +83,89 @@ class Board():
     # def check_move_up (self, cars_list):
     # if car.orientation == 'H' and 
 
-    def check_move_up(self, board):
+
+    def check_move_up(self):
         # kunnen we hier gebruik maken van de car_object?
-        if car.location[1] - 1 < 0:
+        if car.y_location - 1 < 0:
             return False 
-        if board.board[car.location[1] - 1 ][car.location[0]] == EMPTY:
+        if self.board[car.y_location - 1 ][car.x_location] == EMPTY:
             return True
         return False
         
-    def check_move_down(self, board, size):
-        if car.location[1] + car.length > size - 1:
+    def check_move_down(self):
+        if car.y_location + car.length > self.size - 1:
             return False 
-        if board.board[car.location[1] + car.length][car.location[0]] == EMPTY:
+        if self.board[car.y_location + car.length][car.x_location] == EMPTY:
             return True
         return False
 
 
-    def check_move_right(self, board, size):
-        if car.location[0] + car.length > size - 1:
+    def check_move_right(self):
+        if car.x_location + car.length > self.size - 1:
             return False
-        if board.board[car.location[1]][car.location[0] + car.length] == EMPTY:
+        if self.board[car.y_location][car.x_location + car.length] == EMPTY:
             return True
         return False
 
-    def check_move_left(self, board):
-        if car.location[0] - 1 < 0:
+    def check_move_left(self):
+        if car.x_location - 1 < 0:
             return False
-        if board.board[car.location[1]][car.location[0] - 1] == EMPTY:
+        if self.board[car.y_location][car.x_location - 1] == EMPTY:
             return True
         return False
 
-    def move (self, board, size):
+    def find_all_moves(self, cars_dict):
+        all_moves = {}
+        for car in cars_dict.values():
+            all_moves[car] = self.check_move(car)
+
+
+    def check_move (self, car):
         move_options = []
         
-        if car.orientation == 'H':
-            if car.check_move_left(board):
+        if car.horizontal():
+            if car.check_move_left(car):
                 move_options.append('LEFT')
-            if car.check_move_right(board, size):
+            if car.check_move_right(car):
                 move_options.append('RIGHT')
         else: 
-            if car.check_move_up(board):
+            if car.check_move_up(car):
                 move_options.append('UP')
-            if car.check_move_down(board, size):
+            if car.check_move_down(car):
                 move_options.append('DOWN')
         
         # if move in move_options: 
         # self.valid_move = True 
         return move_options
 
-    def move(self, cars_list):
+    def find_possible_boards(self, cars_list):
+        possible_boards = []
+        
+        for car in cars_list:
+            move_options = self.check_move(car)
+
+            if len(move_options) > 0:
+                new_cars = cars_list.deepcopy()
+            else:
+                continue
+            
+            for move in move_options:
+                if move == 'DOWN':
+                    new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location + 1, car.length)
+                elif move == 'UP':
+                    new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location - 1, car.length)
+                elif move == 'RIGHT'
+                    new_car = cars.Car(car.id,car.orientation, car.x_location + 1, car.y_location, car.length)
+                elif move == 'LEFT':
+                    new_car = cars.Car(car.id, car.orientation, car.x_location - 1, car.y_location, car.length)
+
+            new_cars.remove(car)
+            new_cars.append(new_car)
+
+            possible_boards.append(new_cars)
+
+
+        
         # IF MOVE IN MOVE_OPTIONS: MOVE = VALID
 
 
@@ -150,7 +198,7 @@ class Board():
         # krijg stapruimte vanuit bord
         # kijk eerst horizontaal of verticaal, 
         # if self.orientation = "H" --> x + of - 1 en anders y +1 of - 1 
-        return new_board
+        return possible_boards
 
 
     def check_won(self, cars_list): 
@@ -158,7 +206,7 @@ class Board():
             Checks if the game is won by checking won flag
         """
         for car in cars_list:
-            if car.redcar and car.location[0] + 1 == self.size - 1:
+            if car.redcar and car.x_location + 1 == self.size - 1:
                 self.won = True
         # if self.redcar and self.location[0] + 1 == board.size - 1:
         #     board.won = True

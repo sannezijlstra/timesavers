@@ -8,14 +8,13 @@ CEND = '\033[0m'
 
 class Car():
     def __init__(self, car_id, orientation, x, y, length):
-        self.car_id = car_id
-        # self.orientation = orientation 
-        
+        self.id = car_id
+        self.orientation = orientation
 
         # create car descriptions with colour codes with red reserved for main car
-        if self.car_id != 'X':
+        if self.id != 'X':
             colour_num = random.choice(COLOURS)
-            self.description = f'{CBASE}{str(colour_num)}m{self.car_id}{CEND}'
+            self.description = f'{CBASE}{str(colour_num)}m{self.id}{CEND}'
         else:
             self.description = f'{CRED}X{CEND}'
 
@@ -26,74 +25,87 @@ class Car():
         #     self.horizontal = True
         # else:
         #     self.horizontal = False
+        self.x_location = x
+        self.y_location = y
 
-        self.location = [int(x) - 1, int(y) - 1]
         self.length = int(length)
 
         # set redcar boolean for checking if the game is won
-        if self.car_id == 'X':
+        if self.id == 'X':
             self.redcar = True
         else:
             self.redcar = False
 
     def __repr__ (self):
-        return self.car_id
+         return self.id
+
+    # def __repr__(self):
+    #     return "'{0}{1}{2}{3}'".format(self.id, self.orientation, self.x_location, self.y_location)
+
+    def __hash__(self):
+        return hash(self.__repr__())
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
+
+    def horizontal(self):
+        return self.orientation == 'H'
 
     # ONDERSTAANDE WEG HALEN TOT DO_MOVE?
-    def can_move_up(self, board):
-        if self.location[1] - 1 < 0:
-            return False 
-        if board.board[self.location[1] - 1 ][self.location[0]] == EMPTY:
-            return True
-        return False
+    # def can_move_up(self, board):
+    #     if self.y_location - 1 < 0:
+    #         return False 
+    #     if board.board[self.y_location - 1 ][self.x_location] == EMPTY:
+    #         return True
+    #     return False
         
-    def can_move_down(self, board, size):
-        if self.location[1] + self.length > size - 1:
-            return False 
-        if board.board[self.location[1] + self.length][self.location[0]] == EMPTY:
-            return True
-        return False
+    # def can_move_down(self, board, size):
+    #     if self.y_location + self.length > size - 1:
+    #         return False 
+    #     if board.board[self.y_location + self.length][self.x_location] == EMPTY:
+    #         return True
+    #     return False
 
 
-    def can_move_right(self, board, size):
-        if self.location[0] + self.length > size - 1:
-            return False
-        if board.board[self.location[1]][self.location[0] + self.length] == EMPTY:
-            return True
-        return False
+    # def can_move_right(self, board, size):
+    #     if self.x_location + self.length > size - 1:
+    #         return False
+    #     if board.board[self.y_location][self.x_location + self.length] == EMPTY:
+    #         return True
+    #     return False
 
-    def can_move_left(self, board):
-        if self.location[0] - 1 < 0:
-            return False
-        if board.board[self.location[1]][self.location[0] - 1] == EMPTY:
-            return True
-        return False
+    # def can_move_left(self, board):
+    #     if self.x_location - 1 < 0:
+    #         return False
+    #     if board.board[self.y_location][self.x_location - 1] == EMPTY:
+    #         return True
+    #     return False
 
-    def can_move (self, board, size):
-        move_options = []
+    # def can_move (self, board, size):
+    #     move_options = []
         
-        if self.horizontal:
-            if self.can_move_left(board):
-                move_options.append('LEFT')
-            if self.can_move_right(board, size):
-                move_options.append('RIGHT')
-        else: 
-            if self.can_move_up(board):
-                move_options.append('UP')
-            if self.can_move_down(board, size):
-                move_options.append('DOWN')
+    #     if self.horizontal:
+    #         if self.can_move_left(board):
+    #             move_options.append('LEFT')
+    #         if self.can_move_right(board, size):
+    #             move_options.append('RIGHT')
+    #     else: 
+    #         if self.can_move_up(board):
+    #             move_options.append('UP')
+    #         if self.can_move_down(board, size):
+    #             move_options.append('DOWN')
 
-        return move_options
+    #     return move_options
 
     def do_move(self, direction):
         # if self.valid_move
         if direction == 'UP':
-            self.location[1] -= 1
+            self.y_location -= 1
         elif direction == 'DOWN':
-            self.location[1] += 1
+            self.y_location += 1
         elif direction == 'LEFT':
-            self.location[0] -= 1
+            self.x_location -= 1
         elif direction == 'RIGHT':
-            self.location[0] += 1
+            self.x_location += 1
 
 
