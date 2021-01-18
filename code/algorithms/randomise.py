@@ -10,7 +10,7 @@ def random_move(board, cars_that_can):
     """
         Choose a random car that can move and make a random move
     """
-    
+
     car_to_move = random.choice(list(cars_that_can.keys()))
 
     

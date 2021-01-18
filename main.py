@@ -17,7 +17,6 @@ if __name__ == "__main__":
             print("invalid input")
             continue
 
-        #for_6 = random.randint(1,3)
         for_6 = random.randint(1,3)
         for_9 = random.randint(4,6)
 
