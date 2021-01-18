@@ -9,6 +9,8 @@ CEND = '\033[0m'
 class Car():
     def __init__(self, car_id, orientation, x, y, length):
         self.car_id = car_id
+        # self.orientation = orientation 
+        
 
         # create car descriptions with colour codes with red reserved for main car
         if self.car_id != 'X':
@@ -18,10 +20,12 @@ class Car():
             self.description = f'{CRED}X{CEND}'
 
         # create orientation boolean for the car
-        if orientation == 'H':
-            self.horizontal = True
-        else:
-            self.horizontal = False
+        # DIT KAN WEG TOCH? 
+
+        # if orientation == 'H':
+        #     self.horizontal = True
+        # else:
+        #     self.horizontal = False
 
         self.location = [int(x) - 1, int(y) - 1]
         self.length = int(length)
@@ -35,6 +39,7 @@ class Car():
     def __repr__ (self):
         return self.car_id
 
+    # ONDERSTAANDE WEG HALEN TOT DO_MOVE?
     def can_move_up(self, board):
         if self.location[1] - 1 < 0:
             return False 
@@ -72,7 +77,6 @@ class Car():
                 move_options.append('LEFT')
             if self.can_move_right(board, size):
                 move_options.append('RIGHT')
-
         else: 
             if self.can_move_up(board):
                 move_options.append('UP')
@@ -81,8 +85,8 @@ class Car():
 
         return move_options
 
-
-    def do_move(self, board, direction):
+    def do_move(self, direction):
+        # if self.valid_move
         if direction == 'UP':
             self.location[1] -= 1
         elif direction == 'DOWN':
@@ -91,6 +95,5 @@ class Car():
             self.location[0] -= 1
         elif direction == 'RIGHT':
             self.location[0] += 1
-            if self.redcar and self.location[0] + 1 == board.size - 1:
-                board.won = True
+
 
