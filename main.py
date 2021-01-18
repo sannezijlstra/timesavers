@@ -1,5 +1,6 @@
 from code.classes import board, cars
 from code.algorithms import randomise
+from code. import helpers
 import csv
 import random
 import os
@@ -16,8 +17,7 @@ if __name__ == "__main__":
             print("invalid input")
             continue
 
-        #for_6 = random.randint(1,3)
-        for_6 = 3
+        for_6 = random.randint(1,3)
         for_9 = random.randint(4,6)
 
         # save file path depending on the size
@@ -47,7 +47,6 @@ if __name__ == "__main__":
     else:
         sys.exit("data file is empty or does not exist")
 
-    First_move = True
     # create initial board 
     new_board = board.Board(size, cars_list)
     count = 0
@@ -61,9 +60,9 @@ if __name__ == "__main__":
             result = car.can_move(new_board, size)
             if result:
                 cars_that_can[car] = result
-            
 
-        if not First_move:
+
+        if count > 0:
             if len(cars_that_can[reversed_move[0]]) == 2:
                 cars_that_can[reversed_move[0]].remove(reversed_move[1])
             else:
@@ -71,7 +70,7 @@ if __name__ == "__main__":
 
         last_move = randomise.random_move(new_board, cars_that_can)
         
-        reversed_move = [last_move[0], randomise.reverse_move(last_move[1])]
+        reversed_move = [last_move[0], helpers.reverse_move(last_move[1])]
         
         
         # move car if possible -> waarschijnlijk in random.py
@@ -93,6 +92,5 @@ if __name__ == "__main__":
         count += 1
         if count == 1000000:
             break
-        First_move = False
     
     print(f'Bord: {for_6}')
