@@ -1,5 +1,5 @@
 from code.classes import board, cars
-from code.algorithms import randomise, breadth_first
+from code.algorithms import randomise, randomise_2, breadth_first
 from code import helpers
 import csv
 import random
@@ -49,7 +49,18 @@ if __name__ == "__main__":
 
     # create initial board 
     new_board = board.Board(size, cars_list)
+    # next_possible_boards = new_board.find_possible_boards(cars_list)
+    # print(next_possible_boards)
+    # for lst in next_possible_boards:
+    #     print(lst)
 
+    # print(new_board)
+    
+    #print(new_board.string_board)
+
+
+    solution_count = randomise_2.randomise_better(new_board)
+    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 ############################# RANDOM #############################
     # new_board = board.Board(size, cars_list, True)
     # solution_count = randomise.run_random(new_board, cars_list)

@@ -57,7 +57,9 @@ Efficientere manier om auto te selecteren uit de grid
 
 
 TODO
-key/value dictionary voor locaties</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>0</x><y>220</y><w>430</w><h>430</h></coordinates><panel_attributes>Random algoritme 
+key/value dictionary voor locaties
+
+Variabelnamen</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>0</x><y>220</y><w>430</w><h>430</h></coordinates><panel_attributes>Random algoritme 
 --
 Randomize.py 
 

@@ -36,11 +36,14 @@ class Car():
         else:
             self.redcar = False
 
-    def __repr__ (self):
-         return self.id
+    # def __repr__ (self):
+    #      return self.id
 
-    # def __repr__(self):
-    #     return "'{0}{1}{2}{3}'".format(self.id, self.orientation, self.x_location, self.y_location)
+    def __repr__(self):
+        return "'{0}{1}{2}{3}{4}'".format(self.id, self.orientation, self.x_location, self.y_location, self.length)
+    
+    def car_string(self):
+        return "'{0}{1}{2}{3}{4}'".format(self.id, self.orientation, self.x_location, self.y_location, self.length)
 
     def __hash__(self):
         return hash(self.__repr__())

@@ -19,5 +19,12 @@ Donderdag 14/01/2020:
 - Veel verschillende dingen geprobeerd maar we zijn er nog niet helemaal, morgen verder 
 
 Vrijdag 15/01/2020: 
-- run_random aangemaakt, roept het random algortime op 
+- run_random aangemaakt, roept het random algoritme op 
+- lopen helemaal vast met breadth first algoritme, tot de conclusie gekomen dat data structuur compleet veranderd moet worden 
+- cars.py bevat nu alle informatie over het checken of een move valide is, terwijl dit in het board zelf moet gebeuren 
+- board.py moet al het denkwerk doen, cars.py is simpelweg bedoeld om de auto's aan te maken en te verplaatsen 
+
+Maandag 16/01/2020:
+- cars.py en board.py omgeschreven, zodat board.py al het mogelijke denkwerk bevat
+- 
 
