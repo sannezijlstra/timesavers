@@ -26,7 +26,15 @@ Vrijdag 15/01/2020:
 
 Maandag 16/01/2020:
 - cars.py en board.py omgeschreven, zodat board.py al het mogelijke denkwerk bevat
-- 
+- hele dag bezig geweest met randomise omschrijven in randomise_2.py
+- aspect dat een auto zich niet gelijk in tegengestelde richting kan bewegen nadat hij een kant op is gegaan, nog niet helemaal gelukt
+- door complete verandering data structuur lopen we achter op schema 
+- begonnen met boards in strings representeren, maar nog niet goed gekoppeld aan de algoritmes 
+
+Dinsdag 17/01/2020:
+- begonnen aan breadth first algoritme
+- ervoor gezorgd dat een board steeds opgeslagen wordt als string, die daarna weer gedecode kan worden wanneer er een nieuw parent board gegenereerd moet worden. 
+- we lopen tegen erg veel dingen aan, zoals het juist aanmaken van alle 'possible boards' vanaf een parent board, en deze dan omzetten naar strings, in een archief opslaan, in de queue zetten, steeds de eerste van de queue weer uitpakken, en daarmee verder gaan. 
 
 
 

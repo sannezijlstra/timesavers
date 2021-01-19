@@ -76,6 +76,7 @@ class BreadthFirst():
             if self.count % 100 == 0:
                  print(f'children count:{self.count}')
         print('hallo states is leeg denk ik')
+        print(f'finished with {self.count} boards')
         
 
 

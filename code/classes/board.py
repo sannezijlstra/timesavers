@@ -187,69 +187,36 @@ class Board():
     def find_possible_boards(self):
         possible_boards = []
         
-        for car in self.cars_list:
+        # itereer over de auto's in de cars dictionary
+        for car in self.cars_dict.values():
+            # vind de move options voor de huidige auto
             move_options = self.check_move(car)
+            print(f'{car} can move {move_options}')
 
+            # check of deze auto kan bewegen
             if len(move_options) > 0:
-                new_cars = copy.deepcopy(self.cars_list)
+                # maak een nieuwe auto dictionary aan om een move in te maken
+                new_cars_dict = copy.deepcopy(self.cars_dict)
             else:
                 continue
             
-            for move in move_options:
-                if move == 'DOWN':
-                    new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location + 1, car.length)
-                    # print(f'new cars list: {new_cars}')
-                    # print(f'car:{car}, new car:{new_car}')
-                    try:
-                        new_cars.remove(car)
-                    except ValueError:
-                        new_cars.remove(temp)
+            # vind de huidige auto in de kopie dictionary en beweeg deze
+            new_cars_dict[car.id].do_move(move_options[0])
 
-                    new_cars.append(new_car)
-                    possible_boards.append(new_cars)
-                    temp = new_car
-                    
-                if move == 'UP':
-                    new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location - 1, car.length)
-                    # print(f'new cars list: {new_cars}')
-                    # print(f'car:{car}, new car:{new_car}') 
-                    try:
-                        new_cars.remove(car)
-                    except ValueError:
-                        new_cars.remove(temp)
+            print(f'values kopie dict: {new_cars_dict.values()}')
+            print(f'huidige dict: {self.cars_dict.values()}')
 
-                    new_cars.append(new_car)
-                    possible_boards.append(new_cars)
-                    temp = new_car
+            # voeg de lijst met bewogen auto's hier aan toe
+            possible_boards.append(new_cars_dict.values())
 
-                if move == 'RIGHT':
-                    # print(f'car:{car}')
-                    new_car = cars.Car(car.id,car.orientation, car.x_location + 1, car.y_location, car.length)
-                    # print(new_car)
-                    # print(f'new cars list: {new_cars}')
-                    try:
-                        new_cars.remove(car)
-                    except ValueError:
-                        new_cars.remove(temp)
+            # als de auto twee kanten op kan maak nieuwe kopie aan
+            if len(move_options) > 1:
+                print(f'move options {move_options}')
 
-                    new_cars.append(new_car)
-                    possible_boards.append(new_cars)
-                    temp = new_car
-
-                if move == 'LEFT':
-                    new_car = cars.Car(car.id, car.orientation, car.x_location - 1, car.y_location, car.length)
-                    # print(f'new cars list: {new_cars}')
-                    # print(f'car:{car}, new car:{new_car}')
-                    try:
-                        new_cars.remove(car)
-                    except ValueError:
-                        new_cars.remove(temp)
-
-                    new_cars.append(new_car)
-                    possible_boards.append(new_cars)
-                    temp = new_car
-
-
+                other_cars_dict = copy.deepcopy(self.cars_dict)
+                # beweeg de auto en voeg lijst met auto's toe aan possible boards
+                other_cars_dict[car.id].do_move(move_options[1])
+                possible_boards.append(other_cars_dict.values())
 
         return possible_boards
 

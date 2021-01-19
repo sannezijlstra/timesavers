@@ -146,3 +146,66 @@ def build_children(self, cars_list, board):
                     car.do_move('UP')
                     self.add_to_queue(new_cars, cars_list)
                     car.do_move('DOWN')
+
+
+            if len(move_options) > 1:
+                other_cars = copy.deepcopy(new_cars)
+                if car.horizontal():
+                    new_car = cars.Car(car.id, car.orientation, car.x_location - 1, car.y_location, car.length)
+                    new_cars.remove(car)
+                    new_cars.append(new_car)
+                    possible_boards.append(new_cars)
+
+                    other_car = cars.Car(car.id, car.orientation, car.x_location + 1, car.y_location, car.length)
+                    other_cars.remove(car)
+                    other_cars.append(other_car)
+                    possible_boards.append(other_cars)
+
+                else:
+                    new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location - 1, car.length)
+                    new_cars.remove(car)
+                    new_cars.append(new_car)
+                    possible_boards.append(new_cars)
+
+                    other_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location + 1, car.length)
+                    other_cars.remove(car)
+                    other_cars.append(other_car)
+                    possible_boards.append(other_cars)
+            else:
+                for move in move_options:
+                    if move == 'DOWN':
+                        new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location + 1, car.length)
+                        # print(f'new cars list: {new_cars}')
+                        # print(f'car:{car}, new car:{new_car}')
+                        new_cars.remove(car)
+
+                        new_cars.append(new_car)
+                        possible_boards.append(new_cars)
+                        
+                    if move == 'UP':
+                        new_car = cars.Car(car.id, car.orientation, car.x_location, car.y_location - 1, car.length)
+                        # print(f'new cars list: {new_cars}')
+                        # print(f'car:{car}, new car:{new_car}') 
+                        new_cars.remove(car)
+
+                        new_cars.append(new_car)
+                        possible_boards.append(new_cars)
+
+                    if move == 'RIGHT':
+                        # print(f'car:{car}')
+                        new_car = cars.Car(car.id,car.orientation, car.x_location + 1, car.y_location, car.length)
+                        # print(new_car)
+                        # print(f'new cars list: {new_cars}')
+                        new_cars.remove(car)
+
+                        new_cars.append(new_car)
+                        possible_boards.append(new_cars)
+
+                    if move == 'LEFT':
+                        new_car = cars.Car(car.id, car.orientation, car.x_location - 1, car.y_location, car.length)
+                        # print(f'new cars list: {new_cars}')
+                        # print(f'car:{car}, new car:{new_car}')
+                        new_cars.remove(car)
+
+                        new_cars.append(new_car)
+                        possible_boards.append(new_cars)
