@@ -10,23 +10,33 @@ class BreadthFirst():
         self.board = copy.deepcopy(board)
         self.cars_list = self.board.cars_list
         self.archive = {}
-        self.test_states = [self.board.string_repr()]
         self.states = queue.Queue()
         self.states.put(self.board.string_repr())
         self.best_solution = None
-        self.count = 0
 
+        self.count = 0
+        self.depth = 0
+        self.current_children = 0
+        self.next_children = 0
         self.archive[self.board.string_repr()] = 0
+
+# variabel aanmaken 
 
 
     # def get_next_state(self):
     #     return self.states.get()
 
-    def build_children(self):
+    def build_children(self): # parent board toevoegen en linken
         # find all possible boards,
         # put into archive
         # queue 
-        board_strings = self.board.find_possible_boards()
+        possible_boards_result = self.board.find_possible_boards()
+
+        board_strings = possible_boards_result[0]
+        # wat is hier mis mee??
+        # self.next_children += possible_boards_result[1]
+
+
         # possibleboards = [[A,B,C][A,B,C]
         #print(f'\n r28 board strings: {board_strings} \n')
         for board_string in board_strings:
@@ -43,40 +53,47 @@ class BreadthFirst():
             # if board not in archive: add to archive and add to queue
             else:
                 # heuristiek mogelijk toepassen, score, hoe goed?
-                self.archive[new_board_string] = 0
+                self.archive[new_board_string] = 0 
+                # queue_input = [new_board_string, score] -> order queue op score
                 # heuristieken toepassen
+                # vb 1: alle x coordinaten van de auto's zo veel naar links 
+                # vb 2: alle verticale auto's zo veel mogelijk naar de boven/onder rand
                 self.states.put(new_board_string)
-                # self.test_states.append(new_board_string)
 
 
     def run(self):
         # zolang er items in de queue staan
         while self.states.qsize() > 0:
-            print('test')
-            print(self.states.qsize())
             
             # haal het eerste element uit de queue
             current_board = self.states.get()
-            # current_board = self.test_states.pop(0)
+            
 
-            print(f'current_board: {current_board}')
+            # print(f'current_board: {current_board}')
             # pak de informatie uit, uit de string
             self.board.decode_str(current_board)
-            print()
-            self.board.print_board()
+            # print()
+            # self.board.print_board()
             # break uit loop wanneer er een oplossing is gevonden (breadth first, eerste oplossing altijd het beste)
             if self.board.is_won():
                 print("we won")
                 break
+            # wat is mis met deze logica?
 
+            # if self.current_children < 1:
+            #     self.current_children = self.next_children
+            #     self.next_children = 0
+            #     self.depth += 1
+            # else:
+            #     self.current_children -= 1
             # build children en zet ze eventueel in de queue
             self.build_children()
 
             self.count += 1
             if self.count % 100 == 0:
                  print(f'children count:{self.count}')
-        print('hallo states is leeg denk ik')
         print(f'finished with {self.count} boards')
+        print(f'depth: {self.depth}')
         
 
 

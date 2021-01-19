@@ -29,8 +29,6 @@ class Board():
     """
     def __init__(self, size, cars_list):
         # size, welke auto'tjes, list van moves, archive: DICT want key in dictionary is UNIEK, string opslaan als key van dictionary, hoe groot is bord, bord laden 
-
-
         self.board = [list(EMPTY * size) for i in range(size)]
         self.size = size
         self.cars_list = cars_list
@@ -191,7 +189,6 @@ class Board():
         for car in self.cars_dict.values():
             # vind de move options voor de huidige auto
             move_options = self.check_move(car)
-            print(f'{car} can move {move_options}')
 
             # check of deze auto kan bewegen
             if len(move_options) > 0:
@@ -203,22 +200,20 @@ class Board():
             # vind de huidige auto in de kopie dictionary en beweeg deze
             new_cars_dict[car.id].do_move(move_options[0])
 
-            print(f'values kopie dict: {new_cars_dict.values()}')
-            print(f'huidige dict: {self.cars_dict.values()}')
 
             # voeg de lijst met bewogen auto's hier aan toe
             possible_boards.append(new_cars_dict.values())
 
             # als de auto twee kanten op kan maak nieuwe kopie aan
             if len(move_options) > 1:
-                print(f'move options {move_options}')
-
                 other_cars_dict = copy.deepcopy(self.cars_dict)
                 # beweeg de auto en voeg lijst met auto's toe aan possible boards
                 other_cars_dict[car.id].do_move(move_options[1])
                 possible_boards.append(other_cars_dict.values())
+        
+        num_children = len(possible_boards)
 
-        return possible_boards
+        return [possible_boards, num_children]
 
 
         

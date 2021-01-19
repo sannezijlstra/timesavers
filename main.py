@@ -18,7 +18,7 @@ if __name__ == "__main__":
             continue
 
         # for_6 = random.randint(1,3)
-        for_6 = 1
+        for_6 = 2
         for_9 = random.randint(4,6)
 
         # save file path depending on the size
