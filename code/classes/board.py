@@ -51,15 +51,16 @@ class Board():
     def string_repr(self):
         string_repr = ""
 
-        for row in len(self.board) :
-            for column in len(self.board):
-                string_repr = string_repr + column + ',' + row + '.' + self.board[row][column] '-'
+        for row in range(self.size):
+            for column in range(self.size):
+                string_repr = string_repr + str(column) + ',' + str(row) + '.' + self.board[row][column] + '-'
 
+        #print(f'r58 string_repr: {string_repr}')
         return string_repr
 
     def decode_str(self, string_repr):
         self.board = [list(EMPTY * self.size) for i in range(self.size)]
-        for car in cars_list:
+        for car in self.cars_list:
             car.x_location = None
             car.y_location = None
 
@@ -68,22 +69,23 @@ class Board():
 
         for location in locations:
             filled = location.split('.')
+            #print(filled)
 
-            if filled[1] != EMPTY:
+            if len(filled) > 1 and filled[1] != EMPTY:
                 coordinates = filled[0].split(',')
-                x = coordinates[0]
-                y = coordinates[1]
+                x = int(coordinates[0])
+                y = int(coordinates[1])
                 self.board[y][x] = filled[1]
 
                 if filled[1] not in found_cars:
                     found_cars.append(filled[1])
-                    self.car_dict[filled[1]].x_location = x
-                    self.car_dict[filled[1]].y_location = y
+                    self.cars_dict[filled[1]].x_location = x
+                    self.cars_dict[filled[1]].y_location = y
 
-    def __hash__(self):
-        return hash(self.string_board())
-        # lijst maken van hashes, gebruikte boards 
-        # bord en richting opslaan in een hash, 
+    # def __hash__(self):
+    #     return hash(self.string_repr())
+    #     # lijst maken van hashes, gebruikte boards 
+    #     # bord en richting opslaan in een hash, 
     
     def __eq__(self, other):
         return hash(self) == hash(other)
@@ -164,7 +166,7 @@ class Board():
             all_moves[car] = self.check_move(car)
 
 
-    def check_move (self, car):
+    def check_move(self, car):
         move_options = []
         
         if car.horizontal():
