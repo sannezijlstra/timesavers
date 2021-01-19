@@ -1,9 +1,13 @@
-from code.classes import board, cars
-from code import helpers
-import queue
-import copy
+hoe zit het met functies __repr__, __hash__: hoe implementeer je die?
+hoe gebruik je dit om een fijne representatie te maken voor de archive in breadth first?
 
-class BreadthFirst():
+
+
+
+hash_functie(sleutel, bord) = 1234321ffaabb
+reverse_hash(1234321ffaabb + sleutel) = bord
+
+lass BreadthFirst():
     def __init__(self, board):
         self.size = board.size
         self.board = copy.deepcopy(board)
@@ -55,11 +59,14 @@ class BreadthFirst():
             # breadth_instance = BreadthFirst(board_instance) 
             build_children(current_board)
 
+            if current_board.is_won():
+                print("we won")
+                break
+
             print(current_list)
             self.count += 1
             if self.count % 100 == 0:
                  print(f'children count:{self.count}')
-
 
 
 

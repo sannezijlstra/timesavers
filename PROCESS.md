@@ -28,3 +28,6 @@ Maandag 16/01/2020:
 - cars.py en board.py omgeschreven, zodat board.py al het mogelijke denkwerk bevat
 - 
 
+
+
+

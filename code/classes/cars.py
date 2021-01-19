@@ -28,6 +28,9 @@ class Car():
         self.x_location = x
         self.y_location = y
 
+        self.locations = [] 
+        # 
+
         self.length = int(length)
 
         # set redcar boolean for checking if the game is won

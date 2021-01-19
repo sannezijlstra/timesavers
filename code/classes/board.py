@@ -9,10 +9,18 @@ CRED = '\033[91m'
 CEND = '\033[0m'
 
 
+# je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
+# 
+
 # eerst bord maken
 # lijst met beschikbare auto's 
 # welke plek staan de auto's? 
 # 
+
+# je wil loopen over elke row van je board
+# for row in board
+# wat daar in zit, stop je in string
+# mijn bord is 9x9, dan 
 
 class Board():
     """
@@ -36,10 +44,42 @@ class Board():
         # self.valid_move = False 
 
     # SOURCE: https://github.com/KaKariki02/rushHour/blob/master/RushClass.py
-    def string_board (self):
+    def print_board (self):
         self.printboard = '\n\n'.join(['      '.join(['{}'.format(item) for item in row]) for row in self.board])
         return self.printboard
     
+    def string_repr(self):
+        string_repr = ""
+
+        for row in len(self.board) :
+            for column in len(self.board):
+                string_repr = string_repr + column + ',' + row + '.' + self.board[row][column] '-'
+
+        return string_repr
+
+    def decode_str(self, string_repr):
+        self.board = [list(EMPTY * self.size) for i in range(self.size)]
+        for car in cars_list:
+            car.x_location = None
+            car.y_location = None
+
+        found_cars = []
+        locations = string_repr.split('-')
+
+        for location in locations:
+            filled = location.split('.')
+
+            if filled[1] != EMPTY:
+                coordinates = filled[0].split(',')
+                x = coordinates[0]
+                y = coordinates[1]
+                self.board[y][x] = filled[1]
+
+                if filled[1] not in found_cars:
+                    found_cars.append(filled[1])
+                    self.car_dict[filled[1]].x_location = x
+                    self.car_dict[filled[1]].y_location = y
+
     def __hash__(self):
         return hash(self.string_board())
         # lijst maken van hashes, gebruikte boards 
@@ -193,7 +233,7 @@ class Board():
                     new_cars.append(new_car)
                     possible_boards.append(new_cars)
                     temp = new_car
-                    
+
                 if move == 'LEFT':
                     new_car = cars.Car(car.id, car.orientation, car.x_location - 1, car.y_location, car.length)
                     # print(f'new cars list: {new_cars}')

@@ -57,10 +57,10 @@ if __name__ == "__main__":
     # print(new_board)
     
     #print(new_board.string_board)
+    
 
-
-    solution_count = randomise_2.randomise_better(new_board)
-    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
+    # solution_count = randomise_2.randomise_better(new_board)
+    # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 ############################# RANDOM #############################
     # new_board = board.Board(size, cars_list, True)
     # solution_count = randomise.run_random(new_board, cars_list)

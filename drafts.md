@@ -113,3 +113,36 @@ def move(self, direction, car):
 
     #         # moving out of bounds generates an index error so return false
     #         # TODO GAAT MISSCHIEN PROBLEMEN OPLEVEREN
+
+
+def build_children(self, cars_list, board):
+        # Add an instance of the graph to the stack, with each unique value assigned to the node.
+        # values = node.get_possibilities(self.transmitters)
+       
+       # staat van het bord moet in een string vorm --> encoden en decoden: bord naar de staat en staat naar het bord 
+
+       # 12A 456B 89C ?
+       
+        new_cars = copy.deepcopy(cars_list)
+        for car in new_cars:
+            # we moeten iets vinden om de dictionary met 2 mogelijke keuzes op te splitsen en na elkaar te kunnen gebruiken 
+            if car.horizontal:
+                if car.can_move_left(board):
+                    car.do_move('LEFT')
+                    self.add_to_queue(new_cars, cars_list) # uiteindelijk een string???????
+                    car.do_move('RIGHT')
+
+                if car.can_move_right(board, self.size):
+                    car.do_move('RIGHT')
+                    self.add_to_queue(new_cars, cars_list)
+                    car.do_move('LEFT')
+
+            if not car.horizontal:
+                if car.can_move_down(board, self.size):
+                    car.do_move('DOWN')
+                    self.add_to_queue(new_cars, cars_list)
+                    car.do_move('UP')
+                if car.can_move_up(board):
+                    car.do_move('UP')
+                    self.add_to_queue(new_cars, cars_list)
+                    car.do_move('DOWN')
