@@ -12,6 +12,7 @@ class BreadthFirst():
         self.cars_list = self.board.cars_list
         self.archive = {}
         self.states = deque()
+        
         # self.states = queue.Queue()
         # self.states.put(self.board.string_repr())
         self.best_solution = None
@@ -74,6 +75,9 @@ class BreadthFirst():
                 #self.states.append(new_board_string)
                 queue_item = [new_board_string, x_score]
 
+                if len(self.states) < 1:
+                    self.states.appendleft(queue_item)
+
                 if self.states[0][1] <= queue_item[1]:
                     self.states.append(queue_item)
                 else:
@@ -81,12 +85,18 @@ class BreadthFirst():
 
 
     def run(self):
-        self.states.appendleft(self.board.string_repr())
+        
+        x_score = helpers.x_score(self.board)
+        self.states.appendleft([self.board.string_repr(), x_score])
         # zolang er items in de queue staan
         while len(self.states) > 0:
             
             # haal het eerste element uit de queue
-            current_board = self.states.pop()
+            
+            current_item = self.states.pop()
+            current_board = current_item[0]
+            
+
             
 
             # print(f'current_board: {current_board}')

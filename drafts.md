@@ -209,3 +209,27 @@ def build_children(self, cars_list, board):
 
                         new_cars.append(new_car)
                         possible_boards.append(new_cars)
+
+
+
+
+for car in next_board:
+                car_string = car.car_string()
+                next_string = next_string + car_string
+
+            for select_board in possible_boards:
+                compare_string = ""
+                for car in select_board:
+                    car_string = car.car_string()
+                    compare_string = compare_string + car_string
+                compare_list.append(compare_string)
+            
+            # print(f'r44 compare list: {compare_list}')
+            # print()
+            # print(f'r45 next string: {next_string}')
+            for count, compare_board in enumerate(compare_list):
+                if compare_board == next_string:
+                    possible_boards.pop(count)
+                # print(f'second possible boards: {possible_boards}')
+
+        # print(f'r40: updated possible board: {possible_boards}')
