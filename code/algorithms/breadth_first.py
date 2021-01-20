@@ -1,5 +1,6 @@
 from code.classes import board, cars
 from code import helpers
+from collections import deque
 import queue
 import copy
 #from collections import deque
@@ -10,8 +11,9 @@ class BreadthFirst():
         self.board = copy.deepcopy(board)
         self.cars_list = self.board.cars_list
         self.archive = {}
-        self.states = queue.Queue()
-        self.states.put(self.board.string_repr())
+        self.states = deque()
+        # self.states = queue.Queue()
+        # self.states.put(self.board.string_repr())
         self.best_solution = None
 
         self.count = 0
@@ -32,20 +34,19 @@ class BreadthFirst():
         # queue 
         possible_boards_result = self.board.find_possible_boards()
 
-        board_strings = possible_boards_result[0]
+        cars_lists = possible_boards_result[0]
         # wat is hier mis mee??
         # self.next_children += possible_boards_result[1]
 
 
         # possibleboards = [[A,B,C][A,B,C]
         #print(f'\n r28 board strings: {board_strings} \n')
-        for board_string in board_strings:
+        for cars_list in cars_lists:
             # make board from car_list [A,B,C]
-            new_board = board.Board(self.size, board_string)
+            new_board = board.Board(self.size, cars_list)
+            
             # zet bord om in string
             new_board_string = new_board.string_repr()
-            # verwijder het bord
-            del(new_board)
             # if board in archive: pass
 
             if new_board_string in self.archive.keys():
@@ -56,17 +57,36 @@ class BreadthFirst():
                 self.archive[new_board_string] = 0 
                 # queue_input = [new_board_string, score] -> order queue op score
                 # heuristieken toepassen
-                # vb 1: alle x coordinaten van de auto's zo veel naar links 
+                # vb 1: alle x coordinaten van de auto's zo veel naar links
                 # vb 2: alle verticale auto's zo veel mogelijk naar de boven/onder rand
-                self.states.put(new_board_string)
+                # als er een empty kan komen op een plek rechts van de auto, move maken
+                # plekken rechts tot uitgang minimaliseren
+
+                        
+
+                x_score = helpers.x_score(new_board)
+                # verwijder het bord
+                del(new_board)
+                # checken wat de value is van de eerste in de rij is 
+                # als x_value lager is dan wordt huidige string achteraan gezet
+                # anders vooraan
+
+                #self.states.append(new_board_string)
+                queue_item = [new_board_string, x_score]
+
+                if self.states[0][1] <= queue_item[1]:
+                    self.states.append(queue_item)
+                else:
+                    self.states.appendleft(queue_item)
 
 
     def run(self):
+        self.states.appendleft(self.board.string_repr())
         # zolang er items in de queue staan
-        while self.states.qsize() > 0:
+        while len(self.states) > 0:
             
             # haal het eerste element uit de queue
-            current_board = self.states.get()
+            current_board = self.states.pop()
             
 
             # print(f'current_board: {current_board}')
@@ -76,8 +96,9 @@ class BreadthFirst():
             # self.board.print_board()
             # break uit loop wanneer er een oplossing is gevonden (breadth first, eerste oplossing altijd het beste)
             if self.board.is_won():
-                print("we won")
+                print("you won")
                 break
+
             # wat is mis met deze logica?
 
             # if self.current_children < 1:
