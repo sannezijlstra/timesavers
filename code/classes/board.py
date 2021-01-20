@@ -2,63 +2,52 @@ from . import cars
 import copy
 
 EMPTY = '_'
-HORIZONTAL_MOVES = ['LEFT', 'RIGHT']
-VERTICAL_MOVES = ['UP', 'DOWN']
 
-CRED = '\033[91m'
-CEND = '\033[0m'
-
-
-# je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
-# 
-
-# eerst bord maken
-# lijst met beschikbare auto's 
-# welke plek staan de auto's? 
-# 
-
-# je wil loopen over elke row van je board
-# for row in board
-# wat daar in zit, stop je in string
-# mijn bord is 9x9, dan 
+# CRED = '\033[91m'
+# CEND = '\033[0m'
 
 class Board():
     """
-        class for supporting the game of rush hour
+        Class for supporting the game of rush hour,
         needs a size and list of cars to generate a new game
     """
     def __init__(self, size, cars_list):
-        # size, welke auto'tjes, list van moves, archive: DICT want key in dictionary is UNIEK, string opslaan als key van dictionary, hoe groot is bord, bord laden 
+        # initialize empty board
         self.board = [list(EMPTY * size) for i in range(size)]
         self.size = size
-        self.cars_list = cars_list
         self.cars_dict = {}
         self.load_cars_dict(cars_list)
-        # cars_list een dictionary waarin je kan zoeken, elke auto uniek
         self.load_cars(self.cars_dict)
-        self.is_random = False
         self.won = False
-        self.empty = [] # of variabele aan car toevoegen van is_movable, waarbij we checken na de move of er nog een vakje is
-        # self.valid_move = False 
 
     # SOURCE: https://github.com/KaKariki02/rushHour/blob/master/RushClass.py
     def print_board (self):
+        """TODO kijken in git history voor hoe we dit deden met kleur"""
         self.printboard = '\n\n'.join(['      '.join(['{}'.format(item) for item in row]) for row in self.board])
         return self.printboard
     
     def string_repr(self):
+        """
+        Serializes board object into string
+        """
         string_repr = ""
 
+        # iterates over every row in board
         for row in range(self.size):
+            # iterates over every column in board
             for column in range(self.size):
+                # string keeps extending with every spot in the grid, splitting based on location, description and item
                 string_repr = string_repr + str(column) + ',' + str(row) + '.' + self.board[row][column] + '-'
-
-        #print(f'r58 string_repr: {string_repr}')
         return string_repr
 
     def decode_str(self, string_repr):
+        """
+        Decodes serialized board object
+        """
         self.board = [list(EMPTY * self.size) for i in range(self.size)]
-        for car in self.cars_list:
+        
+        # set all car location values to None
+        for car in self.cars_dict.values():
             car.x_location = None
             car.y_location = None
 
@@ -67,7 +56,6 @@ class Board():
 
         for location in locations:
             filled = location.split('.')
-            #print(filled)
 
             if len(filled) > 1 and filled[1] != EMPTY:
                 coordinates = filled[0].split(',')
@@ -139,17 +127,14 @@ class Board():
     def check_move_down(self, car):
         if car.y_location + car.length > self.size - 1:
             return False 
-        if self.board[car.y_location + car.length][car.x_location] == EMPTY:
-            return True
-        return False
+        return self.board[car.y_location + car.length][car.x_location] == EMPTY
+
 
 
     def check_move_right(self, car):
         if car.x_location + car.length > self.size - 1:
             return False
-        if self.board[car.y_location][car.x_location + car.length] == EMPTY:
-            return True
-        return False
+        return self.board[car.y_location][car.x_location + car.length] == EMPTY
 
     def check_move_left(self, car):
         if car.x_location - 1 < 0:
