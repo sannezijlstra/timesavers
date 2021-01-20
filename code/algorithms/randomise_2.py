@@ -6,7 +6,7 @@ from code.classes import board, cars
 
 def randomise(new_board):
     new_board = copy.deepcopy(new_board)
-    count = 0
+    loop_count = 0
     # last_board_string = new_board.string_repr()
 
     # hash hierheen krijgen en in dictionary opslaan: string als key, object als value
@@ -14,30 +14,30 @@ def randomise(new_board):
     #     return f'{car}{car.x_location}{car.y_location}'
     while True:
         #ARCHIVE VULLEN MET NEW_BOARD.___
-        if count == 1000000:
+        if loop_count == 1000000:
             break
         
-        if count % 1000 == 0:
-            print(f'count:{count}')
+        if loop_count % 1000 == 0:
+            print(f'count:{loop_count}')
         
         result = new_board.find_possible_boards()
         possible_boards = result[0]
         
         #last_board_string = random.choice(possible_boards.string_repr())
 
-        print(f'first possible boardslist {len(possible_boards)}\n{possible_boards}')
-        if count > 0:
+        # print(f'first possible boardslist {len(possible_boards)}\n{possible_boards}')
+        if loop_count > 0:
             for count, cars_list  in enumerate(possible_boards):
                 temp = board.Board(new_board.size, cars_list)
                 
                 if last_board_string == temp.string_repr():
-                    print(possible_boards[count])
-                    print()
-                    print(temp.cars_dict.values())
+                    #print(possible_boards[count])
+                    #print()
+                    #print(temp.cars_dict.values())
                     # del(possible_boards[count])
                     possible_boards.pop(count)
                     
-        print(f'second possible boardslist length {len(possible_boards)} \n {possible_boards}')
+        # print(f'second possible boardslist length {len(possible_boards)} \n {possible_boards}')
 
         last_board_string = new_board.string_repr()
         # print(f'possible boards:{possible_boards}')
@@ -48,11 +48,12 @@ def randomise(new_board):
         new_board = board.Board(new_board.size, next_board)
         new_board.print_board()
         print()
-        count += 1
-        time.sleep(0.5)
+        loop_count += 1
+        # time.sleep(0.5)
         
         if new_board.is_won():
-            return count
+            print(loop_count)
+            return loop_count
         
 def car_string (car):
     return f'{car}{car.x_location}{car.y_location}'
