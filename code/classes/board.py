@@ -254,16 +254,10 @@ class Board():
         # if self.redcar and self.location[0] + 1 == board.size - 1:
         #     board.won = True
         
-    
-    def is_won (self):
-        """
-            Checks if the game is won by checking won flag
-        """
-        for car in self.cars_list:
-            if car.redcar and car.x_location + 1 == self.size - 1:
-                self.won = True
-        return self.won
-    
+    def is_won(self):
+        return self.cars_dict['X'].x_location + 1 == self.size - 1
+
+
     #def check_won_breadth(self):
     def copy_board (self):
         pass
@@ -276,5 +270,6 @@ class Board():
             for item in row:
                print(f'{item} ', end="")
             print()
+    
 
 
