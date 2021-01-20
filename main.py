@@ -1,7 +1,9 @@
 from code.classes import board, cars
-from code.algorithms import randomise, randomise_2, breadth_first
+from code.algorithms import randomise, breadth_first
 from code import helpers
 import csv
+import copy
+import time
 import random
 import os
 import sys
@@ -51,14 +53,29 @@ if __name__ == "__main__":
     # create initial board 
     
 
-############################ RANDOM #############################
-    new_board = board.Board(size, cars_list)
-    solution_count = randomise_2.randomise(new_board)
-    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
-
-# ############################# BREADTH FIRST #############################
+# ############################ RANDOM #############################
 #     new_board = board.Board(size, cars_list)
+#     solution_count = randomise.randomise(new_board)
+#     print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
+
+############################# BREADTH FIRST #############################
+    new_board = board.Board(size, cars_list)
     
-#     breadth = breadth_first.BreadthFirst(new_board)
-#     print('begin run')
-#     breadth.run()
+    breadth = breadth_first.BreadthFirst(new_board)
+    print('begin run')
+    result = breadth.run()
+    print(result)
+    newest_board = copy.deepcopy(new_board)
+    solution_list = result['solution']
+    solve_time = result['solve_time']
+
+    print(solve_time)
+    # for solution in reversed(solution_list):
+    #     newest_board.decode_str(solution)
+    #     newest_board.print_board()
+    #     print()
+    #     time.sleep(0.25)
+    
+    print(len(solution_list))
+
+    

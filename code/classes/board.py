@@ -213,7 +213,7 @@ class Board():
         
         num_children = len(possible_boards)
 
-        return [possible_boards, num_children]
+        return possible_boards
 
 
         

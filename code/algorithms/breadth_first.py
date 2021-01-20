@@ -3,25 +3,25 @@ from code import helpers
 from collections import deque
 import queue
 import copy
+import time
 #from collections import deque
 
 class BreadthFirst():
     def __init__(self, board):
         self.size = board.size
         self.board = copy.deepcopy(board)
+        self.default_string = self.board.string_repr()
         self.cars_list = self.board.cars_list
         self.archive = {}
         self.states = deque()
-        
+        self.solution_strings = []
+        self.rec_count = 0
         # self.states = queue.Queue()
         # self.states.put(self.board.string_repr())
         self.best_solution = None
 
         self.count = 0
-        self.depth = 0
-        self.current_children = 0
-        self.next_children = 0
-        self.archive[self.board.string_repr()] = 0
+        self.archive[self.default_string] = 0
 
 # variabel aanmaken 
 
@@ -33,9 +33,8 @@ class BreadthFirst():
         # find all possible boards,
         # put into archive
         # queue 
-        possible_boards_result = self.board.find_possible_boards()
-
-        cars_lists = possible_boards_result[0]
+        cars_lists = self.board.find_possible_boards()
+        parent_board_string = self.board.string_repr()
         # wat is hier mis mee??
         # self.next_children += possible_boards_result[1]
 
@@ -55,24 +54,21 @@ class BreadthFirst():
             # if board not in archive: add to archive and add to queue
             else:
                 # heuristiek mogelijk toepassen, score, hoe goed?
-                self.archive[new_board_string] = 0 
+                self.archive[new_board_string] = parent_board_string 
                 # queue_input = [new_board_string, score] -> order queue op score
                 # heuristieken toepassen
                 # vb 1: alle x coordinaten van de auto's zo veel naar links
                 # vb 2: alle verticale auto's zo veel mogelijk naar de boven/onder rand
                 # als er een empty kan komen op een plek rechts van de auto, move maken
                 # plekken rechts tot uitgang minimaliseren
-
-                        
-
                 x_score = helpers.x_score(new_board)
                 # verwijder het bord
                 del(new_board)
                 # checken wat de value is van de eerste in de rij is 
                 # als x_value lager is dan wordt huidige string achteraan gezet
                 # anders vooraan
-
-                #self.states.append(new_board_string)
+                
+                ############ MET HEURESTIEK #############
                 queue_item = [new_board_string, x_score]
 
                 if len(self.states) < 1:
@@ -82,10 +78,12 @@ class BreadthFirst():
                     self.states.append(queue_item)
                 else:
                     self.states.appendleft(queue_item)
+                # ############# ZONDER HEURESTIEK #############
+                # self.states.appendleft([new_board_string])
 
 
     def run(self):
-        
+        start_time = time.time()
         x_score = helpers.x_score(self.board)
         self.states.appendleft([self.board.string_repr(), x_score])
         # zolang er items in de queue staan
@@ -97,8 +95,6 @@ class BreadthFirst():
             current_board = current_item[0]
             
 
-            
-
             # print(f'current_board: {current_board}')
             # pak de informatie uit, uit de string
             self.board.decode_str(current_board)
@@ -107,21 +103,30 @@ class BreadthFirst():
             # break uit loop wanneer er een oplossing is gevonden (breadth first, eerste oplossing altijd het beste)
             if self.board.is_won():
                 print("you won")
-                break
+                self.load_solution_strings(self.board.string_repr())
+                # print(self.solution_strings)
+                # print(f'solution string length: {len(self.solution_strings)}')
+                return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
 
-            # wat is mis met deze logica?
-
-            # if self.current_children < 1:
-            #     self.current_children = self.next_children
-            #     self.next_children = 0
-            #     self.depth += 1
-            # else:
-            #     self.current_children -= 1
-            # build children en zet ze eventueel in de queue
+ 
             self.build_children()
 
             self.count += 1
             if self.count % 100 == 0:
                  print(f'children count:{self.count}')
-        print(f'finished with {self.count} boards')
-        print(f'depth: {self.depth}')
+    
+    def load_solution_strings(self, parent_string):
+        # solution_strings.append(self.board.string_repr())
+        # print(f'\nparent string: {parent_string}')
+        # print(f'\n solution list:{self.solution_strings}\n')
+        # print(f'default string {self.default_string}')
+
+        while self.default_string not in self.solution_strings and self.rec_count < 100:
+            self.rec_count += 1
+            self.solution_strings.append(parent_string)
+            self.load_solution_strings(self.archive[parent_string])
+
+        
+        # volgend bord = archief[self.string_repr()]
+        # solution_strings.append(volgend_bord)
+
