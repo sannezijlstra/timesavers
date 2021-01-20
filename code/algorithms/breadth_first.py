@@ -94,8 +94,3 @@ class BreadthFirst():
                  print(f'children count:{self.count}')
         print(f'finished with {self.count} boards')
         print(f'depth: {self.depth}')
-        
-
-
-
-
