@@ -23,6 +23,7 @@ class BreadthFirst():
 
     def build_children(self):
         """
+
         """
 
          # parent board toevoegen en linken
