@@ -20,7 +20,7 @@ if __name__ == "__main__":
             continue
 
         # for_6 = random.randint(1,3)
-        for_6 = 1
+        for_6 = 2
         for_9 = random.randint(4,6)
 
         # save file path depending on the size
@@ -91,6 +91,8 @@ if __name__ == "__main__":
         
         positive_moves = new_board.positive_moves(car, location)
         negative_moves = new_board.negative_moves(car, location)
-        move_dict[car] = [positive_moves, negative_moves]
-
-    print(move_dict)
+        print(f'{car.id} positive: {positive_moves}, negative {negative_moves}')
+        move_dict[car] = list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
+    new_board.print_board()
+    for car in new_board.cars_dict.values():
+        print(f'{car.id} with {move_dict[car]} options')

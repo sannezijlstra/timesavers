@@ -205,6 +205,10 @@ class Board():
 
     def positive_moves(self, car, location, possible_move=0):
         while location + car.length <= self.size -1:
+            if car.horizontal() and self.board[car.y_location][location + car.length] != EMPTY:
+                break
+            elif not car.horizontal() and self.board[location + car.length][car.x_location] != EMPTY:
+                break
             possible_move += 1
             location += 1
             self.positive_moves(car, location, possible_move)
@@ -213,15 +217,16 @@ class Board():
 
     
     def negative_moves(self, car, location, possible_move=0):
+
         while location - 1 >= 0:
-            possible_move = 0
+            if car.horizontal() and self.board[car.y_location][location - 1] != EMPTY:
+                break
+            elif not car.horizontal() and self.board[location - 1][car.x_location] != EMPTY:
+                break
             possible_move -= 1
             location -= 1
             self.negative_moves(car, location, possible_move)
         return possible_move
 
 
-        
-
-        
 
