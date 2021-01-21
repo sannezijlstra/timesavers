@@ -1,5 +1,5 @@
 from code.classes import board, cars
-from code.algorithms import randomise, breadth_first
+from code.algorithms import randomise, breadth_first, depth_first
 from code import helpers
 import csv
 import copy
@@ -59,17 +59,39 @@ if __name__ == "__main__":
     # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 ############################ BREADTH FIRST #############################
+    # new_board = board.Board(size, cars_list)
+    
+    # breadth = breadth_first.BreadthFirst(new_board)
+    # print('begin run')
+    # result = breadth.run()
+    # # print(result)
+    # newest_board = copy.deepcopy(new_board)
+    # solution_list = result['solution']
+    # solve_time = result['solve_time']
+
+
+    # for solution in reversed(solution_list):
+    #     newest_board.decode_str(solution)
+    #     print()
+    #     newest_board.print_board()
+    #     print()
+    #     time.sleep(0.1)
+
+    # print(f'solved in: {solve_time} seconds ', end="")
+    # print(f' with {len(solution_list)} steps')
+
+############################# DEPTH FIRST #############################
     new_board = board.Board(size, cars_list)
     
-    breadth = breadth_first.BreadthFirst(new_board)
+    depth_obj = depth_first.DepthFirst(new_board)
     print('begin run')
-    result = breadth.run()
+    result = depth_obj.run()
     # print(result)
     newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
     solve_time = result['solve_time']
 
-    print(f'solved in: {solve_time} seconds ', end="")
+
     for solution in reversed(solution_list):
         newest_board.decode_str(solution)
         print()
@@ -77,8 +99,8 @@ if __name__ == "__main__":
         print()
         time.sleep(0.1)
     
+    print(f'solved in: {solve_time} seconds ', end="")
     print(f' with {len(solution_list)} steps')
-
 ############################# michaels play corner #############################
     # new_board = board.Board(size, cars_list)
     # # car_to_move = new_board.cars_dict['A']
