@@ -137,19 +137,20 @@ class Board():
         """
         Creates a list for every car object, consisting of their possible moves
         """
-        move_options = []
         
         if car.horizontal():
-            if self.check_move_left(car):
-                move_options.append('LEFT')
-            if self.check_move_right(car):
-                move_options.append('RIGHT')
-        else: 
-            if self.check_move_up(car):
-                move_options.append('UP')
-            if self.check_move_down(car):
-                move_options.append('DOWN')
-        return move_options
+            location = car.x_location
+        else:
+            location = car.y_location
+        
+        positive_moves = self.positive_moves(car, location)
+        negative_moves = self.negative_moves(car, location)
+        
+        move_list = list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
+        # misschien in een keer die berekening returnen?
+        return move_list
+
+
 
     def find_possible_boards(self):
         """
@@ -162,26 +163,14 @@ class Board():
 
             move_options = self.check_move(car)
 
-            # check if car can move 
-            if len(move_options) > 0:
-                # make a copy of the existing cars dictionary 
-                new_cars_dict = copy.deepcopy(self.cars_dict)
-            else:
-                continue
-            
-            # vind de huidige auto in de kopie dictionary en beweeg deze
-            # find the 
-            new_cars_dict[car.id].do_move(move_options[0])
-
-            # voeg de lijst met bewogen auto's hier aan toe
-            possible_boards.append(new_cars_dict.values())
-
-            # als de auto twee kanten op kan maak nieuwe kopie aan
-            if len(move_options) > 1:
-                other_cars_dict = copy.deepcopy(self.cars_dict)
-                # beweeg de auto en voeg lijst met auto's toe aan possible boards
-                other_cars_dict[car.id].do_move(move_options[1])
-                possible_boards.append(other_cars_dict.values())
+            for move_option in move_options:
+                if move_option != 0:
+                    print(move_option)
+                    new_cars_dict = copy.deepcopy(self.cars_dict)
+                    car_to_move = new_cars_dict[car.id]
+                    car_to_move.do_move(move_option)
+                    possible_boards.append(new_cars_dict.values())
+       
 
         return possible_boards
         
@@ -194,13 +183,12 @@ class Board():
         """
             iterate over the board rows and items to print the board
         """
-        # checken of item _ is
-        # anders print item = carid (description heeft kleur)
         for row in self.board:
             for item in row:
-                print(item)
-                #print(f'{item} ', end="")
-            print()
+                if item != "_":
+                    item = self.cars_dict[item].description
+                print(f'{item} ', end="")
+            print()    
     
 
     def positive_moves(self, car, location, possible_move=0):

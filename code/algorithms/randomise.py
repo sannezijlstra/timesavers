@@ -48,11 +48,9 @@ def randomise(new_board):
         new_board.print_board()
         print()
         loop_count += 1
-        # time.sleep(0.5)
+        time.sleep(0.5)
         
         if new_board.is_won():
             print(loop_count)
             return loop_count
         
-def car_string (car):
-    return f'{car}{car.x_location}{car.y_location}'

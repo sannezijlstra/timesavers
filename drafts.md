@@ -449,3 +449,7 @@ cars.py:
     #     Returns string representation of car object
     #     """
     #     return "'{0}{1}{2}{3}{4}'".format(self.id, self.orientation, self.x_location, self.y_location, self.length)
+
+randomise.py
+# def car_string (car):
+    return f'{car}{car.x_location}{car.y_location}'
