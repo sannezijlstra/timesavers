@@ -99,39 +99,39 @@ class Board():
                 if car.length > 2:
                     self.board[car.y_location + 2][car.x_location] = car.id
 
-    def check_move_up(self, car):
-        # TODO! DEZE FUNCTIES OMSCHRIJVEN TOT 1
-        """
-        Checks whether the location one step above the car is empty
-        """
-        # kunnen we hier gebruik maken van de car_object?
-        if car.y_location - 1 < 0:
-            return False 
-        return self.board[car.y_location - 1 ][car.x_location] == EMPTY
+    # def check_move_up(self, car):
+    #     # TODO! DEZE FUNCTIES OMSCHRIJVEN TOT 1
+    #     """
+    #     Checks whether the location one step above the car is empty
+    #     """
+    #     # kunnen we hier gebruik maken van de car_object?
+    #     if car.y_location - 1 < 0:
+    #         return False 
+    #     return self.board[car.y_location - 1 ][car.x_location] == EMPTY
         
-    def check_move_down(self, car):
-        """
-        Checks whether the location one step below the car is empty
-        """
-        if car.y_location + car.length > self.size - 1:
-            return False 
-        return self.board[car.y_location + car.length][car.x_location] == EMPTY
+    # def check_move_down(self, car):
+    #     """
+    #     Checks whether the location one step below the car is empty
+    #     """
+    #     if car.y_location + car.length > self.size - 1:
+    #         return False 
+    #     return self.board[car.y_location + car.length][car.x_location] == EMPTY
 
-    def check_move_right(self, car):
-        """
-        Checks whether the location one step right of the car is empty
-        """
-        if car.x_location + car.length > self.size - 1:
-            return False
-        return self.board[car.y_location][car.x_location + car.length] == EMPTY
+    # def check_move_right(self, car):
+    #     """
+    #     Checks whether the location one step right of the car is empty
+    #     """
+    #     if car.x_location + car.length > self.size - 1:
+    #         return False
+    #     return self.board[car.y_location][car.x_location + car.length] == EMPTY
 
-    def check_move_left(self, car):
-        """
-        Checks whether the location one step left of the car is empty
-        """
-        if car.x_location - 1 < 0:
-            return False
-        return self.board[car.y_location][car.x_location - 1] == EMPTY
+    # def check_move_left(self, car):
+    #     """
+    #     Checks whether the location one step left of the car is empty
+    #     """
+    #     if car.x_location - 1 < 0:
+    #         return False
+    #     return self.board[car.y_location][car.x_location - 1] == EMPTY
 
     def check_move(self, car):
         """
@@ -157,6 +157,7 @@ class Board():
         Finds all possible boards going from the current board
         """
         possible_boards = []
+        move_option_count = 0
         
         # iterates over the cars in the cars dictionary 
         for car in self.cars_dict.values():
@@ -164,14 +165,21 @@ class Board():
             move_options = self.check_move(car)
 
             for move_option in move_options:
+                # print(f'{car} with {move_options}')
                 if move_option != 0:
-                    print(move_option)
                     new_cars_dict = copy.deepcopy(self.cars_dict)
                     car_to_move = new_cars_dict[car.id]
-                    car_to_move.do_move(move_option)
-                    possible_boards.append(new_cars_dict.values())
-       
+                    # print(f'pre move car to move: {car_to_move} with move option: {move_option}')
 
+                    car_to_move.do_move(move_option)
+                    # print(f'after move car to move: {car_to_move}')
+
+                    possible_boards.append(new_cars_dict.values())
+                    move_option_count += 1
+       
+        # print(f'possible_boards {possible_boards}')
+        # print(f'total next possible boards {len(possible_boards)}')
+        # print(f'move count{move_option_count}')
         return possible_boards
         
     def is_won(self):

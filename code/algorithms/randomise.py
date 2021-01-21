@@ -48,7 +48,7 @@ def randomise(new_board):
         new_board.print_board()
         print()
         loop_count += 1
-        time.sleep(0.5)
+        time.sleep(0.1)
         
         if new_board.is_won():
             print(loop_count)

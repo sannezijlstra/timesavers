@@ -20,7 +20,7 @@ if __name__ == "__main__":
             continue
 
         # for_6 = random.randint(1,3)
-        for_6 = 2
+        for_6 = 1
         for_9 = random.randint(4,6)
 
         # save file path depending on the size
@@ -54,30 +54,30 @@ if __name__ == "__main__":
     
 
 ############################ RANDOM #############################
-    new_board = board.Board(size, cars_list)
-    solution_count = randomise.randomise(new_board)
-    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
+    # new_board = board.Board(size, cars_list)
+    # solution_count = randomise.randomise(new_board)
+    # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 ############################ BREADTH FIRST #############################
-    # new_board = board.Board(size, cars_list)
+    new_board = board.Board(size, cars_list)
     
-    # breadth = breadth_first.BreadthFirst(new_board)
-    # print('begin run')
-    # result = breadth.run()
-    # # print(result)
-    # newest_board = copy.deepcopy(new_board)
-    # solution_list = result['solution']
-    # solve_time = result['solve_time']
+    breadth = breadth_first.BreadthFirst(new_board)
+    print('begin run')
+    result = breadth.run()
+    # print(result)
+    newest_board = copy.deepcopy(new_board)
+    solution_list = result['solution']
+    solve_time = result['solve_time']
 
-    # print(f'solved in: {solve_time} seconds ', end="")
-    # # for solution in reversed(solution_list):
-    # #     newest_board.decode_str(solution)
-    # #     print()
-    # #     newest_board.print_board()
-    # #     print()
-    # #     time.sleep(0.1)
+    print(f'solved in: {solve_time} seconds ', end="")
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
     
-    # print(f' with {len(solution_list)} steps')
+    print(f' with {len(solution_list)} steps')
 
 ############################# michaels play corner #############################
     # new_board = board.Board(size, cars_list)
