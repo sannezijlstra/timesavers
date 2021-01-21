@@ -1,3 +1,7 @@
+Board.py TODOS:   vanaf regel 113, regel 148, regel 186, regel 210
+
+
+
 def move(self, direction, car):
         """
             checks if move suggested is possible depending on orientation and space in the grid
@@ -301,3 +305,147 @@ def run_random(new_board, cars_list):
         if count % 100 == 0:
             print(count)
     return count
+
+Board.py:
+    # def __hash__(self):
+    #     return hash(self.string_repr())
+    #     # lijst maken van hashes, gebruikte boards 
+    #     # bord en richting opslaan in een hash, 
+
+        # #TODO gebruiken we deze??
+    # def __eq__(self, other):
+    #     return hash(self) == hash(other)
+
+# plaats dit object op positie 0,0 en 0,1 bijv. 
+    # for i in range(size):
+    # load board with car_objects?
+    # dit is de parent staat van het bord, de staat vanuit waar het algoritme zijn werk gaat doen. 
+
+    # def check_move_up (self, cars_list):
+    # if car.orientation == 'H' and 
+
+# IF MOVE IN MOVE_OPTIONS: MOVE = VALID
+
+
+        # kopie van het huidige bord maken en met move 1 aanpassing maken
+        # move moet een nieuwe instantie aanmaken in plaats van zichzelf aanpassen
+        # kijken naar het bord ipv naar de auto's
+        # steeds opnieuw een bord aanmaken 
+
+        # HIER CHECKEN OF DE MOVE GEDAAN KAN WORDEN, 
+        # IS HET VALID MOVE? DAN MOVEN 
+        # serializen: archief bijhouden
+        # het bord waar je mee bezig bent is parent, en children opslaan in list van parent 
+        # begin staat van bord: bord is parent
+        # op basis van heuristiek ga je alle bordjes aanmaken
+        # voorbeelden: eerst alle auto's 1 plek, daarna naar links, daarna zo veel mogelijk 
+        # sla alle borden op in queue 
+        # je maakt alle staten van het bord aan, elk object heeft eigen locatie, maar omdat het string is zijn het geen echte objecten: representatie van bord in woorden 
+        # pas bij het echt uitpakken van een string verander je pas echt de locaties ad hand van de string en gooi je de parent weg 
+        # auto A heeft nu locatie x,y 
+        # voor auto in string: 
+        # auto objecten aangepast naar staat van het bord 
+        # dus je checkt steeds of het voordeliug is (heuristiek!!!) hoe ver auto van finish of hoe weinig obstakels precies, en 
+        # je wil de lijst met strings van bordjes kunnen sorteren, wat is nou een goed bord??? Dat kan je bepalen met een goede heuristiek!!!
+        # laagste waarde van random gebruiken!! 
+
+        # is dit een valid move? is het H of V? zit er een plekje omheen? --> niet valid? ga naar ander auto'tje 
+
+
+        # AUTO CLASS: UITVOEREN VAN MOVE MET INFORMATIE VANAF BOARD
+        # krijg stapruimte vanuit bord
+        # kijk eerst horizontaal of verticaal, 
+        # if self.orientation = "H" --> x + of - 1 en anders y +1 of - 1 
+        # return possible_boards
+     
+        # if self.redcar and self.location[0] + 1 == board.size - 1:
+        #     board.won = True
+
+Board.py: 
+
+def check_move_up(self, car):
+        # TODO! DEZE FUNCTIES OMSCHRIJVEN TOT 1
+        """
+        Checks whether the location one step above the car is empty
+        """
+        # kunnen we hier gebruik maken van de car_object?
+        if car.y_location - 1 < 0:
+            return False 
+        return self.board[car.y_location - 1 ][car.x_location] == EMPTY
+        
+    def check_move_down(self, car):
+        """
+        Checks whether the location one step below the car is empty
+        """
+        if car.y_location + car.length > self.size - 1:
+            return False 
+        return self.board[car.y_location + car.length][car.x_location] == EMPTY
+
+    def check_move_right(self, car):
+        """
+        Checks whether the location one step right of the car is empty
+        """
+        if car.x_location + car.length > self.size - 1:
+            return False
+        return self.board[car.y_location][car.x_location + car.length] == EMPTY
+
+    def check_move_left(self, car):
+        """
+        Checks whether the location one step left of the car is empty
+        """
+        if car.x_location - 1 < 0:
+            return False
+        return self.board[car.y_location][car.x_location - 1] == EMPTY
+
+def find_all_moves(self, cars_dict):
+        # TODO is dit niet dubbel met check_move?
+        """
+        Creates a dictionary where all possible moves are connected to the car objects? 
+        """
+        all_moves = {}
+        # 
+        for car in cars_dict.values():
+            all_moves[car] = self.check_move(car)
+
+            def check_move(self, car):
+        """
+        Creates a list for every car object, consisting of their possible moves
+        """
+        move_options = []
+        
+        if car.horizontal():
+            if self.check_move_left(car):
+                move_options.append('LEFT')
+            if self.check_move_right(car):
+                move_options.append('RIGHT')
+        else: 
+            if self.check_move_up(car):
+                move_options.append('UP')
+            if self.check_move_down(car):
+                move_options.append('DOWN')
+        return move_options
+
+
+    def do_move(self, direction):
+        # if self.valid_move
+        if direction == 'UP':
+            self.y_location -= 1
+        elif direction == 'DOWN':
+            self.y_location += 1
+        elif direction == 'LEFT':
+            self.x_location -= 1
+        elif direction == 'RIGHT':
+            self.x_location += 1
+
+cars.py:
+   # def __hash__(self):
+    #     return hash(self.__repr__())
+
+    # def __eq__(self, other):
+    #     return hash(self) == hash(other)
+
+# def car_string(self):
+    #     """
+    #     Returns string representation of car object
+    #     """
+    #     return "'{0}{1}{2}{3}{4}'".format(self.id, self.orientation, self.x_location, self.y_location, self.length)

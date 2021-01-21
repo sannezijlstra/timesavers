@@ -1,0 +1,12 @@
+DOEL: move options met daarin [1,2,-1,-2] of leeg []
+argumenten nodig in functie:
+    - auto
+    - x_coordinaat of y_coordinaat
+    - possible move (voor recursie)
+
+
+Check auto is horizontaal of verticaal
+    - afhankelijk van orientatie geef de x of y coordinaat mee
+    - check of het bord leeg is op lokatie x,y van de auto als +1 of -1
+zo ja append aan move-options het getal
+doe de functie nog een keer met nieuw getal

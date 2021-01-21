@@ -35,7 +35,10 @@ Dinsdag 17/01/2020:
 - begonnen aan breadth first algoritme
 - ervoor gezorgd dat een board steeds opgeslagen wordt als string, die daarna weer gedecode kan worden wanneer er een nieuw parent board gegenereerd moet worden. 
 - we lopen tegen erg veel dingen aan, zoals het juist aanmaken van alle 'possible boards' vanaf een parent board, en deze dan omzetten naar strings, in een archief opslaan, in de queue zetten, steeds de eerste van de queue weer uitpakken, en daarmee verder gaan. 
+- uiteindelijk gelukt om breadth first algoritme te implementeren, maar nog alleen mogelijk om aantal 'children boards', dus het totale aantal opties te printen, in plaats van het aantal 'parent boards', waarbij de zetten geteld kunnen worden. 
+- resultaten pagina van deze versie van breadth first ingeleverd
 
-
-
-
+Woensdag 18/01/2020:
+- verder gegaan met breadth first, ervoor gezorgd dat het nu mogelijk is om het aantal zetten te zien dmv een recursieve functie
+- heuristiek toegevoegd: ervoor zorgen dat steeds het mogelijke bord met de meeste horizontale auto's zo ver mogelijk naar links, vooraan wordt gezet in de queue. Wanneer alle horizontale auto's zo veel mogelijk naar links staan, kunnen de verticale auto's rechts van het rode auto'tje eerder omhoog en omlaag schuiven en zo ruimte maken voor het rode auto'tje
+- random opnieuw werkend gekregen 
