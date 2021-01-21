@@ -53,44 +53,46 @@ if __name__ == "__main__":
     # create initial board 
     
 
-# ############################ RANDOM #############################
-#     new_board = board.Board(size, cars_list)
-#     solution_count = randomise.randomise(new_board)
-#     print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
+############################ RANDOM #############################
+    # new_board = board.Board(size, cars_list)
+    # solution_count = randomise.randomise(new_board)
+    # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 ############################ BREADTH FIRST #############################
-    # new_board = board.Board(size, cars_list)
+    new_board = board.Board(size, cars_list)
     
-    # breadth = breadth_first.BreadthFirst(new_board)
-    # print('begin run')
-    # result = breadth.run()
-    # # print(result)
-    # newest_board = copy.deepcopy(new_board)
-    # solution_list = result['solution']
-    # solve_time = result['solve_time']
+    breadth = breadth_first.BreadthFirst(new_board)
+    print('begin run')
+    result = breadth.run()
+    # print(result)
+    newest_board = copy.deepcopy(new_board)
+    solution_list = result['solution']
+    solve_time = result['solve_time']
 
-    # print(f'solved in: {solve_time} seconds ', end="")
-    # # for solution in reversed(solution_list):
-    # #     newest_board.decode_str(solution)
-    # #     print()
-    # #     newest_board.print_board()
-    # #     print()
-    # #     time.sleep(0.1)
+    print(f'solved in: {solve_time} seconds ', end="")
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
     
-    # print(f' with {len(solution_list)} steps')
+    print(f' with {len(solution_list)} steps')
 
 ############################# michaels play corner #############################
-    new_board = board.Board(size, cars_list)
-    # car_to_move = new_board.cars_dict['A']
-    move_dict = {}
-    for car in new_board.cars_dict.values():
-        if car.horizontal():
-            location = car.x_location
-        else:
-            location = car.y_location
+    # new_board = board.Board(size, cars_list)
+    # # car_to_move = new_board.cars_dict['A']
+    # move_dict = {}
+    # for car in new_board.cars_dict.values():
+    #     if car.horizontal():
+    #         location = car.x_location
+    #     else:
+    #         location = car.y_location
         
-        positive_moves = new_board.positive_moves(car, location)
-        negative_moves = new_board.negative_moves(car, location)
-        move_dict[car] = [positive_moves, negative_moves]
-
-    print(move_dict)
+    #     positive_moves = new_board.positive_moves(car, location)
+    #     negative_moves = new_board.negative_moves(car, location)
+    #     print(f'{car.id} positive: {positive_moves}, negative {negative_moves}')
+    #     move_dict[car] = list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
+    # new_board.print_board()
+    # for car in new_board.cars_dict.values():
+    #     print(f'{car.id} with {move_dict[car]} options')

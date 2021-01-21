@@ -37,24 +37,25 @@ class Car():
             self.redcar = True
         else:
             self.redcar = False
-    
+    def __repr__(self):
+            """
+            Returns string representation of car object
+            """
+            return "'{0}{1}{2}{3}{4}'".format(self.id, self.orientation, self.x_location, self.y_location, self.length)
+
     def horizontal(self):
         """
         Checks whether car is in horizontal orientation
         """
         return self.orientation == 'H'
 
-    def do_move(self, direction):
+    def do_move(self, move):
         """
         The car objects do the actual moves 
         """
-        if direction == 'UP':
-            self.y_location -= 1
-        elif direction == 'DOWN':
-            self.y_location += 1
-        elif direction == 'LEFT':
-            self.x_location -= 1
-        elif direction == 'RIGHT':
-            self.x_location += 1
+        if self.horizontal():
+            self.x_location += move
+        else:
+            self.y_location += move
 
 

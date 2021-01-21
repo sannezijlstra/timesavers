@@ -641,3 +641,6 @@ plekken rechts tot uitgang minimaliseren
 checken wat de value is van de eerste in de rij is 
 als x_value lager is dan wordt huidige string achteraan gezet
 anders vooraan
+randomise.py
+# def car_string (car):
+    return f'{car}{car.x_location}{car.y_location}'

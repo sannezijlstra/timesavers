@@ -90,7 +90,7 @@ class BreadthFirst():
             # break out of loop when solution is found
             if self.board.is_won():
                 print("you won")
-                # e
+                # 
                 self.load_solution_strings(self.board.string_repr())
                 return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
 
@@ -102,10 +102,8 @@ class BreadthFirst():
                  print(f'children count:{self.count}')
     
     def load_solution_strings(self, parent_string):
-        # solution_strings.append(self.board.string_repr())
-        # print(f'\nparent string: {parent_string}')
-        # print(f'\n solution list:{self.solution_strings}\n')
-        # print(f'default string {self.default_string}')
+        """
+        """
 
         while self.default_string not in self.solution_strings and self.rec_count < 100:
             self.rec_count += 1
