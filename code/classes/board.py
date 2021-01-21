@@ -170,16 +170,17 @@ class Board():
                 continue
             
             # vind de huidige auto in de kopie dictionary en beweeg deze
-            # find the 
+            # find the car in the dictionary to do the move with
             new_cars_dict[car.id].do_move(move_options[0])
 
-            # voeg de lijst met bewogen auto's hier aan toe
+            # add the boards with the moved cars to the list of possible boards
             possible_boards.append(new_cars_dict.values())
 
-            # als de auto twee kanten op kan maak nieuwe kopie aan
+            # if the car could move both ways, make another copy of the car
             if len(move_options) > 1:
                 other_cars_dict = copy.deepcopy(self.cars_dict)
-                # beweeg de auto en voeg lijst met auto's toe aan possible boards
+
+                # move the car into the other possible direciton, and add the board to the possible boards list
                 other_cars_dict[car.id].do_move(move_options[1])
                 possible_boards.append(other_cars_dict.values())
 
@@ -187,13 +188,15 @@ class Board():
         
     def is_won(self):
         """
+        Checks whether the red car has found the exit, thus the game has been won
         """
         return self.cars_dict['X'].x_location + 1 == self.size - 1
 
     def print_board(self):
         """
-            iterate over the board rows and items to print the board
+        Iterate over the board rows and items to print the board
         """
+        #TODO
         # checken of item _ is
         # anders print item = carid (description heeft kleur)
         for row in self.board:
@@ -219,9 +222,3 @@ class Board():
             location -= 1
             self.negative_moves(car, location, possible_move)
         return possible_move
-
-
-        
-
-        
-
