@@ -13,6 +13,7 @@ def randomise(new_board):
     loop_count = 0
 
     while True:
+        # TODO MAG DIT WEG?
         # if loop_count == 1000000:
         #     break
         
