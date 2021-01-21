@@ -5,45 +5,39 @@ from code import helpers
 from code.classes import board, cars
 
 def randomise(new_board):
+    """
+    Algorithm that solves the Rush Hour game by randomly choosing possible boards, excluding the board that had been chosen last
+    
+    """
     new_board = copy.deepcopy(new_board)
     loop_count = 0
-    # last_board_string = new_board.string_repr()
 
-    # hash hierheen krijgen en in dictionary opslaan: string als key, object als value
-    # def functie(car)
-    #     return f'{car}{car.x_location}{car.y_location}'
     while True:
-        #ARCHIVE VULLEN MET NEW_BOARD.___
-        if loop_count == 1000000:
-            break
+        # if loop_count == 1000000:
+        #     break
         
-        if loop_count % 1000 == 0:
-            print(f'count:{loop_count}')
-        
-        possible_boards = new_board.find_possible_boards()
-        
-        #last_board_string = random.choice(possible_boards.string_repr())
+        # if loop_count % 1000 == 0:
+        #     print(f'count:{loop_count}')
 
-        # print(f'first possible boardslist {len(possible_boards)}\n{possible_boards}')
+        # gives all possible boards from the current board
+        possible_boards = new_board.find_possible_boards()
+
         if loop_count > 0:
+            # iterates over all possible boards 
             for count, cars_list  in enumerate(possible_boards):
                 temp = board.Board(new_board.size, cars_list)
                 
+                # excludes the last board, so that cars don't jump forward and backward
                 if last_board_string == temp.string_repr():
-                    #print(possible_boards[count])
-                    #print()
-                    #print(temp.cars_dict.values())
-                    # del(possible_boards[count])
                     possible_boards.pop(count)
-                    
-        # print(f'second possible boardslist length {len(possible_boards)} \n {possible_boards}')
 
+        # makes the string representation of the last board
         last_board_string = new_board.string_repr()
-        # print(f'possible boards:{possible_boards}')
-        # hier kies je 1 bord, dit wordt de nieuwe lijst 
+
+        # a random board out of the possible boards is chosen  
         next_board = random.choice(possible_boards)
-        # hier onder wordt gelijk het bord veranderd, dmv next_board 
-        # print(f'next_board: {next_board}')
+        
+        # new board object is made, with next_board
         new_board = board.Board(new_board.size, next_board)
         new_board.print_board()
         print()

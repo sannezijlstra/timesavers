@@ -184,12 +184,13 @@ class Board():
         
     def is_won(self):
         """
+        Checks whether the red car has found the exit, thus the game has been won
         """
         return self.cars_dict['X'].x_location + 1 == self.size - 1
 
     def print_board(self):
         """
-            iterate over the board rows and items to print the board
+        Iterate over the board rows and items to print the board
         """
         for row in self.board:
             for item in row:
