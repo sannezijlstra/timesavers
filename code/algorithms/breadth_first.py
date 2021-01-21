@@ -14,12 +14,17 @@ class BreadthFirst():
         self.archive = {}
         self.states = deque()
         self.solution_strings = []
-        self.rec_count = 0
         self.best_solution = None
-
+        self.x_score = helpers.x_score(self.board)
+        self.states.appendleft([self.board.string_repr(), self.x_score])
         self.count = 0
         self.archive[self.default_string] = 0
 
+    def append_last(self, queue_item):
+        self.states.append(queue_item)
+    
+    def append_first(self, queue_item):
+        self.states.appendleft(queue_item)
 
     def build_children(self):
         """
@@ -46,19 +51,22 @@ class BreadthFirst():
             else:
                 # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
+                
 
-                del(new_board)
+                ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
+                # self.x_score = helpers.x_score(new_board)
+                # red_car_score = new_board.cars_dict['X'].x_location + 1
+                # new_score = self.x_score / red_car_score
 
-                # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                # queue_item = [new_board_string, x_score]
+                # queue_item = [new_board_string, new_score]
 
                 # if len(self.states) < 1:
-                #     self.states.appendleft(queue_item)
+                #     self.append_first(queue_item)
 
                 # if self.states[0][1] <= queue_item[1]:
-                #     self.states.append(queue_item)
+                #     self.append_last(queue_item)
                 # else:
-                #     self.states.appendleft(queue_item)
+                #     self.append_first(queue_item)
 
                 ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
                 # TODO
@@ -67,14 +75,17 @@ class BreadthFirst():
 
                 ############# WITHOUT HEURISTICS #############
                 self.states.appendleft([new_board_string])
+                ############# don't remove #############
+
+                del(new_board)
+
 
 
     def run(self):
         """
         """
         start_time = time.time()
-        x_score = helpers.x_score(self.board)
-        self.states.appendleft([self.board.string_repr(), x_score])
+
         # as long as there are items in the queue
         while len(self.states) > 0:
             
@@ -105,8 +116,7 @@ class BreadthFirst():
         """
         """
 
-        while self.default_string not in self.solution_strings and self.rec_count < 100:
-            self.rec_count += 1
+        while self.default_string not in self.solution_strings:
             self.solution_strings.append(parent_string)
             self.load_solution_strings(self.archive[parent_string])
 
