@@ -54,19 +54,19 @@ class DepthFirst():
                 
 
                 ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                self.x_score = helpers.x_score(new_board)
-                red_car_score = new_board.cars_dict['X'].x_location + 1
-                new_score = self.x_score / red_car_score
+                # self.x_score = helpers.x_score(new_board)
+                # red_car_score = new_board.cars_dict['X'].x_location + 1
+                # new_score = self.x_score / red_car_score
 
-                queue_item = [new_board_string, new_score]
+                # queue_item = [new_board_string, new_score]
 
-                if len(self.states) < 1:
-                    self.append_first(queue_item)
+                # if len(self.states) < 1:
+                #     self.append_first(queue_item)
 
-                if self.states[0][1] <= queue_item[1]:
-                    self.append_last(queue_item)
-                else:
-                    self.append_first(queue_item)
+                # if self.states[0][1] <= queue_item[1]:
+                #     self.append_last(queue_item)
+                # else:
+                #     self.append_first(queue_item)
 
                 ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
                 # TODO
@@ -74,7 +74,7 @@ class DepthFirst():
                 # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
 
                 ############# WITHOUT HEURISTICS #############
-                # self.append_first([new_board_string])
+                self.append_first([new_board_string])
                 ############# don't remove #############
 
                 del(new_board)

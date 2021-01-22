@@ -157,7 +157,6 @@ class Board():
         Finds all possible boards going from the current board
         """
         possible_boards = []
-        move_option_count = 0
         
         # iterates over the cars in the cars dictionary 
         for car in self.cars_dict.values():
@@ -175,7 +174,6 @@ class Board():
                     # print(f'after move car to move: {car_to_move}')
 
                     possible_boards.append(new_cars_dict.values())
-                    move_option_count += 1
        
         # print(f'possible_boards {possible_boards}')
         # print(f'total next possible boards {len(possible_boards)}')
