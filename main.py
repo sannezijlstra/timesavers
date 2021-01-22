@@ -1,5 +1,5 @@
 from code.classes import board, cars
-from code.algorithms import randomise, breadth_first, depth_first
+from code.algorithms import randomise, breadth_first, depth_first, depth_first2
 from code import helpers
 import csv
 import copy
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # newest_board = copy.deepcopy(new_board)
     # solution_list = result['solution']
     # solve_time = result['solve_time']
-
+    # count = result['count']
 
     # for solution in reversed(solution_list):
     #     newest_board.decode_str(solution)
@@ -79,18 +79,19 @@ if __name__ == "__main__":
 
     # print(f'solved in: {solve_time} seconds ', end="")
     # print(f' with {len(solution_list)} steps')
+    # print(f'total amount of children analysed: {count}')
 
 ############################# DEPTH FIRST #############################
     new_board = board.Board(size, cars_list)
     
-    depth_obj = depth_first.DepthFirst(new_board)
+    depth_obj = depth_first2.DepthFirst(new_board)
     print('begin run')
     result = depth_obj.run()
     # print(result)
     newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
     solve_time = result['solve_time']
-
+    count = result['count']
 
     for solution in reversed(solution_list):
         newest_board.decode_str(solution)
@@ -101,6 +102,7 @@ if __name__ == "__main__":
     
     print(f'solved in: {solve_time} seconds ', end="")
     print(f' with {len(solution_list)} steps')
+    print(f' number of children analysed: {count}')
 ############################# michaels play corner #############################
     # new_board = board.Board(size, cars_list)
     # # car_to_move = new_board.cars_dict['A']

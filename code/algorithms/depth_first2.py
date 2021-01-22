@@ -6,25 +6,25 @@ import copy
 import time
 #from collections import deque
 
-class BreadthFirst():
+class DepthFirst():
     def __init__(self, board):
         self.size = board.size
         self.board = copy.deepcopy(board)
         self.default_string = self.board.string_repr()
         self.archive = {}
-        self.states = deque()
+        self.states = []
         self.solution_strings = []
         self.best_solution = None
         self.x_score = helpers.x_score(self.board)
-        self.states.appendleft([self.board.string_repr(), self.x_score])
+        self.states.append([self.board.string_repr(), self.x_score])
         self.count = 0
         self.archive[self.default_string] = 0
 
     def append_last(self, queue_item):
-        self.states.append(queue_item)
+        self.states.insert(0,queue_item)
     
     def append_first(self, queue_item):
-        self.states.appendleft(queue_item)
+        self.states.append(queue_item)
 
     def build_children(self):
         """
