@@ -1,3 +1,4 @@
+# TODO nog nodig???
 def reverse_move(direction):
     if direction == 'UP':
         return 'DOWN'
@@ -8,7 +9,7 @@ def reverse_move(direction):
     else:
         return 'RIGHT'
 
-
+# TODO nog nodig???
 def find_cars_that_can(cars_list, new_board):
     cars_that_can = {}
     
@@ -21,8 +22,19 @@ def find_cars_that_can(cars_list, new_board):
 
 
 def x_score(board):
+    """
+    Determines the x score of a car, by adding all x-coordinates of the horizontal cars
+    This is used in the heuristic in breadth first search where we keep taking the possible board where the x-score is the lowest
+    """
     x_score = 0
+    # iterates over all cars
     for car in board.cars_dict.values():
         if car.horizontal() and car.id != 'X':
             x_score += car.x_location 
-    return x_score
+    return x_score           
+
+def red_car_score(board):
+    red_car_score = 0
+    if car.id == 'X':
+        red_car_score == car.x_location
+    return red_car_score
