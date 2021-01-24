@@ -70,12 +70,12 @@ class BreadthFirst():
                 #     continue
                 # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
-                queue_item = [new_board_string]
+                # queue_item = [new_board_string]
 
-                ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                self.x_score = helpers.x_score(new_board)
-                # new_score = self.x_score / red_car_score
-                queue_item.append(self.x_score)
+                # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
+                # self.x_score = helpers.x_score(new_board)
+                # # new_score = self.x_score / red_car_score
+                # queue_item.append(self.x_score)
                 # queue_item = [new_board_string, self.x_score]
 
                 # if len(self.states) < 1:
@@ -110,21 +110,21 @@ class BreadthFirst():
                 # # queue_item = [new_board_string, self.red_car_score]
                 # queue_item.append(self.red_car_score)
                 ############ HEURISTIC 4: MAKE path redcar = empty ############
-                y = new_board.cars_dict['X'].y_location
-                empty_path_red = 0
-                for x in range(new_board.size - new_board.cars_dict['X'].x_location):
-                    if new_board.board[x][y] == board.EMPTY:
-                        empty_path_red += 1
+                # y = new_board.cars_dict['X'].y_location
+                # empty_path_red = 0
+                # for x in range(new_board.size - new_board.cars_dict['X'].x_location):
+                #     if new_board.board[x][y] == board.EMPTY:
+                #         empty_path_red += 1
                 
-                queue_item.append(empty_path_red)
+                # queue_item.append(empty_path_red)
 
-                if len(self.states) < 1:
-                    self.states.appendleft(queue_item)
+                # if len(self.states) < 1:
+                #     self.states.appendleft(queue_item)
 
-                if self.states[0][1] <= queue_item[1] and self.states[0][2] >= queue_item[2]:
-                    self.append_last(queue_item)
-                else:
-                    self.append_first(queue_item)
+                # if self.states[0][1] <= queue_item[1] and self.states[0][2] >= queue_item[2]:
+                #     self.append_last(queue_item)
+                # else:
+                #     self.append_first(queue_item)
 
 
                 # if len(self.states) < 1:
@@ -136,7 +136,7 @@ class BreadthFirst():
                 # else:
                 #      self.append_first(queue_item)
                 ############# WITHOUT HEURISTICS #############
-                # self.append_first([new_board_string])
+                self.append_first([new_board_string])
                 ############# don't remove #############
 
                 del(new_board)
@@ -183,6 +183,7 @@ class BreadthFirst():
             self.load_solution_strings(self.archive[parent_string])
 
     def iterate_solution_strings(self, parent_string):
+        # iets anders fixen dan recursion?
         pass
         
        

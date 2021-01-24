@@ -42,6 +42,8 @@ def run_breadth_first(new_board, cars_list):
     print("solved in: {0:.3f} seconds".format(solve_time), end="")
     print(f' with {len(solution_list)} steps')
     print(f' with {count} children analysed ')
+    moves_list = helpers.find_moves(solution_list, newest_board)
+    print(moves_list)
 
 ############################# DEPTH FIRST #############################
 def run_depth_first(board, cars_list):
@@ -66,6 +68,8 @@ def run_depth_first(board, cars_list):
     print("solved in: {0:.3f} seconds".format(solve_time), end="")
     print(f' with {len(solution_list)} steps')
     print(f' number of children analysed: {count}')
+    moves_list = helpers.find_moves(solution_list, newest_board)
+    print(moves_list)
 
 if __name__ == "__main__":
     # prompt user for data file size and select file from data folder
@@ -127,10 +131,17 @@ if __name__ == "__main__":
         sys.exit("data file is empty or does not exist")
 
     # create initial board 
-    algorithm_choices = {'run random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first}
-
-    alg_choice = input(f'select algrorithm from {algorithm_choices.keys()}')
-    algorithm_choices[alg_choice](board, cars_list)
+    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first}
+    while True:
+        try:
+            dict_string = {str(key) for key in algorithm_choices.keys()}
+            alg_choice = input(f'select algrorithm from {dict_string} ')
+            algorithm_choices[alg_choice](board, cars_list)
+            break
+        except KeyError:
+            print('invalid algorithm selection')
+            
+    
 
 
 

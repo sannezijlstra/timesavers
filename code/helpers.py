@@ -1,3 +1,4 @@
+import copy
 # TODO nog nodig???
 def reverse_move(direction):
     if direction == 'UP':
@@ -48,3 +49,38 @@ def y_score(board):
             # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
             y_score += y_score + abs(board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
     return y_score
+
+def find_moves(solution_list, new_board):
+    moves_list = []
+    for index in reversed(range(len(solution_list))):
+        
+        new_board.decode_str(solution_list[index])
+        first_dict = copy.deepcopy(new_board.cars_dict)
+        if first_dict['X'].x_location == 4:
+            break
+
+        new_board.decode_str(solution_list[index - 1])
+        second_dict = new_board.cars_dict
+
+        for car_id in first_dict.keys():
+            first_x =first_dict[car_id].x_location
+            first_y = first_dict[car_id].y_location
+            second_x = second_dict[car_id].x_location
+            second_y = second_dict[car_id].y_location
+
+            if first_x - second_x != 0:
+                print(f'{car_id}: {first_x} {second_x}')
+                move = second_x - first_x
+                moves_list.append([car_id, move])
+                continue
+            elif first_y - second_y != 0:
+                print(f'{car_id}: {first_y} {second_y}')
+                move = second_y - first_y
+                moves_list.append([car_id, move])
+
+    return moves_list
+
+            
+            
+        
+
