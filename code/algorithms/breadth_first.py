@@ -4,6 +4,7 @@ from collections import deque
 import queue
 import copy
 import time
+
 #from collections import deque
 
 class BreadthFirst():
@@ -69,21 +70,21 @@ class BreadthFirst():
                 #     continue
                 # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
-                # queue_item = [new_board_string]
+                queue_item = [new_board_string]
 
                 ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                # self.x_score = helpers.x_score(new_board)
+                self.x_score = helpers.x_score(new_board)
                 # new_score = self.x_score / red_car_score
-                # queue_item.append(self.x_score)
+                queue_item.append(self.x_score)
                 # queue_item = [new_board_string, self.x_score]
 
                 # if len(self.states) < 1:
-                    # self.append_first(queue_item)
+                #     self.append_first(queue_item)
 
                 # if self.states[0][1] >= queue_item[1]:
-                    # self.append_last(queue_item)
+                #     self.append_last(queue_item)
                 # else:
-                    # self.append_first(queue_item)
+                #     self.append_first(queue_item)
 
                 ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
                 # TODO
@@ -100,7 +101,7 @@ class BreadthFirst():
                 #     # self.append_last(queue_item)
                 # # else:
                 #     # self.append_first(queue_item)
-                # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST ############
+                # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
                 # # red car met kleinste x wordt altijd achteraan gezet 
                 # self.red_car_score = new_board.cars_dict['X'].x_location
                 # # self.red_car_score = helpers.red_car_score(new_board)
@@ -108,18 +109,34 @@ class BreadthFirst():
                 # # #board string van nieuwe board die een red car score bevat 
                 # # queue_item = [new_board_string, self.red_car_score]
                 # queue_item.append(self.red_car_score)
+                ############ HEURISTIC 4: MAKE path redcar = empty ############
+                y = new_board.cars_dict['X'].y_location
+                empty_path_red = 0
+                for x in range(new_board.size - new_board.cars_dict['X'].x_location):
+                    if new_board.board[x][y] == board.EMPTY:
+                        empty_path_red += 1
+                
+                queue_item.append(empty_path_red)
+
+                if len(self.states) < 1:
+                    self.states.appendleft(queue_item)
+
+                if self.states[0][1] <= queue_item[1] and self.states[0][2] >= queue_item[2]:
+                    self.append_last(queue_item)
+                else:
+                    self.append_first(queue_item)
+
 
                 # if len(self.states) < 1:
-                #      self.append_first(queue_item)
+                    #  self.append_first(queue_item)
                 # # als de huidige queue een red car score bevat die hoger is dan de queue item, dan zet je de queue item vooraan de queue
                 # # dit werkt niet want je wil alleen de red car score steeds zo groot mogelijk, dus werkt niet hetzelfde als de x_score...
-                # if self.states[0][1] <= queue_item[1] and self.states[0][2] <= queue_item[2] and self.states[0][3] <= queue_item[3]:
+                # if self.states[0][1] <= queue_item[1] and self.states[0][2] <= queue_item[2] and self.states[0][3] >= queue_item[3]:
                 #      self.append_last(queue_item)
                 # else:
                 #      self.append_first(queue_item)
-                
                 ############# WITHOUT HEURISTICS #############
-                self.append_first([new_board_string])
+                # self.append_first([new_board_string])
                 ############# don't remove #############
 
                 del(new_board)
@@ -153,8 +170,8 @@ class BreadthFirst():
             self.build_children()
 
             self.count += 1
-            # if self.count % 100 == 0:
-            #      print(f'children count:{self.count}')
+            if self.count % 1000 == 0:
+                 print(f'children count:{self.count}')
     
     def load_solution_strings(self, parent_string):
         """
@@ -163,8 +180,9 @@ class BreadthFirst():
 
         while self.default_string not in self.solution_strings:
             self.solution_strings.append(parent_string)
-            #TODO ???
             self.load_solution_strings(self.archive[parent_string])
 
+    def iterate_solution_strings(self, parent_string):
+        pass
         
        

@@ -62,28 +62,28 @@ if __name__ == "__main__":
     # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 ############################ BREADTH FIRST #############################
-    # new_board = board.Board(size, cars_list)
+    new_board = board.Board(size, cars_list)
     
-    # breadth = breadth_first.BreadthFirst(new_board)
-    # print('begin run')
-    # result = breadth.run()
-    # # print(result)
-    # newest_board = copy.deepcopy(new_board)
-    # solution_list = result['solution']
-    # solve_time = result['solve_time']
-    # count = result['count']
+    breadth = breadth_first.BreadthFirst(new_board)
+    print('begin run')
+    result = breadth.run()
+    # print(result)
+    newest_board = copy.deepcopy(new_board)
+    solution_list = result['solution']
+    solve_time = result['solve_time']
+    count = result['count']
 
 
-    # for solution in reversed(solution_list):
-    #     newest_board.decode_str(solution)
-    #     print()
-    #     newest_board.print_board()
-    #     print()
-    #     time.sleep(0.1)
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
 
-    # print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    # print(f' with {len(solution_list)} steps')
-    # print(f' with {count} children analysed ')
+    print("solved in: {0:.3f} seconds".format(solve_time), end="")
+    print(f' with {len(solution_list)} steps')
+    print(f' with {count} children analysed ')
 
 ############################# NIET WERKENDE DEPTH FIRST #############################
     # new_board = board.Board(size, cars_list)
@@ -109,27 +109,27 @@ if __name__ == "__main__":
     # print(f'total amount of children analysed: {count}')
 
 ############################# DEPTH FIRST #############################
-    new_board = board.Board(size, cars_list)
-    # print(result)
+    # new_board = board.Board(size, cars_list)
+    # # print(result)
 
-    newest_board = copy.deepcopy(new_board)
-    depth_obj = depth_first2.DepthFirst(new_board)
-    print('begin run')
-    result = depth_obj.run()
-    solution_list = result['solution']
-    solve_time = result['solve_time']
-    count = result['count']
+    # newest_board = copy.deepcopy(new_board)
+    # depth_obj = depth_first2.DepthFirst(new_board)
+    # print('begin run')
+    # result = depth_obj.run()
+    # solution_list = result['solution']
+    # solve_time = result['solve_time']
+    # count = result['count']
 
-    for solution in reversed(solution_list):
-        newest_board.decode_str(solution)
-        print()
-        newest_board.print_board()
-        print()
-        time.sleep(0.1)
+    # for solution in reversed(solution_list):
+    #     newest_board.decode_str(solution)
+    #     print()
+    #     newest_board.print_board()
+    #     print()
+    #     time.sleep(0.1)
     
-    print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    print(f' with {len(solution_list)} steps')
-    print(f' number of children analysed: {count}')
+    # print("solved in: {0:.3f} seconds".format(solve_time), end="")
+    # print(f' with {len(solution_list)} steps')
+    # print(f' number of children analysed: {count}')
     
     
 
