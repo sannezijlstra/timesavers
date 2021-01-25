@@ -99,39 +99,6 @@ class Board():
                 if car.length > 2:
                     self.board[car.y_location + 2][car.x_location] = car.id
 
-    # def check_move_up(self, car):
-    #     # TODO! DEZE FUNCTIES OMSCHRIJVEN TOT 1
-    #     """
-    #     Checks whether the location one step above the car is empty
-    #     """
-    #     # kunnen we hier gebruik maken van de car_object?
-    #     if car.y_location - 1 < 0:
-    #         return False 
-    #     return self.board[car.y_location - 1 ][car.x_location] == EMPTY
-        
-    # def check_move_down(self, car):
-    #     """
-    #     Checks whether the location one step below the car is empty
-    #     """
-    #     if car.y_location + car.length > self.size - 1:
-    #         return False 
-    #     return self.board[car.y_location + car.length][car.x_location] == EMPTY
-
-    # def check_move_right(self, car):
-    #     """
-    #     Checks whether the location one step right of the car is empty
-    #     """
-    #     if car.x_location + car.length > self.size - 1:
-    #         return False
-    #     return self.board[car.y_location][car.x_location + car.length] == EMPTY
-
-    # def check_move_left(self, car):
-    #     """
-    #     Checks whether the location one step left of the car is empty
-    #     """
-    #     if car.x_location - 1 < 0:
-    #         return False
-    #     return self.board[car.y_location][car.x_location - 1] == EMPTY
 
     def check_move(self, car):
         """
@@ -157,7 +124,6 @@ class Board():
         Finds all possible boards going from the current board
         """
         possible_boards = []
-        move_option_count = 0
         
         # iterates over the cars in the cars dictionary 
         for car in self.cars_dict.values():
@@ -175,7 +141,6 @@ class Board():
                     # print(f'after move car to move: {car_to_move}')
 
                     possible_boards.append(new_cars_dict.values())
-                    move_option_count += 1
        
         # print(f'possible_boards {possible_boards}')
         # print(f'total next possible boards {len(possible_boards)}')
@@ -212,6 +177,9 @@ class Board():
             # can move right or down
         return possible_move
 
+    # while possible_move() == 0 
+    #   horizontaal() ->  cars.dict[board[x-1][y-1] = nu leeg -> welke auto kan erin
+    # return auto die kan bewegen.
     
     def negative_moves(self, car, location, possible_move=0):
 

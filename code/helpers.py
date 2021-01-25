@@ -1,3 +1,4 @@
+import copy
 # TODO nog nodig???
 def reverse_move(direction):
     if direction == 'UP':
@@ -31,10 +32,55 @@ def x_score(board):
     for car in board.cars_dict.values():
         if car.horizontal() and car.id != 'X':
             x_score += car.x_location 
-    return x_score           
+            return x_score  
+
 
 def red_car_score(board):
-    red_car_score = 0
-    if car.id == 'X':
-        red_car_score == car.x_location
-    return red_car_score
+    # red_car_score = 0
+    return board.cars_dict['X'].x_location
+    # if car.id == 'X':
+        # red_car_score = car.x_location
+    # return red_car_score
+
+def y_score(board):
+    y_score = 0
+    for car in board.cars_dict.values():
+        if not car.horizontal() and car.length < 3:
+            # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
+            y_score += y_score + abs(board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
+    return y_score
+
+def find_moves(solution_list, new_board):
+    moves_list = []
+    for index in reversed(range(len(solution_list))):
+        
+        new_board.decode_str(solution_list[index])
+        first_dict = copy.deepcopy(new_board.cars_dict)
+        if first_dict['X'].x_location == 4:
+            break
+
+        new_board.decode_str(solution_list[index - 1])
+        second_dict = new_board.cars_dict
+
+        for car_id in first_dict.keys():
+            first_x =first_dict[car_id].x_location
+            first_y = first_dict[car_id].y_location
+            second_x = second_dict[car_id].x_location
+            second_y = second_dict[car_id].y_location
+
+            if first_x - second_x != 0:
+                print(f'{car_id}: {first_x} {second_x}')
+                move = second_x - first_x
+                moves_list.append([car_id, move])
+                continue
+            elif first_y - second_y != 0:
+                print(f'{car_id}: {first_y} {second_y}')
+                move = second_y - first_y
+                moves_list.append([car_id, move])
+
+    return moves_list
+
+            
+            
+        
+

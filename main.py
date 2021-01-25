@@ -1,5 +1,5 @@
 from code.classes import board, cars
-from code.algorithms import randomise, breadth_first, depth_first
+from code.algorithms import randomise, breadth_first, depth_first, depth_first2
 from code import helpers
 import csv
 import copy
@@ -8,7 +8,68 @@ import random
 import os
 import sys
 
+import sys
+sys.setrecursionlimit(1500)
+
 # TODO 12x12 grid auto's hebben 2 letterige id
+############################ RANDOM #############################
+def run_random(board, cars_list):
+    new_board = board.Board(size, cars_list)
+    solution_count = randomise.randomise(new_board)
+    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
+
+############################ BREADTH FIRST #############################
+def run_breadth_first(new_board, cars_list):
+    new_board = board.Board(size, cars_list)
+    
+    breadth = breadth_first.BreadthFirst(new_board)
+    print('begin run')
+    result = breadth.run()
+    # print(result)
+    newest_board = copy.deepcopy(new_board)
+    solution_list = result['solution']
+    solve_time = result['solve_time']
+    count = result['count']
+
+
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
+
+    print("solved in: {0:.3f} seconds".format(solve_time), end="")
+    print(f' with {len(solution_list)} steps')
+    print(f' with {count} children analysed ')
+    moves_list = helpers.find_moves(solution_list, newest_board)
+    print(moves_list)
+
+############################# DEPTH FIRST #############################
+def run_depth_first(board, cars_list):
+    new_board = board.Board(size, cars_list)
+    # print(result)
+
+    newest_board = copy.deepcopy(new_board)
+    depth_obj = depth_first2.DepthFirst(new_board)
+    print('begin run')
+    result = depth_obj.run()
+    solution_list = result['solution']
+    solve_time = result['solve_time']
+    count = result['count']
+
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
+    
+    print("solved in: {0:.3f} seconds".format(solve_time), end="")
+    print(f' with {len(solution_list)} steps')
+    print(f' number of children analysed: {count}')
+    moves_list = helpers.find_moves(solution_list, newest_board)
+    print(moves_list)
 
 if __name__ == "__main__":
     # prompt user for data file size and select file from data folder
@@ -20,22 +81,41 @@ if __name__ == "__main__":
             continue
 
         # for_6 = random.randint(1,3)
-        for_6 = 1
+        for_6 = random.randint(1,3)
         for_9 = random.randint(4,6)
+        
+        try:
+            file_nr = int(input("> type file number if you'd like "))
+        except ValueError:
+            file_nr = None
+        
+        
+            
+
 
         # save file path depending on the size
         if size == 6:
+            if file_nr and file_nr in range(1,3):
+                for_6 = file_nr
+                print(f'file {for_6} for size {size} is loaded')
+            else:
+                print(f'file {for_6} was selected randomly for size {size}')
             file_to_open = f'data/6x6_grids/Rushhour6x6_{for_6}.csv'
             break
         elif size == 9:
+            if file_nr and file_nr in range(4,6):
+                for_9 = file_nr
+                print(f'file {for_9} for size {size} is loaded')
+            else:
+                print(f'file {for_9} was selected randomly for size {size}')
             file_to_open = f'data/9x9_grids/Rushhour9x9_{for_9}.csv'
             break
         elif size == 12:
+            print('file with grid size 12 is loaded')
             file_to_open = f'data/12x12_grids/Rushhour12x12_7.csv'
             break
         else:
             print('invalid size')
-
     # create empty list to fill with cars
     cars_list = []
 
@@ -51,36 +131,24 @@ if __name__ == "__main__":
         sys.exit("data file is empty or does not exist")
 
     # create initial board 
+    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first}
+    while True:
+        try:
+            dict_string = {str(key) for key in algorithm_choices.keys()}
+            alg_choice = input(f'select algrorithm from {dict_string} ')
+            algorithm_choices[alg_choice](board, cars_list)
+            break
+        except KeyError:
+            print('invalid algorithm selection')
+            
     
 
-############################ RANDOM #############################
-    new_board = board.Board(size, cars_list)
-    solution_count = randomise.randomise(new_board)
-    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
-
-############################ BREADTH FIRST #############################
-    # new_board = board.Board(size, cars_list)
-    
-    # breadth = breadth_first.BreadthFirst(new_board)
-    # print('begin run')
-    # result = breadth.run()
-    # # print(result)
-    # newest_board = copy.deepcopy(new_board)
-    # solution_list = result['solution']
-    # solve_time = result['solve_time']
 
 
-    # for solution in reversed(solution_list):
-    #     newest_board.decode_str(solution)
-    #     print()
-    #     newest_board.print_board()
-    #     print()
-    #     time.sleep(0.1)
 
-    # print(f'solved in: {solve_time} seconds ', end="")
-    # print(f' with {len(solution_list)} steps')
 
-############################# DEPTH FIRST #############################
+
+############################# NIET WERKENDE DEPTH FIRST #############################
     # new_board = board.Board(size, cars_list)
     
     # depth_obj = depth_first.DepthFirst(new_board)
@@ -90,7 +158,7 @@ if __name__ == "__main__":
     # newest_board = copy.deepcopy(new_board)
     # solution_list = result['solution']
     # solve_time = result['solve_time']
-
+    # count = result['count']
 
     # for solution in reversed(solution_list):
     #     newest_board.decode_str(solution)
@@ -99,8 +167,14 @@ if __name__ == "__main__":
     #     print()
     #     time.sleep(0.1)
     
-    # print(f'solved in: {solve_time} seconds ', end="")
+    # print("solved in: {0:.3f} seconds".format(solve_time), end="")
     # print(f' with {len(solution_list)} steps')
+    # print(f'total amount of children analysed: {count}')
+
+
+    
+    
+
 
 ############################# michaels play corner #############################
     # new_board = board.Board(size, cars_list)
