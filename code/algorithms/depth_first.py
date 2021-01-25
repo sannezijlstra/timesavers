@@ -7,8 +7,8 @@ import time
 
 class DepthFirst(BreadthFirst):
     def __init__(self, board):
-        super().__init__(board)
-        self.states = []
+            super().__init__(board)
+            self.states = []
 
 
     def append_last(self, queue_item):

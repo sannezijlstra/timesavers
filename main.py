@@ -1,5 +1,5 @@
 from code.classes import board, cars
-from code.algorithms import randomise, breadth_first, depth_first, depth_first2
+from code.algorithms import randomise, breadth_first, depth_first, depth_first2, beam_search
 from code import helpers
 import csv
 import copy
@@ -20,6 +20,31 @@ def run_random(board, cars_list):
     solution_count = randomise.randomise(new_board)
     print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
+
+################# BEAM SEARCH #########################
+def run_beam_search(new_board, cars_list):
+    new_board = board.Board(size, cars_list)
+    
+    beam = beam_search.BeamSearch(new_board)
+    print('begin run')
+    result = beam.run()
+    # print(result)
+    newest_board = copy.deepcopy(new_board)
+    solution_list = result['solution']
+    solve_time = result['solve_time']
+    count = result['count']
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
+
+    print("solved in: {0:.3f} seconds".format(solve_time), end="")
+    print(f' with {len(solution_list)} steps')
+    print(f' with {count} children analysed ')
+    moves_list = helpers.find_moves(solution_list, newest_board)
+    print(moves_list)
 ############################ BREADTH FIRST #############################
 def run_breadth_first(new_board, cars_list):
     heuristic_default = ['X_SCORE', 'Y_SCORE', 'RED_CAR_LOCATION']
@@ -149,7 +174,7 @@ if __name__ == "__main__":
         sys.exit("data file is empty or does not exist")
 
     # create initial board 
-    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first}
+    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first, 'beam_search': run_beam_search}
     while True:
         try:
             dict_string = {str(key) for key in algorithm_choices.keys()}

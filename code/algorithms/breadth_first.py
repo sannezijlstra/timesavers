@@ -22,15 +22,11 @@ class BreadthFirst():
         self.states = deque()
         self.solution_strings = []
         #self.best_solution = None
-        self.x_score = False
-        self.y_score = False
-        self.red_car_location = False
-        self.heuristic_dict = {'X_SCORE': self.x_score, 'Y_SCORE': self.y_score, 'RED_CAR_SCORE': self.red_car_location}
-        self.calc_x_score = helpers.x_score(self.board)
-        self.red_car_score = helpers.red_car_score(self.board)
+        self.x_score = helpers.x_score(self.board)
+        # self.red_car_score = helpers.red_car_score(self.board)
 
         # add to queue
-        self.states.appendleft([self.board.string_repr(), self.x_score])
+        self.states.appendleft([ self.x_score, self.board.string_repr(),])
 
         #self.states.appendleft([self.board.string_repr(), self.red_car_score])
 
@@ -39,9 +35,12 @@ class BreadthFirst():
 
     def append_last(self, queue_item):
         self.states.append(queue_item)
-    
+
     def append_first(self, queue_item):
         self.states.appendleft(queue_item)
+    
+    def get_next_state(self):
+        return self.states.pop()
 
     def build_children(self):
         """
@@ -74,71 +73,8 @@ class BreadthFirst():
                 #     continue
                 # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
-                queue_item = [new_board_string]
-
-                
-                # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                if self.x_score:
-                    print('yes im here')
-                    self.calc_x_score = helpers.x_score(new_board)
-                    queue_item.append(self.calc_x_score)
-
-                if not self.y_score and not self.red_car_location:
-                    self.que_the_que_item(queue_item)
-                    continue
-
-
-                ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
-                # TODO
-                # je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
-                # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
-                if self.y_score:
-                    calc_y_score = helpers.y_score(new_board)
-                    queue_item.append(y_score)
-                    print(queue_item)
-                    if not self.x_score and not self.red_car_location:
-                        self.que_the_que_item(queue_item)
-                        continue
-                    
-                # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
-                # red car met kleinste x wordt altijd achteraan gezet 
-                # self.red_car_score = new_board.cars_dict['X'].x_location
-                # self.red_car_score = helpers.red_car_score(new_board)
-
-                # #board string van nieuwe board die een red car score bevat 
-                # queue_item = [new_board_string, self.red_car_score]
-                # queue_item.append(self.red_car_score)
-                ############ HEURISTIC 4: MAKE path redcar = empty ############
-                if self.red_car_location:
-                    y = new_board.cars_dict['X'].y_location
-                    empty_path_red = 0
-                    for x in range(new_board.size - new_board.cars_dict['X'].x_location):
-                        if new_board.board[x][y] == board.EMPTY:
-                            empty_path_red += 1
-                    
-                    queue_item.append(-1 * empty_path_red)
-                    
-                self.que_the_que_item(queue_item)
-
-                # if len(self.states) < 1:
-                #     self.states.appendleft(queue_item)
-
-                # if self.states[0][1] <= queue_item[1] and self.states[0][2] >= queue_item[2]:
-                #     self.append_last(queue_item)
-                # else:
-                #     self.append_first(queue_item)
-
-
-                # if len(self.states) < 1:
-                    #  self.append_first(queue_item)
-                # # als de huidige queue een red car score bevat die hoger is dan de queue item, dan zet je de queue item vooraan de queue
-                # # dit werkt niet want je wil alleen de red car score steeds zo groot mogelijk, dus werkt niet hetzelfde als de x_score...
-                # if self.states[0][1] <= queue_item[1] and self.states[0][2] <= queue_item[2] and self.states[0][3] >= queue_item[3]:
-                #      self.append_last(queue_item)
-                # else:
-                #      self.append_first(queue_item)
-                ############# WITHOUT HEURISTICS #############
-                # self.append_first([new_board_string])
+                # queue_item = [new_board_string]
+                self.append_first([new_board_string])
                 ############# don't remove #############
 
                 del(new_board)
@@ -146,7 +82,7 @@ class BreadthFirst():
 
     def run(self, heuristic_input = None):
         """
-        Runs the algorithm until shortest solution is found.
+        Runs the algorithm until shortest solution is found
         """
         if heuristic_input:
             for heuristic in heuristic_input:
@@ -161,10 +97,10 @@ class BreadthFirst():
         while len(self.states) > 0:
             
             # takes the first element out of the queue
-            current_item = self.states.pop()
+            current_item = self.get_next_state()
 
             # takes the string representation of the current board
-            current_board = current_item[0]
+            current_board = current_item[1]
             
             # decodes the string representation of the board back into a board object
             self.board.decode_str(current_board)
@@ -177,7 +113,7 @@ class BreadthFirst():
                 return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
  
             self.build_children()
-
+            # resize and sort queue
             self.count += 1
             if self.count % 1000 == 0:
                  print(f'children count:{self.count}')
