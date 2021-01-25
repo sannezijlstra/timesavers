@@ -22,7 +22,11 @@ class BreadthFirst():
         self.states = deque()
         self.solution_strings = []
         #self.best_solution = None
-        self.x_score = helpers.x_score(self.board)
+        self.x_score = False
+        self.y_score = False
+        self.red_car_location = False
+        self.heuristic_dict = {'X_SCORE': self.x_score, 'Y_SCORE': self.y_score, 'RED_CAR_SCORE': self.red_car_location}
+        self.calc_x_score = helpers.x_score(self.board)
         self.red_car_score = helpers.red_car_score(self.board)
 
         # add to queue
@@ -70,53 +74,51 @@ class BreadthFirst():
                 #     continue
                 # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
-                # queue_item = [new_board_string]
+                queue_item = [new_board_string]
 
+                
                 # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                # self.x_score = helpers.x_score(new_board)
-                # # new_score = self.x_score / red_car_score
-                # queue_item.append(self.x_score)
-                # queue_item = [new_board_string, self.x_score]
+                if self.x_score:
+                    print('yes im here')
+                    self.calc_x_score = helpers.x_score(new_board)
+                    queue_item.append(self.calc_x_score)
 
-                # if len(self.states) < 1:
-                #     self.append_first(queue_item)
+                if not self.y_score and not self.red_car_location:
+                    self.que_the_que_item(queue_item)
+                    continue
 
-                # if self.states[0][1] >= queue_item[1]:
-                #     self.append_last(queue_item)
-                # else:
-                #     self.append_first(queue_item)
 
                 ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
                 # TODO
                 # je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
                 # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
-                # y_score = helpers.y_score(new_board)
-                # # queue_item = [new_board_string, y_score]
-                # queue_item.append(y_score)
-
-                # # if len(self.states) < 1:
-                #     # self.states.appendleft(queue_item)
-
-                # # if self.states[0][1] <= queue_item[1]:
-                #     # self.append_last(queue_item)
-                # # else:
-                #     # self.append_first(queue_item)
+                if self.y_score:
+                    calc_y_score = helpers.y_score(new_board)
+                    queue_item.append(y_score)
+                    print(queue_item)
+                    if not self.x_score and not self.red_car_location:
+                        self.que_the_que_item(queue_item)
+                        continue
+                    
                 # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
-                # # red car met kleinste x wordt altijd achteraan gezet 
+                # red car met kleinste x wordt altijd achteraan gezet 
                 # self.red_car_score = new_board.cars_dict['X'].x_location
-                # # self.red_car_score = helpers.red_car_score(new_board)
+                # self.red_car_score = helpers.red_car_score(new_board)
 
-                # # #board string van nieuwe board die een red car score bevat 
-                # # queue_item = [new_board_string, self.red_car_score]
+                # #board string van nieuwe board die een red car score bevat 
+                # queue_item = [new_board_string, self.red_car_score]
                 # queue_item.append(self.red_car_score)
                 ############ HEURISTIC 4: MAKE path redcar = empty ############
-                # y = new_board.cars_dict['X'].y_location
-                # empty_path_red = 0
-                # for x in range(new_board.size - new_board.cars_dict['X'].x_location):
-                #     if new_board.board[x][y] == board.EMPTY:
-                #         empty_path_red += 1
-                
-                # queue_item.append(empty_path_red)
+                if self.red_car_location:
+                    y = new_board.cars_dict['X'].y_location
+                    empty_path_red = 0
+                    for x in range(new_board.size - new_board.cars_dict['X'].x_location):
+                        if new_board.board[x][y] == board.EMPTY:
+                            empty_path_red += 1
+                    
+                    queue_item.append(-1 * empty_path_red)
+                    
+                self.que_the_que_item(queue_item)
 
                 # if len(self.states) < 1:
                 #     self.states.appendleft(queue_item)
@@ -136,16 +138,23 @@ class BreadthFirst():
                 # else:
                 #      self.append_first(queue_item)
                 ############# WITHOUT HEURISTICS #############
-                self.append_first([new_board_string])
+                # self.append_first([new_board_string])
                 ############# don't remove #############
 
                 del(new_board)
 
 
-    def run(self):
+    def run(self, heuristic_input = None):
         """
         Runs the algorithm until shortest solution is found.
         """
+        if heuristic_input:
+            for heuristic in heuristic_input:
+                print(heuristic)
+                if heuristic.upper() in self.heuristic_dict.keys():
+                    self.heuristic_dict[heuristic.upper()] = True
+        print(self.heuristic_dict)
+
         start_time = time.time()
 
         # runs as long as there are items in the queue
@@ -186,4 +195,18 @@ class BreadthFirst():
         # iets anders fixen dan recursion?
         pass
         
-       
+    def apply_heuristics(self, queue_item):
+        pass
+    
+    def que_the_que_item(self, queue_item):
+        if len(self.states) < 1:
+            self.append_first(queue_item)
+            print(queue_item)
+        else:
+            for index in range(len(queue_item)):
+                if index == 0:
+                    continue
+                if self.states[0][index] >= queue_item[index]:
+                    self.append_last(queue_item)
+                else:
+                    self.append_first(queue_item)

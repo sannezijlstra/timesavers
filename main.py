@@ -11,6 +11,8 @@ import sys
 import sys
 sys.setrecursionlimit(1500)
 
+
+
 # TODO 12x12 grid auto's hebben 2 letterige id
 ############################ RANDOM #############################
 def run_random(board, cars_list):
@@ -20,11 +22,26 @@ def run_random(board, cars_list):
 
 ############################ BREADTH FIRST #############################
 def run_breadth_first(new_board, cars_list):
+    heuristic_default = ['X_SCORE', 'Y_SCORE', 'RED_CAR_LOCATION']
     new_board = board.Board(size, cars_list)
     
     breadth = breadth_first.BreadthFirst(new_board)
-    print('begin run')
-    result = breadth.run()
+    input_string = input("Enter heuristics if any ")
+    heuristic_list = input_string.split(" ")
+    # print(type(family_list))s
+    print("\n")
+    if len(heuristic_list) == 1 and heuristic_list[0].upper() == 'NONE':
+        result = breadth.run()
+    else:
+        for heuristic in heuristic_list:
+            heuristic = heuristic.upper()
+            print(heuristic)
+            if heuristic not in heuristic_default:
+                heuristic_list.remove(heuristic)
+        print(heuristic_list)
+        result = breadth.run(heuristic_list)
+    if not heuristic_list:
+        result = breadth.run()
     # print(result)
     newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
@@ -52,6 +69,7 @@ def run_depth_first(board, cars_list):
 
     newest_board = copy.deepcopy(new_board)
     depth_obj = depth_first2.DepthFirst(new_board)
+    
     print('begin run')
     result = depth_obj.run()
     solution_list = result['solution']

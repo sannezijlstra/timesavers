@@ -22,6 +22,8 @@ class DepthFirst(BreadthFirst):
         """
         start_time = time.time()
 
+
+
         # as long as there are items in the queue
         while len(self.states) > 0:
             

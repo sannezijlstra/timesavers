@@ -69,12 +69,10 @@ def find_moves(solution_list, new_board):
             second_y = second_dict[car_id].y_location
 
             if first_x - second_x != 0:
-                print(f'{car_id}: {first_x} {second_x}')
                 move = second_x - first_x
                 moves_list.append([car_id, move])
                 continue
             elif first_y - second_y != 0:
-                print(f'{car_id}: {first_y} {second_y}')
                 move = second_y - first_y
                 moves_list.append([car_id, move])
 
