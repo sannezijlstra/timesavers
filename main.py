@@ -54,31 +54,31 @@ if __name__ == "__main__":
     
 
 ############################ RANDOM #############################
-    # new_board = board.Board(size, cars_list)
-    # solution_count = randomise.randomise(new_board)
-    # print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
+    new_board = board.Board(size, cars_list)
+    solution_count = randomise.randomise(new_board)
+    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 ############################ BREADTH FIRST #############################
-    new_board = board.Board(size, cars_list)
+    # new_board = board.Board(size, cars_list)
     
-    breadth = breadth_first.BreadthFirst(new_board)
-    print('begin run')
-    result = breadth.run()
-    # print(result)
-    newest_board = copy.deepcopy(new_board)
-    solution_list = result['solution']
-    solve_time = result['solve_time']
+    # breadth = breadth_first.BreadthFirst(new_board)
+    # print('begin run')
+    # result = breadth.run()
+    # # print(result)
+    # newest_board = copy.deepcopy(new_board)
+    # solution_list = result['solution']
+    # solve_time = result['solve_time']
 
 
-    for solution in reversed(solution_list):
-        newest_board.decode_str(solution)
-        print()
-        newest_board.print_board()
-        print()
-        time.sleep(0.1)
+    # for solution in reversed(solution_list):
+    #     newest_board.decode_str(solution)
+    #     print()
+    #     newest_board.print_board()
+    #     print()
+    #     time.sleep(0.1)
 
-    print(f'solved in: {solve_time} seconds ', end="")
-    print(f' with {len(solution_list)} steps')
+    # print(f'solved in: {solve_time} seconds ', end="")
+    # print(f' with {len(solution_list)} steps')
 
 ############################# DEPTH FIRST #############################
     # new_board = board.Board(size, cars_list)

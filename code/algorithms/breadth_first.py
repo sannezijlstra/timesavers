@@ -114,7 +114,7 @@ class BreadthFirst():
 
     def run(self):
         """
-        Runs the algorithm until shortest solution is found.
+        Runs the algorithm until shortest solution is found
         """
         start_time = time.time()
 
