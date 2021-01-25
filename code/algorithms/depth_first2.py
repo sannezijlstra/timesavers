@@ -14,7 +14,7 @@ class DepthFirst():
         self.archive = {}
         self.states = []
         self.solution_strings = []
-        self.best_solution = None
+
         self.x_score = helpers.x_score(self.board)
         self.states.append([self.board.string_repr(), self.x_score])
         self.count = 0
