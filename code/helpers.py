@@ -1,4 +1,5 @@
 import copy
+EMPTY = '_'
 # TODO nog nodig???
 def reverse_move(direction):
     if direction == 'UP':
@@ -49,6 +50,38 @@ def y_score(board):
             # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
             y_score += y_score + abs(board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
     return y_score
+
+def vehicles_before_exit(board):
+    redcar = board.cars_dict['X']
+    red_x = redcar.x_location
+    red_y = redcar.y_location
+    car_ids = []
+    for index in range(red_x, board.size - 1):
+        if board.board[red_y][index] != EMPTY:
+            car_ids.append(board.board[red_y][index])
+    return car_ids
+
+def minimum_cost(board):
+    minimum_red_steps = board.size - 1 - board.cars_dict['X'].x_location
+    cars_in_way = vehicles_before_exit(board, car_ids)
+    if not cars_in_way:
+        return minimum_red_steps
+    elif len(cars_in_way) == 1:
+        return minimum_red_steps + 1
+    else:
+        for car_in_way in cars_in_way:
+            if board.cars_dict[car_in_way].length < 3:
+                minimum_red_steps += 1
+            else:
+                if board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 1:
+                    minimum_red_steps += 2
+                elif board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 2:
+                    minimum_red_steps += 3
+                else:
+                    minimum_red_steps += 1
+                    
+
+
 
 def find_moves(solution_list, new_board):
     moves_list = []

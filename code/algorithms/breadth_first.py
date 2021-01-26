@@ -84,13 +84,7 @@ class BreadthFirst():
         """
         Runs the algorithm until shortest solution is found
         """
-        if heuristic_input:
-            for heuristic in heuristic_input:
-                print(heuristic)
-                if heuristic.upper() in self.heuristic_dict.keys():
-                    self.heuristic_dict[heuristic.upper()] = True
-        print(self.heuristic_dict)
-
+ 
         start_time = time.time()
 
         # runs as long as there are items in the queue
