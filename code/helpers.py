@@ -32,23 +32,26 @@ def x_score(board):
     for car in board.cars_dict.values():
         if car.horizontal() and car.id != 'X':
             x_score += car.x_location 
-            return x_score  
+            # alleen door horizontale auto's delen!!! 
+            return x_score / len(board.cars_dict.values()) 
 
 
 def red_car_score(board):
     # red_car_score = 0
-    return board.cars_dict['X'].x_location
+    return -1 * board.cars_dict['X'].x_location
     # if car.id == 'X':
         # red_car_score = car.x_location
     # return red_car_score
 
 def y_score(board):
     y_score = 0
+    car_count = 0
     for car in board.cars_dict.values():
         if not car.horizontal() and car.length < 3:
+            car_count += 1
             # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
             y_score += y_score + abs(board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
-    return y_score
+    return -1 * y_score / car_count
 
 def find_moves(solution_list, new_board):
     moves_list = []
@@ -69,12 +72,10 @@ def find_moves(solution_list, new_board):
             second_y = second_dict[car_id].y_location
 
             if first_x - second_x != 0:
-                print(f'{car_id}: {first_x} {second_x}')
                 move = second_x - first_x
                 moves_list.append([car_id, move])
                 continue
             elif first_y - second_y != 0:
-                print(f'{car_id}: {first_y} {second_y}')
                 move = second_y - first_y
                 moves_list.append([car_id, move])
 
