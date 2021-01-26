@@ -80,10 +80,11 @@ class BreadthFirst():
                 del(new_board)
 
 
-    def run(self):
+    def run(self, heuristic_input = None):
         """
         Runs the algorithm until shortest solution is found
         """
+ 
         start_time = time.time()
 
         # runs as long as there are items in the queue
@@ -126,4 +127,18 @@ class BreadthFirst():
         # iets anders fixen dan recursion?
         pass
         
-       
+    def apply_heuristics(self, queue_item):
+        pass
+    
+    def que_the_que_item(self, queue_item):
+        if len(self.states) < 1:
+            self.append_first(queue_item)
+            print(queue_item)
+        else:
+            for index in range(len(queue_item)):
+                if index == 0:
+                    continue
+                if self.states[0][index] >= queue_item[index]:
+                    self.append_last(queue_item)
+                else:
+                    self.append_first(queue_item)

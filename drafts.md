@@ -83,7 +83,7 @@ def move(self, direction, car):
             checks if move suggested is possible depending on orientation and space in the grid
             if move is possible make the move by updating the car object location
         """
-        # moving a car is only possible in 4 directions and the field in grid has to be empty
+        # movingh a car is only possible in 4 directions and the field in grid has to be empty
         if car.horizontal == False and self.board[car.location[1] - 1 ][car.location[0]] == EMPTY or self.board[car.location[1] + car.length][car.location[0]] == EMPTY:
             car.can_move = True
         elif car.horizontal == True and self.board[car.location[1]][car.location[0] - 1] == EMPTY or self.board[car.location[1]][car.location[0] + car.length] == EMPTY:
