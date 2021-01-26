@@ -15,99 +15,65 @@ sys.setrecursionlimit(1500)
 
 # TODO 12x12 grid auto's hebben 2 letterige id
 ############################ RANDOM #############################
-def run_random(board, cars_list):
-    new_board = board.Board(size, cars_list)
+def run_random(new_board, cars_list):
     solution_count = randomise.randomise(new_board)
     print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
+def generate_output(result):
+    solution_list = result['solution']
+    solve_time = result['solve_time']
+    count = result['count']
+    for solution in reversed(solution_list):
+        newest_board.decode_str(solution)
+        print()
+        newest_board.print_board()
+        print()
+        time.sleep(0.1)
 
+    print("solved in: {0:.3f} seconds".format(solve_time), end="")
+    print(f' with {len(solution_list)} steps')
+    print(f' with {count} children analysed ')
+    # moves_list = helpers.find_moves(solution_list, newest_board)
+    # print(moves_list)
+    return helpers.output(solution_list, newest_board)
 ################# BEAM SEARCH #########################
 def run_beam_search(new_board, cars_list):
     ### hierzo
-    alg_dic = {'min_steps': helpers.minimum_cost, 'combination': helpers.score_combination}
-    alg_choice = input(f'select heuristic: {alg_dict} ')
-    alg_to_use = alg_dic[alg_choice]
-    alg_to_use(new_board)
-    new_board = board.Board(size, cars_list)
+    heur_dict = {'min_steps': helpers.minimum_cost, 'combination': helpers.combination_score}
+    heur_choice = input(f'select heuristic: {heur_dict.keys()} ')
+    heur_to_use = heur_dict[heur_choice]
+    # alg_to_use(new_board)
     
-    beam = beam_search.BeamSearch(new_board)
+    beam = beam_search.BeamSearch(new_board, heur_to_use)
     print('begin run')
     result = beam.run()
     # print(result)
     newest_board = copy.deepcopy(new_board)
-    solution_list = result['solution']
-    solve_time = result['solve_time']
-    count = result['count']
-    for solution in reversed(solution_list):
-        newest_board.decode_str(solution)
-        print()
-        newest_board.print_board()
-        print()
-        time.sleep(0.1)
-
-    print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    print(f' with {len(solution_list)} steps')
-    print(f' with {count} children analysed ')
-    moves_list = helpers.find_moves(solution_list, newest_board)
-    print(moves_list)
+    generate_output(result)
+    
 ############################ BREADTH FIRST #############################
 def run_breadth_first(new_board, cars_list):
-    heuristic_default = ['X_SCORE', 'Y_SCORE', 'RED_CAR_LOCATION']
-    new_board = board.Board(size, cars_list)
-    
-    breadth = breadth_first.BreadthFirst(new_board)
-    result = breadth.run()
-    # print(result)
     newest_board = copy.deepcopy(new_board)
-    solution_list = result['solution']
-    solve_time = result['solve_time']
-    count = result['count']
+    breadth = breadth_first.BreadthFirst(newest_board)
+    result = breadth.run()
+    generate_output(result)
+
+    # print(result)
 
 
-    for solution in reversed(solution_list):
-        newest_board.decode_str(solution)
-        print()
-        newest_board.print_board()
-        print()
-        time.sleep(0.1)
-
-    print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    print(f' with {len(solution_list)} steps')
-    print(f' with {count} children analysed ')
-    moves_list = helpers.find_moves(solution_list, newest_board)
-    print(moves_list)
 
 ############################# DEPTH FIRST #############################
-def run_depth_first(board, cars_list):
-    new_board = board.Board(size, cars_list)
-    # print(result)
-
+def run_depth_first(new_board, cars_list):
     newest_board = copy.deepcopy(new_board)
     depth_obj = depth_first.DepthFirst(new_board)
-    
+    generate_output(result)
+
     print('begin run')
     result = depth_obj.run()
-    solution_list = result['solution']
-    solve_time = result['solve_time']
-    count = result['count']
 
-    for solution in reversed(solution_list):
-        newest_board.decode_str(solution)
-        print()
-        newest_board.print_board()
-        print()
-        time.sleep(0.1)
-    
-    print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    print(f' with {len(solution_list)} steps')
-    print(f' number of children analysed: {count}')
-    moves_list = helpers.find_moves(solution_list, newest_board)
-    print(moves_list)
-
-def test_corner(board, cars_list):
-    new_board = board.Board(size, cars_list)
+def test_corner(new_board, cars_list):
     minimum_steps = helpers.minimum_cost(new_board)
-    print(minimum_steps)
+    print(f'minimum steps: {minimum_steps}')
     new_board.print_board()
 
 if __name__ == "__main__":
@@ -164,14 +130,15 @@ if __name__ == "__main__":
                 cars_list.append(new_car)
     else:
         sys.exit("data file is empty or does not exist")
+    new_board = board.Board(size, cars_list)
 
     # create initial board 
     algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first, 'beam_search': run_beam_search, 'test_corner': test_corner}
     while True:
         try:
             dict_string = {str(key) for key in algorithm_choices.keys()}
-            alg_choice = input(f'select algrorithm from {dict_string} ')
-            algorithm_choices[alg_choice](board, cars_list)
+            alg_choice = input(f'select algorithm from {dict_string} ')
+            algorithm_choices[alg_choice](new_board, cars_list)
             break
         except KeyError:
             print('invalid algorithm selection')

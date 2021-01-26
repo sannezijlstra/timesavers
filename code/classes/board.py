@@ -146,7 +146,13 @@ class Board():
         # print(f'total next possible boards {len(possible_boards)}')
         # print(f'move count{move_option_count}')
         return possible_boards
-        
+
+    def is_blocked (self, car):
+        if car.y_location - 1 > 0: 
+            # TODO te lange zin
+            return self.board[car.y_location - 1][car.x_location] != EMPTY and self.board[car.y_location + car.length][car.x_location] != EMPTY
+        return car.y_location - 1 == 0 and self.board[car.y_location + car.length][car.x_location] != EMPTY
+
     def is_won(self):
         """
         Checks whether the red car has found the exit, thus the game has been won
