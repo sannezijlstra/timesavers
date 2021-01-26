@@ -22,6 +22,10 @@ def find_cars_that_can(cars_list, new_board):
             cars_that_can[car] = result
     return cars_that_can
 
+#def score_combination(board):
+     
+
+
 
 def x_score(board):
     """
@@ -98,9 +102,6 @@ def minimum_cost(board):
 
                 minimum_red_steps += 1
     return minimum_red_steps
-                    
-
-
 
 def find_moves(solution_list, new_board):
     moves_list = []
@@ -130,7 +131,7 @@ def find_moves(solution_list, new_board):
 
     return moves_list
 
-            
+      
             
         
 

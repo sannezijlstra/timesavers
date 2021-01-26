@@ -199,6 +199,3 @@ class Board():
             location -= 1
             self.negative_moves(car, location, possible_move)
         return possible_move
-
-
-

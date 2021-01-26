@@ -21,20 +21,13 @@ class BreadthFirst():
         self.archive = {}
         self.states = deque()
         self.solution_strings = []
-        #self.best_solution = None
-        self.x_score = helpers.x_score(self.board)
-        # self.red_car_score = helpers.red_car_score(self.board)
 
         # add to queue
-        self.states.appendleft([ self.x_score, self.board.string_repr(),])
-
-        #self.states.appendleft([self.board.string_repr(), self.red_car_score])
+        self.states.appendleft(self.board.string_repr())
 
         # initialize the archive
         self.archive[self.default_string] = 0
 
-    def append_last(self, queue_item):
-        self.states.append(queue_item)
 
     def append_first(self, queue_item):
         self.states.appendleft(queue_item)
@@ -48,11 +41,6 @@ class BreadthFirst():
         Then iterates over every possible board, creating board objects, turning them into strings, and adding them to the archive
         Applies different heuristics
         """
-
-         # parent board toevoegen en linken
-        # find all possible boards,
-        # put into archive
-        # queue 
         cars_lists = self.board.find_possible_boards()
         parent_board_string = self.board.string_repr()
 
@@ -74,13 +62,13 @@ class BreadthFirst():
                 # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
                 # queue_item = [new_board_string]
-                self.append_first([new_board_string])
+                self.append_first(new_board_string)
                 ############# don't remove #############
 
                 del(new_board)
 
 
-    def run(self, heuristic_input = None):
+    def run(self):
         """
         Runs the algorithm until shortest solution is found
         """
@@ -90,11 +78,8 @@ class BreadthFirst():
         # runs as long as there are items in the queue
         while len(self.states) > 0:
             
-            # takes the first element out of the queue
-            current_item = self.get_next_state()
-
-            # takes the string representation of the current board
-            current_board = current_item[1]
+            # get first state out of the queue
+            current_board = self.get_next_state()
             
             # decodes the string representation of the board back into a board object
             self.board.decode_str(current_board)
@@ -123,22 +108,4 @@ class BreadthFirst():
             self.solution_strings.append(parent_string)
             self.load_solution_strings(self.archive[parent_string])
 
-    def iterate_solution_strings(self, parent_string):
-        # iets anders fixen dan recursion?
-        pass
-        
-    def apply_heuristics(self, queue_item):
-        pass
-    
-    def que_the_que_item(self, queue_item):
-        if len(self.states) < 1:
-            self.append_first(queue_item)
-            print(queue_item)
-        else:
-            for index in range(len(queue_item)):
-                if index == 0:
-                    continue
-                if self.states[0][index] >= queue_item[index]:
-                    self.append_last(queue_item)
-                else:
-                    self.append_first(queue_item)
+

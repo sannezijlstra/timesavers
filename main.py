@@ -23,6 +23,11 @@ def run_random(board, cars_list):
 
 ################# BEAM SEARCH #########################
 def run_beam_search(new_board, cars_list):
+    ### hierzo
+    alg_dic = {'min_steps': helpers.minimum_cost, 'combination': helpers.score_combination}
+    alg_choice = input(f'select heuristic: {alg_dict} ')
+    alg_to_use = alg_dic[alg_choice]
+    alg_to_use(new_board)
     new_board = board.Board(size, cars_list)
     
     beam = beam_search.BeamSearch(new_board)
@@ -51,22 +56,7 @@ def run_breadth_first(new_board, cars_list):
     new_board = board.Board(size, cars_list)
     
     breadth = breadth_first.BreadthFirst(new_board)
-    input_string = input("Enter heuristics if any ")
-    heuristic_list = input_string.split(" ")
-    # print(type(family_list))s
-    print("\n")
-    if len(heuristic_list) == 1 and heuristic_list[0].upper() == 'NONE':
-        result = breadth.run()
-    else:
-        for heuristic in heuristic_list:
-            heuristic = heuristic.upper()
-            print(heuristic)
-            if heuristic not in heuristic_default:
-                heuristic_list.remove(heuristic)
-        print(heuristic_list)
-        result = breadth.run(heuristic_list)
-    if not heuristic_list:
-        result = breadth.run()
+    result = breadth.run()
     # print(result)
     newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
@@ -93,7 +83,7 @@ def run_depth_first(board, cars_list):
     # print(result)
 
     newest_board = copy.deepcopy(new_board)
-    depth_obj = depth_first2.DepthFirst(new_board)
+    depth_obj = depth_first.DepthFirst(new_board)
     
     print('begin run')
     result = depth_obj.run()
@@ -137,10 +127,6 @@ if __name__ == "__main__":
             file_nr = int(input("> type file number if you'd like "))
         except ValueError:
             file_nr = None
-        
-        
-            
-
 
         # save file path depending on the size
         if size == 6:
@@ -189,13 +175,13 @@ if __name__ == "__main__":
             break
         except KeyError:
             print('invalid algorithm selection')
+    
+    #if algorithm_choices.beam_search == True: 
+
+
+
             
     
-
-
-
-
-
 
 ############################# NIET WERKENDE DEPTH FIRST #############################
     # new_board = board.Board(size, cars_list)

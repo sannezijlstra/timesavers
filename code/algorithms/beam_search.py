@@ -25,8 +25,6 @@ class BeamSearch(BreadthFirst):
         # insert score
         bisect.insort(self.states, queue_item)
 
-
-
     def build_children(self):
         """
         First takes all possible boards, and determines the parent board string representation
@@ -60,6 +58,7 @@ class BeamSearch(BreadthFirst):
                 self.archive[new_board_string] = parent_board_string 
                 # queue_item = [new_board_string]
 
+<<<<<<< HEAD
                 # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
                 # self.x_score = helpers.x_score(new_board)
                 # new_score = self.x_score / red_car_score
@@ -87,6 +86,36 @@ class BeamSearch(BreadthFirst):
                 # self.red_car_score = helpers.red_car_score(new_board)
                 # queue_item[0] += self.red_car_score
                 # # #board string van nieuwe board die een red car score bevat 
+=======
+                # ############ HEURISTIC 1:  #############
+                # x coordinates of horizontal vehicles as small as possible
+                self.x_score = helpers.x_score(new_board)
+                new_score = self.x_score / red_car_score
+                queue_item = [self.x_score, new_board_string]
+                queue_item.append(self.x_score)
+
+                if self.states[0][1] >= queue_item[1]:
+                    self.append_last(queue_item)
+                else:
+                    self.append_first(queue_item)
+
+                # vertical cars to upper or lower bound as much as possible 
+                y_score = helpers.y_score(new_board)
+                queue_item[0] += y_score
+
+                # red car always situated to the right as much as possible 
+                self.red_car_score = helpers.red_car_score(new_board)
+                self.red_car_score = helpers.red_car_score(new_board)
+                queue_item[0] += self.red_car_score
+
+                ############### HEURISTIC 2:  ##########
+
+                self.min_red_steps = helpers.minimum_cost(new_board)
+                queue_item = [self.min_red_steps, new_board_string]
+                self.insert_on_score(queue_item)
+
+
+>>>>>>> 4d300ddc904f0fa82a3c53019bdf31668a1d38a0
                 ############ HEURISTIC 4: MAKE path redcar = empty ############
                 # y = new_board.cars_dict['X'].y_location
                 # empty_path_red = 0

@@ -644,3 +644,129 @@ anders vooraan
 randomise.py
 # def car_string (car):
     return f'{car}{car.x_location}{car.y_location}'
+
+    def que_the_que_item(self, queue_item):
+        if len(self.states) < 1:
+            self.append_first(queue_item)
+            print(queue_item)
+        else:
+            for index in range(len(queue_item)):
+                if index == 0:
+                    continue
+                if self.states[0][index] >= queue_item[index]:
+                    self.append_last(queue_item)
+                else:
+                    self.append_first(queue_item)
+
+
+beam search: 
+ else:
+
+                # if self.states[0][1] >= new_board.cars_dict['X'].x_location:
+                #     continue
+                # heuristiek mogelijk toepassen, score, hoe goed?
+                self.archive[new_board_string] = parent_board_string 
+                # queue_item = [new_board_string]
+
+                # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
+                # self.x_score = helpers.x_score(new_board)
+                # new_score = self.x_score / red_car_score
+                # queue_item = [self.x_score, new_board_string]
+                # queue_item.append(self.x_score)
+                
+
+                # if self.states[0][1] >= queue_item[1]:
+                #     self.append_last(queue_item)
+                # else:
+                #     self.append_first(queue_item)
+                self.min_red_steps = helpers.minimum_cost(new_board)
+                queue_item = [self.min_red_steps, new_board_string]
+                self.insert_on_score(queue_item)
+                ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
+                # TODO
+                # je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
+                # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
+                # y_score = helpers.y_score(new_board)
+                # queue_item[0] += y_score
+
+                # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
+                # red car met kleinste x wordt altijd achteraan gezet 
+                # self.red_car_score = helpers.red_car_score(new_board)
+                # self.red_car_score = helpers.red_car_score(new_board)
+                # queue_item[0] += self.red_car_score
+                # # #board string van nieuwe board die een red car score bevat 
+                
+                ############ HEURISTIC 4: MAKE path redcar = empty ############
+                # y = new_board.cars_dict['X'].y_location
+                # empty_path_red = 0
+                # for x in range(new_board.size - new_board.cars_dict['X'].x_location):
+                #     if new_board.board[x][y] == board.EMPTY:
+                #         empty_path_red += 1
+
+
+                # # als de huidige queue een red car score bevat die hoger is dan de queue item, dan zet je de queue item vooraan de queue
+                # # dit werkt niet want je wil alleen de red car score steeds zo groot mogelijk, dus werkt niet hetzelfde als de x_score...
+                ############# don't remove #############
+
+
+                del(new_board)
+
+        if len(self.states) > self.max_length:
+            self.states = self.states[:self.max_length - 1]
+
+# random check:
+                    print(f'last board:')
+                    new_board.decode_str(last_board_string)
+                    new_board.print_board()
+                    print(f'current board:')
+
+                    new_board.decode_str(temp.string_repr())
+                    print()
+                    new_board.print_board()
+                    print(f'cars list: {cars_list}')
+                    print(f'count: {count}')
+                    print(len(possible_boards))
+                    check_pop = possible_boards.pop(count)
+                    print(len(possible_boards))
+                    print(f'the pop: {check_pop}')
+
+def x_score(board):
+    """
+    Determines the x score of a car, by adding all x-coordinates of the horizontal cars
+    This is used in the heuristic in breadth first search where we keep taking the possible board where the x-score is the lowest
+    """
+    x_score = 0
+    # iterates over all cars
+    for car in board.cars_dict.values():
+        if car.horizontal() and car.id != 'X':
+            x_score += car.x_location 
+            # alleen door horizontale auto's delen!!! 
+            return x_score / len(board.cars_dict.values()) 
+
+
+def red_car_score(board):
+    # red_car_score = 0
+    return -1 * board.cars_dict['X'].x_location
+    # if car.id == 'X':
+        # red_car_score = car.x_location
+    # return red_car_score
+
+def y_score(board):
+    y_score = 0
+    car_count = 0
+    for car in board.cars_dict.values():
+        if not car.horizontal() and car.length < 3:
+            car_count += 1
+            # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
+            y_score += y_score + abs(board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
+    return -1 * y_score / car_count
+
+def vehicles_before_exit(board):
+    redcar = board.cars_dict['X']
+    red_x = redcar.x_location
+    red_y = redcar.y_location
+    car_ids = []
+    for index in range(red_x + 2, board.size):
+        if board.board[red_y][index] != EMPTY:
+            car_ids.append(board.board[red_y][index])
+    return car_ids
