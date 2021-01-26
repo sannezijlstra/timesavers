@@ -20,6 +20,8 @@ def run_random(new_board, cars_list):
     print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
 def generate_output(result):
+    # ONDERSTAANDE TOEGEVOEGD DOOR NAME ERROR: NEWEST BOARD IS NOT DEFINED
+    newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
     solve_time = result['solve_time']
     count = result['count']
@@ -60,16 +62,16 @@ def run_breadth_first(new_board, cars_list):
 
     # print(result)
 
-
-
 ############################# DEPTH FIRST #############################
 def run_depth_first(new_board, cars_list):
     newest_board = copy.deepcopy(new_board)
     depth_obj = depth_first.DepthFirst(new_board)
+    result = depth_obj.run()
     generate_output(result)
 
     print('begin run')
-    result = depth_obj.run()
+    # VERPLAATST NAAR BOVEN!!!
+    #result = depth_obj.run()
 
 def test_corner(new_board, cars_list):
     minimum_steps = helpers.minimum_cost(new_board)
@@ -142,8 +144,7 @@ if __name__ == "__main__":
             break
         except KeyError:
             print('invalid algorithm selection')
-    
-    #if algorithm_choices.beam_search == True: 
+
 
 
 

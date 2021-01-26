@@ -123,7 +123,7 @@ def output(solution_list, newest_board ):
     #print(moves_list)      
     fields = ['car', 'move']
     # writing the data into the file 
-    with open('/output/output.csv','w') as f:
+    with open('output.csv','w') as f:
     # with open  file:     
         wr = csv.writer(f)
         wr.writerow(fields)

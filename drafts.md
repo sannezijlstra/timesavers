@@ -1,6 +1,3 @@
-Board.py TODOS:   vanaf regel 113, regel 148, regel 186, regel 210
-
-
 
 def move(self, direction, car):
         """
@@ -770,3 +767,316 @@ def vehicles_before_exit(board):
         if board.board[red_y][index] != EMPTY:
             car_ids.append(board.board[red_y][index])
     return car_ids
+
+class Iterative():
+    def __init__(self, board, max_depth = 1000):
+
+    self.board = board
+    self.max_depth = max_depth
+    self.temp_depth = 1
+    self.start = board #?????
+    self.archive[]
+
+
+    def check_depth(self):
+        pass
+
+<!-- # idee van een vaste breedte toevoegen
+# dingen wegharken die niet bij je heuristieken passen
+
+# A star:
+# voorkeur voor bepaalde borden: minimaal en consistent 
+# altijd onderschalen: consistent. 
+# geen radomness 
+# je gaat je borden rangschikken op voorkeur en aantal zetten dat nodig is om op het bord te komen 
+# bord steeds minste aantal zetten naar doel en 
+# altijd onderschattig, dus realiteit is altijd minder goed 
+# kortste om er te komen + goeie schatting dat volgende zet oplossing is
+# minimale kosten en minimale schatting, garantie dat alles daarna slechter is 
+# alles daarna heeft niet allebei van bovenstaande 
+# slechtste schatting: 0 stappen: precies breadth first search!!! 
+# betere schatting: iig 1 zet: voorkeur aan bord waar auto wel voor t bord staat 
+# beter: als auto hier, 2 auto's daarvoor, 2 auto's aan de kant dus 2 zetten nodig, minimale consistente onderschatting
+# minimale heuristiek is heel lastig  -->
+
+
+klad.txt Michael:
+DOEL: move options met daarin [1,2,-1,-2] of leeg []
+argumenten nodig in functie:
+    - auto
+    - x_coordinaat of y_coordinaat
+    - possible move (voor recursie)
+
+
+Check auto is horizontaal of verticaal
+    - afhankelijk van orientatie geef de x of y coordinaat mee
+    - check of het bord leeg is op lokatie x,y van de auto als +1 of -1
+zo ja append aan move-options het getal
+doe de functie nog een keer met nieuw getal
+
+## depth_first2.py
+from code.classes import board, cars
+from code import helpers
+from collections import deque
+import queue
+import copy
+import time
+#from collections import deque
+
+class DepthFirst():
+    def __init__(self, board):
+        self.size = board.size
+        self.board = copy.deepcopy(board)
+        self.default_string = self.board.string_repr()
+        self.archive = {}
+        self.states = []
+        self.solution_strings = []
+
+        self.x_score = helpers.x_score(self.board)
+        self.states.append([self.board.string_repr(), self.x_score])
+        self.count = 0
+        self.archive[self.default_string] = 0
+
+    def append_last(self, queue_item):
+        self.states.insert(0,queue_item)
+    
+    def append_first(self, queue_item):
+        self.states.append(queue_item)
+
+    def build_children(self):
+        """
+        """
+        
+        cars_lists = self.board.find_possible_boards()
+        parent_board_string = self.board.string_repr()
+
+        # iterates over every possible board
+        for cars_list in cars_lists:
+            # create board object for the possible board
+            new_board = board.Board(self.size, cars_list)
+            
+            # turn board object into string representation
+            new_board_string = new_board.string_repr()
+
+            if new_board_string in self.archive.keys():
+                continue
+            # if board not in archive, add to archive and add to queue
+            else:
+                # heuristiek mogelijk toepassen, score, hoe goed?
+                self.archive[new_board_string] = parent_board_string 
+                self.append_first([new_board_string])
+                ############# don't remove #############
+
+                del(new_board)
+
+    def run(self):
+        """
+        """
+        start_time = time.time()
+
+        # as long as there are items in the queue
+        while len(self.states) > 0:
+            
+            # haal het eerste element uit de queue
+            
+            current_item = self.states.pop()
+            current_board = current_item[0]
+            
+
+            # decode the string representation of the board back into a board object
+            self.board.decode_str(current_board)
+
+            # break out of loop when solution is found
+            if self.board.is_won():
+                print("you won")
+                # 
+                self.load_solution_strings(self.board.string_repr())
+                return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
+
+ 
+            self.build_children()
+
+            self.count += 1
+            if self.count % 100 == 0:
+                 print(f'children count:{self.count}')
+
+    
+    def load_solution_strings(self, parent_string):
+        """
+        """
+
+        while self.default_string not in self.solution_strings:
+            self.solution_strings.append(parent_string)
+            self.load_solution_strings(self.archive[parent_string])
+
+# randomise met comments 26/01 avond
+def randomise(new_board):
+    """
+    Algorithm that solves the Rush Hour game by randomly choosing possible boards, excluding the board that had been chosen last
+    
+    """
+    new_board = copy.deepcopy(new_board)
+    loop_count = 0
+    last_board_string = None
+
+    while True:
+        # TODO MAG DIT WEG?
+        # if loop_count == 1000000:
+        #     break
+        
+        # if loop_count % 1000 == 0:
+        #     print(f'count:{loop_count}')
+
+        # gives all possible boards from the current board
+        possible_boards = new_board.find_possible_boards()
+
+        # if loop_count > 0:
+        #     # iterates over all possible boards 
+        #     for count, cars_list  in enumerate(possible_boards):
+        #         temp = board.Board(new_board.size, cars_list)
+                
+        #         # excludes the last board, so that cars don't jump forward and backward
+        #         if last_board_string == temp.string_repr():
+        #             # print(f'last board:')
+        #             # new_board.decode_str(last_board_string)
+        #             # new_board.print_board()
+        #             # print(f'current board:')
+
+        #             # new_board.decode_str(temp.string_repr())
+        #             # print()
+        #             # new_board.print_board()
+        #             check_pop = possible_boards.pop(count)
+        #     else:
+        #         print('\n no same board found? \n')
+
+        # makes the string representation of the last board
+
+
+        # a random board out of the possible boards is chosen  
+        next_board = random.choice(possible_boards)
+        next_board = board.Board(new_board.size, next_board)
+
+
+        while next_board.string_repr() == last_board_string:
+            next_board = random.choice(possible_boards)
+            next_board = board.Board(new_board.size, next_board)
+
+
+        last_board_string = new_board.string_repr()
+        new_board = next_board
+        # new board object is made, with next_board
+
+        print(f'active_board:')
+        new_board.print_board()
+        print()
+        loop_count += 1
+        time.sleep(0.2)
+        
+        if new_board.is_won():
+            print(loop_count)
+            return loop_count
+        
+# vragen.txt:
+hoe zit het met functies __repr__, __hash__: hoe implementeer je die?
+hoe gebruik je dit om een fijne representatie te maken voor de archive in breadth first?
+
+
+
+
+hash_functie(sleutel, bord) = 1234321ffaabb
+reverse_hash(1234321ffaabb + sleutel) = bord
+
+lass BreadthFirst():
+    def __init__(self, board):
+        self.size = board.size
+        self.board = copy.deepcopy(board)
+        self.cars_list = self.board.cars_list
+        self.archive = {}
+        self.states = queue.Queue(self.board.string_repr())
+        self.best_solution = None
+        self.count = 0
+
+        self.archive[self.board] = 0
+
+
+    def get_next_state(self):
+        return self.states.get()
+
+    def build_children(self):
+        # find all possible boards,
+        # put into archive
+        # queue 
+        board_strings = self.board.find_possible_boards()
+    
+        for board_string in board_strings:
+            
+            new_board = Board(self.size, car_list)
+            new_board_string = new_board.string_repr()
+            del(new_board)
+            # if board in archive: pass
+            if new_board_string in self.archive:
+                continue
+            # if board not in archive: add to archive and add to queue
+            else:
+                # heuristiek mogelijk toepassen, score, hoe goed?
+                self.archive[new_board_string] = 0
+                # heuristieken toepassen
+                self.states.put(new_board_string)
+
+
+    def run(self):
+        while self.states:
+            current_board = self.states.get()
+            self.board.decode_str(current_board)
+
+            if current_board.is_won():
+                print("we won")
+                break
+            build_children(current_board)
+            current_board = self.states.get()
+            # board_instance = copy.deepcopy(current_board) 
+            # breadth_instance = BreadthFirst(board_instance) 
+            build_children(current_board)
+
+            if current_board.is_won():
+                print("we won")
+                break
+
+            print(current_list)
+            self.count += 1
+            if self.count % 100 == 0:
+                 print(f'children count:{self.count}')
+
+# 6x6_2.txt
+6
+a left
+a left
+b left
+b left
+c left
+d left
+g up
+g up
+h up
+x left
+f right
+f right
+k up
+k up
+i left
+i left
+i left
+l left
+l left
+l left
+k down
+k down
+f left
+h down
+h down
+h down
+x right
+x right
+x right
+
+
