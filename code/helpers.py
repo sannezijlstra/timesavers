@@ -56,14 +56,16 @@ def vehicles_before_exit(board):
     red_x = redcar.x_location
     red_y = redcar.y_location
     car_ids = []
-    for index in range(red_x, board.size - 1):
+    for index in range(red_x + 2, board.size):
         if board.board[red_y][index] != EMPTY:
             car_ids.append(board.board[red_y][index])
     return car_ids
 
 def minimum_cost(board):
-    minimum_red_steps = board.size - 1 - board.cars_dict['X'].x_location
-    cars_in_way = vehicles_before_exit(board, car_ids)
+    # correcting for board size and red car length
+    minimum_red_steps = board.size - 1 - board.cars_dict['X'].x_location - 1
+    
+    cars_in_way = vehicles_before_exit(board)
     if not cars_in_way:
         return minimum_red_steps
     elif len(cars_in_way) == 1:
@@ -75,10 +77,11 @@ def minimum_cost(board):
             else:
                 if board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 1:
                     minimum_red_steps += 2
-                elif board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 2:
+                elif board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 2 and board.size < 9:
                     minimum_red_steps += 3
                 else:
                     minimum_red_steps += 1
+    return minimum_red_steps
                     
 
 

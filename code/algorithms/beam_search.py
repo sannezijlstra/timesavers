@@ -13,6 +13,7 @@ class BeamSearch(BreadthFirst):
         self.max_length = 10000
         self.x_score = helpers.x_score(self.board)
         self.red_car_score = helpers.red_car_score(self.board)
+        self.min_red_steps = helpers.minimum_cost(self.board)
         print(f'empty states? {self.states}')
 
         self.states.append([self.x_score, self.board.string_repr()])
@@ -61,9 +62,9 @@ class BeamSearch(BreadthFirst):
                 # queue_item = [new_board_string]
 
                 # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                self.x_score = helpers.x_score(new_board)
+                # self.x_score = helpers.x_score(new_board)
                 # new_score = self.x_score / red_car_score
-                queue_item = [self.x_score, new_board_string]
+                # queue_item = [self.x_score, new_board_string]
                 # queue_item.append(self.x_score)
                 
                 # if len(self.states) < 1:
@@ -73,7 +74,8 @@ class BeamSearch(BreadthFirst):
                 #     self.append_last(queue_item)
                 # else:
                 #     self.append_first(queue_item)
-                
+                self.min_red_steps = helpers.minimum_cost(new_board)
+                queue_item = [self.min_red_steps, new_board_string]
                 self.insert_on_score(queue_item)
                 ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
                 # TODO
@@ -127,6 +129,7 @@ class BeamSearch(BreadthFirst):
                 ############# WITHOUT HEURISTICS #############
                 # self.append_first([new_board_string])
                 ############# don't remove #############
+
 
                 del(new_board)
 

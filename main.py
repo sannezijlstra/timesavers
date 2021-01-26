@@ -114,6 +114,12 @@ def run_depth_first(board, cars_list):
     moves_list = helpers.find_moves(solution_list, newest_board)
     print(moves_list)
 
+def test_corner(board, cars_list):
+    new_board = board.Board(size, cars_list)
+    minimum_steps = helpers.minimum_cost(new_board)
+    print(minimum_steps)
+    new_board.print_board()
+
 if __name__ == "__main__":
     # prompt user for data file size and select file from data folder
     while True:
@@ -174,7 +180,7 @@ if __name__ == "__main__":
         sys.exit("data file is empty or does not exist")
 
     # create initial board 
-    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first, 'beam_search': run_beam_search}
+    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first, 'beam_search': run_beam_search, 'test_corner': test_corner}
     while True:
         try:
             dict_string = {str(key) for key in algorithm_choices.keys()}
