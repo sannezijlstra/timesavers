@@ -52,7 +52,6 @@ def run_beam_search(new_board, cars_list):
     print(moves_list)
 ############################ BREADTH FIRST #############################
 def run_breadth_first(new_board, cars_list):
-    heuristic_default = ['X_SCORE', 'Y_SCORE', 'RED_CAR_LOCATION']
     new_board = board.Board(size, cars_list)
     
     breadth = breadth_first.BreadthFirst(new_board)
