@@ -9,11 +9,9 @@ class DepthFirst(BreadthFirst):
     def __init__(self, board):
             super().__init__(board)
             self.states = []
+            self.states.append(self.board.string_repr())
 
 
-    def append_last(self, queue_item):
-        self.states.insert(0, queue_item)
-    
     def append_first(self, queue_item):
         self.states.append(queue_item)
         
@@ -22,16 +20,11 @@ class DepthFirst(BreadthFirst):
         """
         start_time = time.time()
 
-
-
         # as long as there are items in the queue
         while len(self.states) > 0:
             
             # haal het eerste element uit de queue
-            
-            current_item = self.states.pop()
-            current_board = current_item[0]
-            
+            current_board = self.states.pop()
 
             # decode the string representation of the board back into a board object
             self.board.decode_str(current_board)
@@ -42,7 +35,6 @@ class DepthFirst(BreadthFirst):
                 # 
                 self.load_solution_strings(self.board.string_repr())
                 return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
-
  
             self.build_children()
 

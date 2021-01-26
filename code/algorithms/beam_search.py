@@ -25,8 +25,6 @@ class BeamSearch(BreadthFirst):
         # insert score
         bisect.insort(self.states, queue_item)
 
-
-
     def build_children(self):
         """
         First takes all possible boards, and determines the parent board string representation
@@ -60,33 +58,34 @@ class BeamSearch(BreadthFirst):
                 self.archive[new_board_string] = parent_board_string 
                 # queue_item = [new_board_string]
 
-                # ############ HEURISTIC 1: X COORDINATES OF HORIZONTAL VEHICLES AS SMALL AS POSSIBLE #############
-                # self.x_score = helpers.x_score(new_board)
-                # new_score = self.x_score / red_car_score
-                # queue_item = [self.x_score, new_board_string]
-                # queue_item.append(self.x_score)
-                
+                # ############ HEURISTIC 1:  #############
+                # x coordinates of horizontal vehicles as small as possible
+                self.x_score = helpers.x_score(new_board)
+                new_score = self.x_score / red_car_score
+                queue_item = [self.x_score, new_board_string]
+                queue_item.append(self.x_score)
 
-                # if self.states[0][1] >= queue_item[1]:
-                #     self.append_last(queue_item)
-                # else:
-                #     self.append_first(queue_item)
-                self.min_red_steps = helpers.minimum_cost(new_board)
-                queue_item = [self.min_red_steps, new_board_string]
-                self.insert_on_score(queue_item)
-                ############# HEURISTIC 2: VERTICAL CARS AS TO UPPER OR LOWER BOUND AS MUCH AS POSSIBLE #############
-                # TODO
-                # je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
-                # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
+                if self.states[0][1] >= queue_item[1]:
+                    self.append_last(queue_item)
+                else:
+                    self.append_first(queue_item)
+
+                # vertical cars to upper or lower bound as much as possible 
                 y_score = helpers.y_score(new_board)
                 queue_item[0] += y_score
 
-                # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
-                # red car met kleinste x wordt altijd achteraan gezet 
+                # red car always situated to the right as much as possible 
                 self.red_car_score = helpers.red_car_score(new_board)
-                # self.red_car_score = helpers.red_car_score(new_board)
+                self.red_car_score = helpers.red_car_score(new_board)
                 queue_item[0] += self.red_car_score
-                # # #board string van nieuwe board die een red car score bevat 
+
+                ############### HEURISTIC 2:  ##########
+
+                self.min_red_steps = helpers.minimum_cost(new_board)
+                queue_item = [self.min_red_steps, new_board_string]
+                self.insert_on_score(queue_item)
+
+
                 ############ HEURISTIC 4: MAKE path redcar = empty ############
                 # y = new_board.cars_dict['X'].y_location
                 # empty_path_red = 0
