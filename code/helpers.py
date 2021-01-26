@@ -72,6 +72,7 @@ def minimum_cost(board):
     else:
         for car_in_way in cars_in_way:
             if board.cars_dict[car_in_way].length < 3:
+                print(f'single one of few cars: {minimum_red_steps + 1}')
                 minimum_red_steps += 1
                 print(f'one of few cars in front {minimum_red_steps + 1} ')
             else:
