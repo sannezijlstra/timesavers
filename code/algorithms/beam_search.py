@@ -17,7 +17,6 @@ class BeamSearch(BreadthFirst):
         print(f'empty states? {self.states}')
 
         self.states.append([self.x_score, self.board.string_repr()])
-        print(f'1 state? {self.states}')
         
     def get_next_state(self):
         return self.states.pop(0)
@@ -67,8 +66,6 @@ class BeamSearch(BreadthFirst):
                 # queue_item = [self.x_score, new_board_string]
                 # queue_item.append(self.x_score)
                 
-                # if len(self.states) < 1:
-                #     self.append_first(queue_item)
 
                 # if self.states[0][1] >= queue_item[1]:
                 #     self.append_last(queue_item)
@@ -81,53 +78,25 @@ class BeamSearch(BreadthFirst):
                 # TODO
                 # je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
                 # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
-                # y_score = helpers.y_score(new_board)
-                # # queue_item = [new_board_string, y_score]
-                # queue_item.append(y_score)
+                y_score = helpers.y_score(new_board)
+                queue_item[0] += y_score
 
-                # # if len(self.states) < 1:
-                #     # self.states.appendleft(queue_item)
-
-                # # if self.states[0][1] <= queue_item[1]:
-                #     # self.append_last(queue_item)
-                # # else:
-                #     # self.append_first(queue_item)
                 # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
-                # # red car met kleinste x wordt altijd achteraan gezet 
-                # self.red_car_score = new_board.cars_dict['X'].x_location
-                # # self.red_car_score = helpers.red_car_score(new_board)
-
+                # red car met kleinste x wordt altijd achteraan gezet 
+                self.red_car_score = helpers.red_car_score(new_board)
+                # self.red_car_score = helpers.red_car_score(new_board)
+                queue_item[0] += self.red_car_score
                 # # #board string van nieuwe board die een red car score bevat 
-                # # queue_item = [new_board_string, self.red_car_score]
-                # queue_item.append(self.red_car_score)
                 ############ HEURISTIC 4: MAKE path redcar = empty ############
                 # y = new_board.cars_dict['X'].y_location
                 # empty_path_red = 0
                 # for x in range(new_board.size - new_board.cars_dict['X'].x_location):
                 #     if new_board.board[x][y] == board.EMPTY:
                 #         empty_path_red += 1
-                
-                # queue_item.append(empty_path_red)
-
-                # if len(self.states) < 1:
-                #     self.states.appendleft(queue_item)
-
-                # if self.states[0][1] <= queue_item[1] and self.states[0][2] >= queue_item[2]:
-                #     self.append_last(queue_item)
-                # else:
-                #     self.append_first(queue_item)
 
 
-                # if len(self.states) < 1:
-                    #  self.append_first(queue_item)
                 # # als de huidige queue een red car score bevat die hoger is dan de queue item, dan zet je de queue item vooraan de queue
                 # # dit werkt niet want je wil alleen de red car score steeds zo groot mogelijk, dus werkt niet hetzelfde als de x_score...
-                # if self.states[0][1] <= queue_item[1] and self.states[0][2] <= queue_item[2] and self.states[0][3] >= queue_item[3]:
-                #      self.append_last(queue_item)
-                # else:
-                #      self.append_first(queue_item)
-                ############# WITHOUT HEURISTICS #############
-                # self.append_first([new_board_string])
                 ############# don't remove #############
 
 
@@ -137,10 +106,6 @@ class BeamSearch(BreadthFirst):
             self.states = self.states[:self.max_length - 1]
 
 
-
-
-
-                
 # idee van een vaste breedte toevoegen
 # dingen wegharken die niet bij je heuristieken passen
 

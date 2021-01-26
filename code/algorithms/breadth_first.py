@@ -110,7 +110,9 @@ class BreadthFirst():
             # resize and sort queue
             self.count += 1
             if self.count % 1000 == 0:
-                 print(f'children count:{self.count}')
+                # states_check = [x[0] for x in self.states]
+                # print(f'states {states_check}')
+                print(f'children count:{self.count}')
     
     def load_solution_strings(self, parent_string):
         """
