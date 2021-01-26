@@ -78,14 +78,14 @@ class BeamSearch(BreadthFirst):
                 # TODO
                 # je weet waar rode auto zit en waar ie heen moet, hoe veel plekken tot uitgang, hoe veel auto's in de weg? 
                 # met andere woorden, y = 2 is fout, if not car.horizontal() and y = 2 -> append right (achteraan) rekening houden met lengte auto
-                y_score = helpers.y_score(new_board)
-                queue_item[0] += y_score
+                # y_score = helpers.y_score(new_board)
+                # queue_item[0] += y_score
 
                 # ############ HEURISTIC 3: MAKE SURE RED CAR SCORE IS ALWAYS THE BIGGEST -> minder goeie variant van heuristiek 4############
                 # red car met kleinste x wordt altijd achteraan gezet 
-                self.red_car_score = helpers.red_car_score(new_board)
                 # self.red_car_score = helpers.red_car_score(new_board)
-                queue_item[0] += self.red_car_score
+                # self.red_car_score = helpers.red_car_score(new_board)
+                # queue_item[0] += self.red_car_score
                 # # #board string van nieuwe board die een red car score bevat 
                 ############ HEURISTIC 4: MAKE path redcar = empty ############
                 # y = new_board.cars_dict['X'].y_location
