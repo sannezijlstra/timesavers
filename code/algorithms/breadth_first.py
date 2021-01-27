@@ -69,11 +69,8 @@ class BreadthFirst():
                 continue
             # if board not in archive, add to archive and add to queue
             else:
-                # TODO KAN ONDERSTAANDE WEG?
-                # if self.states[0][1] >= new_board.cars_dict['X'].x_location:
-                #     continue
+     
                 self.archive[new_board_string] = parent_board_string 
-                # queue_item = [new_board_string]
                 self.append_first(new_board_string)
 
                 del(new_board)
@@ -106,9 +103,6 @@ class BreadthFirst():
             # counts amount of children boards analyzed
             self.count += 1
             if self.count % 1000 == 0:
-                #TODO KAN ONDERSTAANDE WEG?
-                # states_check = [x[0] for x in self.states]
-                # print(f'states {states_check}')
                 print(f'children count:{self.count}')
     
     def load_solution_strings(self, parent_string):

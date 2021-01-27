@@ -154,11 +154,75 @@ class Board():
         # print(f'total next possible boards {len(possible_boards)}')
         # print(f'move count{move_option_count}')
         return possible_boards
-    def is_blocked (self, car):
-        if car.y_location - 1 > 0: 
-            # TODO te lange zin
+    def is_v_blocked (self, car):
+        if car.y_location > 0 and car.y_location + car.length < self.size:
             return self.board[car.y_location - 1][car.x_location] != EMPTY and self.board[car.y_location + car.length][car.x_location] != EMPTY
-        return car.y_location - 1 == 0 and self.board[car.y_location + car.length][car.x_location] != EMPTY
+        if car.y_location > 0 and car.y_location + car.length == self.size:
+            return self.board[car.y_location][car.x_location - 1] != EMPTY
+        return self.board[car.y_location + car.length][car.x_location] != EMPTY
+
+
+    def is_h_blocked(self,car):
+        if car.x_location > 0 and car.x_location + car.length < self.size:
+            return self.board[car.y_location][car.x_location - 1] != EMPTY and self.board[car.y_location][car.x_location + car.length] != EMPTY
+        if car.x_location > 0 and car.x_location + car.length == self.size:
+            return self.board[car.y_location][car.x_location - 1] != EMPTY
+        return self.board[car.y_location][car.x_location + car.length] != EMPTY
+
+    def blocked_chain(self, pot_blocked_cars, blocked_cars = None):
+        if not blocked_cars:
+            blocked_cars = set()
+        while pot_blocked_cars:
+            pot_blocked_list = list(pot_blocked_cars)
+            # print(pot_blocked_cars)
+            for car_id in pot_blocked_list:
+
+                # print(f'current car: {car_id}')
+                if car_id == 'X':
+                    pot_blocked_cars.remove(car_id)
+                    continue
+                car = self.cars_dict[car_id] 
+                if car.horizontal() and self.is_h_blocked(car):
+                    # if car.x_location > 0:
+                        # pot_blocked_car = self.board[car.y_location][car.x_location - 1]
+                        # print(f'potential blocked car: {pot_blocked_car}')
+                        # if pot_blocked_car not in blocked_cars:
+                            # pot_blocked_cars.add(pot_blocked_car)
+                    # for a minimum we don't want to check in both directions of a horizontal blocked car
+
+                    # elif car.x_location + car.length < self.size:
+                        # pot_blocked_car = self.board[car.y_location][car.x_location + car.length]
+                        # print(f'potential blocked car: {pot_blocked_car}')
+
+                        # if pot_blocked_car not in blocked_cars:
+                            # pot_blocked_cars.add(pot_blocked_car)
+                            
+                    blocked_cars.add(car.id)
+                elif not car.horizontal() and self.is_v_blocked(car):
+                    if car.y_location > 0:
+                        pot_blocked_car = self.board[car.y_location - 1][car.x_location]
+                        # print(f'potential blocked car: {pot_blocked_car}')
+
+                        if pot_blocked_car not in blocked_cars:
+                            pot_blocked_cars.add(pot_blocked_car)
+                    if car.y_location + car.length  < self.size:
+                        # print(f'potential blocked car: {pot_blocked_car}')
+
+                        pot_blocked_car = self.board[car.y_location + car.length][car.x_location]
+                        if pot_blocked_car not in blocked_cars:
+                            pot_blocked_cars.add(pot_blocked_car)
+                        pot_blocked_cars.add(pot_blocked_car)
+                        
+                    blocked_cars.add(car.id)
+                # print(pot_blocked_cars)
+                pot_blocked_cars.remove(car_id)
+                # print(pot_blocked_cars)
+            # print(f'blocked cars: {blocked_cars} \n')
+            # print(f'potential blocked cars: {pot_blocked_cars}\n')
+            self.blocked_chain(pot_blocked_cars, blocked_cars)
+            
+        return len(blocked_cars)
+
 
     def is_won(self):
         """
