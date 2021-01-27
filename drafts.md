@@ -71,7 +71,7 @@ def move(self, direction, car):
             continue
 
         # if game is won break out of loop
-        if new_board.is_won():
+        if new_board.is_won(): 
             new_board = board.Board(size, cars_list, True)
             new_board.print_board()
             break
@@ -1145,3 +1145,27 @@ Takes all possible boards, and determines the parent board string representation
     # new_board.print_board()
     # for car in new_board.cars_dict.values():
     #     print(f'{car.id} with {move_dict[car]} options')
+
+helpers.py: 
+
+# TODO nog nodig???
+def reverse_move(direction):
+    if direction == 'UP':
+        return 'DOWN'
+    elif direction == 'DOWN':
+        return 'UP'
+    elif direction == 'RIGHT':
+        return 'LEFT'
+    else:
+        return 'RIGHT'
+
+# TODO nog nodig???
+def find_cars_that_can(cars_list, new_board):
+    cars_that_can = {}
+    
+    for car in cars_list:
+        ## TODO can_move functie size oplossen
+        result = car.can_move(new_board, new_board.size)
+        if result:
+            cars_that_can[car] = result
+    return cars_that_can

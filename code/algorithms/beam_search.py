@@ -29,7 +29,7 @@ class BeamSearch(BreadthFirst):
         self.states.append([self.heuristic_score, self.board.string_repr()])
 
 
-    # ONDERSTAANDE FUNCTIE NODIG? 
+    # TODO comment! 
     def get_next_state(self):
         current_state = self.states.pop(0)
         return current_state[1]
@@ -66,10 +66,10 @@ class BeamSearch(BreadthFirst):
                 self.heuristic_score = self.heuristic(new_board)
 
                 #TODO ??? KLOPT DIT?
-                # adds the board string, which contains the heuristic score, to the queue
+                # builds an item for the queue, connecting the board string and heuristic score
                 queue_item = [self.heuristic_score, new_board_string]
 
-                # sorts the queue in order of least heuristic score to highest heuristic score 
+                # adds item and inserts into queue, maintaining a sorted list
                 self.insert_on_score(queue_item)
 
                 del(new_board)

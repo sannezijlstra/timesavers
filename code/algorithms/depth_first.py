@@ -20,40 +20,8 @@ class DepthFirst(BreadthFirst):
         self.states.append(self.board.string_repr())
 
 
-    #TODO QUEUE ITEM NAAM VERANDEREN NAAR STACK_ITEM? OF KAN DAT NIET?
     def append_first(self, queue_item):
         """
         Adds item to stack 
         """
         self.states.append(queue_item)
-       
-        
-    def run(self):
-        """
-        Runs the algorithm until a solution is found
-        """
-        start_time = time.time()
-
-        # runs as long as there are items in the queue
-        while len(self.states) > 0:
-            
-            # takes the first item out of the stack
-            current_board = self.states.pop()
-
-            # decode the string representation of the board back into a board object
-            self.board.decode_str(current_board)
-
-            # break out of loop when solution is found
-            if self.board.is_won():
-                print("you won")
-                # 
-                self.load_solution_strings(self.board.string_repr())
-                return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
- 
-            # calls build_children function from Breadth First algorithm
-            self.build_children()
-
-            # TODO WILLEN WE ONDERSTAANDE HOUDEN? RELEVANT?
-            self.count += 1
-            if self.count % 100 == 0:
-                 print(f'children count:{self.count}')
