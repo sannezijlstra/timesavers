@@ -9,8 +9,7 @@ import os
 import sys
 
 import sys
-# TODO BLIJVEN STAAN?
-sys.setrecursionlimit(1500)
+sys.setrecursionlimit(500)
 
 
 # TODO 12x12 grid auto's hebben 2 letterige id????????????
