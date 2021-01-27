@@ -1,16 +1,13 @@
 from . import cars
 import copy
 
+#constant
 EMPTY = '_'
-
-#TODO KAN DIT WEG? 
-# CRED = '\033[91m'
-# CEND = '\033[0m'
 
 class Board():
     """
-        Class for supporting the game of rush hour,
-        needs a size and list of cars to generate a new game
+        Class for supporting the game board of Rush Hour,
+        needs a size and list of cars to generate a new game 
     """
     def __init__(self, size, cars_list):
         """
@@ -25,15 +22,16 @@ class Board():
         self.load_cars(self.cars_dict)
         self.won = False
 
+
     # SOURCE: https://github.com/KaKariki02/rushHour/blob/master/RushClass.py
     def print_board (self):
         """
         Creates a visual representation of the board
         """
-
         self.printboard = '\n\n'.join(['      '.join(['{}'.format(item) for item in row]) for row in self.board])
         return self.printboard
     
+
     def string_repr(self):
         """
         Serializes board object into string
@@ -47,6 +45,7 @@ class Board():
                 # string keeps extending with every spot in the grid, splitting based on location, description and item
                 string_repr = string_repr + str(column) + ',' + str(row) + '.' + self.board[row][column] + '-'
         return string_repr
+
 
     def decode_str(self, string_repr):
         """
@@ -80,12 +79,14 @@ class Board():
                     self.cars_dict[filled[1]].x_location = x
                     self.cars_dict[filled[1]].y_location = y
 
+
     def load_cars_dict(self, cars_list):
         """
         Fills dictionary with car objects
-        """
+        """ 
         for car in cars_list:
             self.cars_dict[car.id] = car
+
 
     def load_cars(self, cars_dict):
         """
@@ -112,7 +113,6 @@ class Board():
         """
         Creates a list for every car object, consisting of their possible moves
         """
-        
         if car.horizontal():
             location = car.x_location
         else:
@@ -124,8 +124,6 @@ class Board():
         move_list = list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
         # misschien in een keer die berekening returnen?
         return move_list
-
-
 
     def is_v_blocked (self, car):
         if car.y_location > 0 and car.y_location + car.length < self.size:
@@ -226,8 +224,10 @@ class Board():
 
             move_options = self.check_move(car)
 
+            # iterates over every possible move
             for move_option in move_options:
                 # print(f'{car} with {move_options}')
+                # TODO WAT GEBEURT HIER? 
                 if move_option != 0:
                     if alg_random and move_option > 1 or move_option < -1:
                         continue
@@ -239,35 +239,44 @@ class Board():
                     # print(f'after move car to move: {car_to_move}')
 
                     possible_boards.append(new_cars_dict.values())
-       
+        #TODO MOGEN ALLE PRINT STATEMENTS WEG? 
         # print(f'possible_boards {possible_boards}')
         # print(f'total next possible boards {len(possible_boards)}')
         # print(f'move count{move_option_count}')
         return possible_boards
 
     def positive_moves(self, car, location, possible_move=0):
+        """
+        # TODO klopt dit? 
+        Returns all possible moves going either to the right or downwards in the grid 
+
+        """
+        # making sure move does not exceed grid size 
         while location + car.length <= self.size -1:
             if car.horizontal() and self.board[car.y_location][location + car.length] != EMPTY:
                 break
             elif not car.horizontal() and self.board[location + car.length][car.x_location] != EMPTY:
                 break
+            # only adding a possible move when an empty spot is found
             possible_move += 1
             location += 1
+            # TODO goeie comment? 
             self.positive_moves(car, location, possible_move)
             # can move right or down
         return possible_move
-
-    # while possible_move() == 0 
-    #   horizontaal() ->  cars.dict[board[x-1][y-1] = nu leeg -> welke auto kan erin
-    # return auto die kan bewegen.
     
-    def negative_moves(self, car, location, possible_move=0):
 
+    def negative_moves(self, car, location, possible_move=0):
+        """
+        Returns all possible moves either going left or upwards in the grid
+        """
         while location - 1 >= 0:
             if car.horizontal() and self.board[car.y_location][location - 1] != EMPTY:
                 break
             elif not car.horizontal() and self.board[location - 1][car.x_location] != EMPTY:
                 break
+            
+            # TODO hoezo gaat de possible move ook -1? want het is toch wel een +1 possible move? 
             possible_move -= 1
             location -= 1
             self.negative_moves(car, location, possible_move)

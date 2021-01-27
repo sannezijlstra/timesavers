@@ -7,7 +7,7 @@ import time
 
 class BreadthFirst():
     """
-    The Breadth First algorithm, the search starts in the 'parent' board. 
+    The Breadth First search starts in the 'parent' board. 
     Then, all the 'children' boards (possible boards) are searched, and put into the back of a queue. 
     This way, the tree is flattened out, as every single 'child' board is searched until finding a solution.
     """
@@ -39,7 +39,6 @@ class BreadthFirst():
         """
         Adds item to queue
         """
-
         self.states.appendleft(queue_item)
     
 
@@ -48,6 +47,7 @@ class BreadthFirst():
         Removes first item out of queue
         """
         return self.states.pop()
+
 
     def build_children(self):
         """
@@ -80,7 +80,6 @@ class BreadthFirst():
         """
         Runs the algorithm until shortest solution is found
         """
- 
         start_time = time.time()
 
         # runs as long as there are items in the queue
@@ -105,11 +104,11 @@ class BreadthFirst():
             if self.count % 1000 == 0:
                 print(f'children count:{self.count}')
     
+
     def load_solution_strings(self, parent_string):
         """
         Uses recursion to load all the string representations of the parent boards, to count amount of necessary moves
         """
-
         while self.default_string not in self.solution_strings:
             self.solution_strings.append(parent_string)
             #TODO NOG EEN COMMENT?

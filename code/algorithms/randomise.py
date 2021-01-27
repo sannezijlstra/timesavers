@@ -6,8 +6,8 @@ from code.classes import board, cars
 
 def randomise(new_board):
     """
-    Algorithm that solves the Rush Hour game by randomly choosing possible boards, excluding the board that had been chosen last
-    
+    Algorithm that solves the Rush Hour game by randomly choosing possible boards.
+    Excludes the board that had been chosen in the last move.
     """
     new_board = copy.deepcopy(new_board)
     loop_count = 0

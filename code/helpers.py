@@ -1,6 +1,10 @@
 import copy
 import csv
+
+# TODO empty blijven staan? constant?
+#constant
 EMPTY = '_'
+
 # TODO nog nodig???
 def reverse_move(direction):
     if direction == 'UP':
@@ -24,39 +28,58 @@ def find_cars_that_can(cars_list, new_board):
     return cars_that_can
 
 def combination_score(new_board):
+    """
+    Combines three heuristic scores for pruning the list in beam search 
+    X-score consists of x-coordinates of horizontal cars, excluding the red car
+    Y-score consists of y-coordinates of vertical cars, opposed to the y-coordinate of the red car
+    """
     x_score = 0
     y_score = 0
     car_count_x = 0 
     car_count_y = 0
+
+    # determines the x-coordinates of the red car, multiplying by -1 because pruned from low to high score, here, higher is better
     red_car_score = -1 * new_board.cars_dict['X'].x_location
 
+    # iterates over every car object
     for car in new_board.cars_dict.values():
         if car.horizontal() and car.id != 'X':
             car_count_x += 1 
             x_score += car.x_location 
-            # alleen door horizontale auto's delen!!! 
         elif not car.horizontal() and car.length < 3:
             car_count_y += 1
             # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
             y_score += y_score + abs(new_board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
     
+    # determines the average x-coordinate for every horizontal car, the lower the better
     total_x_score = x_score / car_count_x 
+    
+    # determines the average y-score for every vertical car, multiplying by -1 because pruned from low to high score, here, higher is better
     total_y_score = -1 * y_score / car_count_y
 
     return (total_x_score + total_y_score + red_car_score)
 
 
 def vehicles_before_exit(board):
+    """
+    Determines the amount of vehicles that are in the way of the red car's destination 
+    """
     redcar = board.cars_dict['X']
     red_x = redcar.x_location
     red_y = redcar.y_location
     car_ids = []
+    # iterates over the grid spots on the right side of the red car
     for index in range(red_x + 2, board.size):
+        # appends to a list when a car is on the right side of the red car
         if board.board[red_y][index] != EMPTY:
             car_ids.append(board.board[red_y][index])
     return car_ids
 
 def minimum_cost(board):
+    """
+    # TODO???
+    Heuristic for beam search in which 
+    """
     # correcting for board size and red car length
     minimum_red_steps = board.size - 1 - board.cars_dict['X'].x_location - 1
     cars_in_way = vehicles_before_exit(board)
@@ -88,6 +111,9 @@ def minimum_cost(board):
     return minimum_red_steps + blocked_score
 
 def find_moves(solution_list, new_board):
+    """
+    #TODO??? 
+    """
     moves_list = []
     for index in reversed(range(len(solution_list))):
         
@@ -116,12 +142,15 @@ def find_moves(solution_list, new_board):
     return moves_list
     
 def output(solution_list, newest_board ):
+    """
+    Creates a csv file consisting of all necessary moves made, when a solution is found
+    """
     moves_list = find_moves(solution_list, newest_board)
     #print(moves_list)      
     fields = ['car', 'move']
+    
     # writing the data into the file 
-    with open('output.csv','w') as f:
-    # with open  file:     
+    with open("output/output.csv", 'w') as f: 
         wr = csv.writer(f)
         wr.writerow(fields)
         wr.writerows(moves_list)        

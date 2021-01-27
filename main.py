@@ -9,17 +9,23 @@ import os
 import sys
 
 import sys
+# TODO BLIJVEN STAAN?
 sys.setrecursionlimit(1500)
 
 
-
-# TODO 12x12 grid auto's hebben 2 letterige id
-############################ RANDOM #############################
+# TODO 12x12 grid auto's hebben 2 letterige id????????????
+# --------------------------- Random reassignment --------------------------
 def run_random(new_board, cars_list):
+    """
+    Runs the random algorithm, and shows the needed amount of steps to find the solution 
+    """
     solution_count = randomise.randomise(new_board)
     print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
 
+# TODO MOET ONDERSTAANDE BLIJVEN STAAN? WORDT DIT WEL GEBRUIKT BIJ RANDOM? NIET MEER EEN SOORT ALGEMEEN DING?
 def generate_output(result):
+    """
+    """
     # ONDERSTAANDE TOEGEVOEGD DOOR NAME ERROR: NEWEST BOARD IS NOT DEFINED
     newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
@@ -38,9 +44,13 @@ def generate_output(result):
     # moves_list = helpers.find_moves(solution_list, newest_board)
     # print(moves_list)
     return helpers.output(solution_list, newest_board)
-################# BEAM SEARCH #########################
+
+
+# --------------------------- Beam Search --------------------------
 def run_beam_search(new_board, cars_list):
-    ### hierzo
+    """
+    Runs the beam search algorithm with the heuristic chosen by the user, then generates the output 
+    """
     heur_dict = {'min_steps': helpers.minimum_cost, 'combination': helpers.combination_score}
     heur_choice = input(f'select heuristic: {heur_dict.keys()} ')
     heur_to_use = heur_dict[heur_choice]
@@ -53,8 +63,10 @@ def run_beam_search(new_board, cars_list):
     newest_board = copy.deepcopy(new_board)
     generate_output(result)
     
-############################ BREADTH FIRST #############################
+# --------------------------- Breadth First  --------------------------
 def run_breadth_first(new_board, cars_list):
+    """
+    """
     newest_board = copy.deepcopy(new_board)
     breadth = breadth_first.BreadthFirst(newest_board)
     result = breadth.run()
@@ -62,7 +74,7 @@ def run_breadth_first(new_board, cars_list):
 
     # print(result)
 
-############################# DEPTH FIRST #############################
+# --------------------------- Depth First  --------------------------
 def run_depth_first(new_board, cars_list):
     newest_board = copy.deepcopy(new_board)
     depth_obj = depth_first.DepthFirst(new_board)
@@ -78,6 +90,8 @@ def test_corner(new_board, cars_list):
     print(f'minimum steps: {minimum_steps}')
     new_board.print_board()
 
+
+# --------------- User Interface ---------------------
 if __name__ == "__main__":
     # prompt user for data file size and select file from data folder
     while True:
@@ -87,12 +101,11 @@ if __name__ == "__main__":
             print("invalid input")
             continue
 
-        # for_6 = random.randint(1,3)
         for_6 = random.randint(1,3)
         for_9 = random.randint(4,6)
         
         try:
-            file_nr = int(input("> type file number if you'd like "))
+            file_nr = int(input("> choose a file number if you'd like "))
         except ValueError:
             file_nr = None
 
@@ -119,11 +132,13 @@ if __name__ == "__main__":
             break
         else:
             print('invalid size')
+    
     # create empty list to fill with cars
     cars_list = []
 
     # open data folder to create car objects
     if os.path.isfile(file_to_open) and os.path.getsize(file_to_open) > 0:
+        # open csv file consisting of the information of the board
         with open(file_to_open, 'r') as in_file:
             car_file = csv.DictReader(in_file)
             for line in car_file:
@@ -144,55 +159,3 @@ if __name__ == "__main__":
             break
         except KeyError:
             print('invalid algorithm selection')
-
-
-
-
-            
-    
-
-############################# NIET WERKENDE DEPTH FIRST #############################
-    # new_board = board.Board(size, cars_list)
-    
-    # depth_obj = depth_first.DepthFirst(new_board)
-    # print('begin run')
-    # result = depth_obj.run()
-    # # print(result)
-    # newest_board = copy.deepcopy(new_board)
-    # solution_list = result['solution']
-    # solve_time = result['solve_time']
-    # count = result['count']
-
-    # for solution in reversed(solution_list):
-    #     newest_board.decode_str(solution)
-    #     print()
-    #     newest_board.print_board()
-    #     print()
-    #     time.sleep(0.1)
-    
-    # print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    # print(f' with {len(solution_list)} steps')
-    # print(f'total amount of children analysed: {count}')
-
-
-    
-    
-
-
-############################# michaels play corner #############################
-    # new_board = board.Board(size, cars_list)
-    # # car_to_move = new_board.cars_dict['A']
-    # move_dict = {}
-    # for car in new_board.cars_dict.values():
-    #     if car.horizontal():
-    #         location = car.x_location
-    #     else:
-    #         location = car.y_location
-        
-    #     positive_moves = new_board.positive_moves(car, location)
-    #     negative_moves = new_board.negative_moves(car, location)
-    #     print(f'{car.id} positive: {positive_moves}, negative {negative_moves}')
-    #     move_dict[car] = list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
-    # new_board.print_board()
-    # for car in new_board.cars_dict.values():
-    #     print(f'{car.id} with {move_dict[car]} options')
