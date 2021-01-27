@@ -19,7 +19,8 @@ class BeamSearch(BreadthFirst):
         self.states.append([self.x_score, self.board.string_repr()])
         
     def get_next_state(self):
-        return self.states.pop(0)
+        current_state = self.states.pop(0)
+        return current_state[1]
     
     def insert_on_score(self, queue_item):
         # insert score

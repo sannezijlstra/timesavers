@@ -71,35 +71,25 @@ def vehicles_before_exit(board):
 def minimum_cost(board):
     # correcting for board size and red car length
     minimum_red_steps = board.size - 1 - board.cars_dict['X'].x_location - 1
-    print(f'initial steps: {minimum_red_steps}')
     cars_in_way = vehicles_before_exit(board)
     if not cars_in_way:
         return minimum_red_steps
     elif len(cars_in_way) == 1:
         if board.is_blocked(board.cars_dict[cars_in_way[0]]):
-            print(f'single BLOCKED car: {minimum_red_steps + 1}')
             minimum_red_steps += 1
-        print(f'single car: {minimum_red_steps + 1}')
         return minimum_red_steps + 1
     else:
         for car_in_way in cars_in_way:
             if board.cars_dict[car_in_way].length < 3:
-                print(f'single one of few cars: {minimum_red_steps + 1}')
                 minimum_red_steps += 1
             else:
                 if board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 1:
-                    print(f'single one truck 1: {minimum_red_steps + 2}')
                     minimum_red_steps += 2
                 elif board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 2 and board.size < 9:
-                    print(f'single one truck 2: {minimum_red_steps + 1}')
                     minimum_red_steps += 3
                 else:
-                    print(f'single one truck 3: {minimum_red_steps + 1}')
-
                     minimum_red_steps += 1
             if board.is_blocked(board.cars_dict[car_in_way]):
-                print(f'blocked bonus: {minimum_red_steps + 1}')
-
                 minimum_red_steps += 1
     return minimum_red_steps
 

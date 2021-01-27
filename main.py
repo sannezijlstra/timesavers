@@ -24,10 +24,10 @@ def run_random(board, cars_list):
 ################# BEAM SEARCH #########################
 def run_beam_search(new_board, cars_list):
     ### hierzo
-    alg_dic = {'min_steps': helpers.minimum_cost, 'combination': helpers.score_combination}
-    alg_choice = input(f'select heuristic: {alg_dict} ')
-    alg_to_use = alg_dic[alg_choice]
-    alg_to_use(new_board)
+    # alg_dic = {'min_steps': helpers.minimum_cost, 'combination': helpers.score_combination}
+    # alg_choice = input(f'select heuristic: {alg_dict} ')
+    # alg_to_use = alg_dic[alg_choice]
+    # alg_to_use(new_board)
     new_board = board.Board(size, cars_list)
     
     beam = beam_search.BeamSearch(new_board)
