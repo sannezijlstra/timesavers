@@ -6,8 +6,9 @@ EMPTY = '_'
 
 class Board():
     """
-        Class for supporting the game board of Rush Hour,
-        needs a size and list of cars to generate a new game 
+        Class for supporting the game board of Rush Hour
+        Needs a size and list of cars to generate a new game
+        (De)serializes the board, loads the cars, checks for possible moves, checks if game is won, and prints current board
     """
     def __init__(self, size, cars_list):
         """
@@ -25,7 +26,6 @@ class Board():
         self.load_cars(self.cars_dict)
         self.won = False
 
-
     # SOURCE: https://github.com/KaKariki02/rushHour/blob/master/RushClass.py
     def print_board (self):
         """
@@ -34,7 +34,6 @@ class Board():
         self.printboard = '\n\n'.join(['      '.join(['{}'.format(item) for item in row]) for row in self.board])
         return self.printboard
     
-
     def string_repr(self):
         """
         Serializes board object into string
@@ -48,7 +47,6 @@ class Board():
                 # string keeps extending with every spot in the grid, splitting based on location, description and item
                 string_repr = string_repr + str(column) + ',' + str(row) + '.' + self.board[row][column] + '-'
         return string_repr
-
 
     def decode_str(self, string_repr):
         """
@@ -82,14 +80,12 @@ class Board():
                     self.cars_dict[filled[1]].x_location = x
                     self.cars_dict[filled[1]].y_location = y
 
-
     def load_cars_dict(self, cars_list):
         """
         Fills dictionary with car objects
         """ 
         for car in cars_list:
             self.cars_dict[car.id] = car
-
 
     def load_cars(self, cars_dict):
         """
@@ -111,7 +107,6 @@ class Board():
                 if car.length > 2:
                     self.board[car.y_location + 2][car.x_location] = car.id
 
-
     def check_move(self, car, max_steps = None):
         """
         Creates a list for every car object, consisting of their possible moves
@@ -132,7 +127,6 @@ class Board():
         
         # combine and return positive and negative move lists for the car object
         return list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
-
 
     def find_possible_boards(self, max_steps = None):
         """
@@ -178,10 +172,7 @@ class Board():
             # keep track of the hypothetical car location
             location += 1
             
-            # recursively finda all positive moves
-            # self.positive_moves(car, location, possible_move)
         return possible_move
-    
 
     def negative_moves(self, car, location, possible_move=0):
         """
@@ -198,9 +189,7 @@ class Board():
             possible_move -= 1
             # keep track of the hypothetical car location
             location -= 1
-            # self.negative_moves(car, location, possible_move)
         return possible_move
-
 
     def is_won(self):
         """
@@ -218,4 +207,3 @@ class Board():
                     item = self.cars_dict[item].description
                 print(f'{item} ', end="")
             print()    
-    

@@ -17,7 +17,7 @@ def combination_score(new_board):
     car_count_x = 0 
     car_count_y = 0
 
-    # the x-coordinates of the red car, multiplying by -1 because pruned from low to high score, here, higher is better
+    # x-coordinates of the red car, multiplying by -1 because pruned from low to high score, here, higher is better
     red_car_score = -1 * new_board.cars_dict['X'].x_location
 
     # iterates over every car object
@@ -27,13 +27,13 @@ def combination_score(new_board):
             x_score += car.x_location 
         elif not car.horizontal() and car.length < 3:
             car_count_y += 1
-            # je wil de y locatie van een verticaal auto'tje zo ver mogelijk van de x locatie van 'X' hebben
+            # the y-coordinates of the vertical cars, which need to be furthest from the y-coordinate of the red car
             y_score += y_score + abs(new_board.cars_dict['X'].y_location + 1 - (car.y_location + 1))
     
-    # the average x-coordinate for every horizontal car, the lower the better
+    # average x-coordinate for every horizontal car, the lower the better
     total_x_score = x_score / car_count_x 
     
-    # the average y-score for every vertical car, multiplying by -1 because pruned from low to high score, here, higher is better
+    # average y-score for every vertical car, multiplying by -1 because pruned from low to high score, here, higher is better
     total_y_score = -1 * y_score / car_count_y
 
     return (total_x_score + total_y_score + red_car_score)
@@ -66,6 +66,7 @@ def minimum_cost(board):
                     minimum_red_steps += 3
                 else:
                     minimum_red_steps += 1
+                    
         # if the cars are blocked themselves, calculate a blocked score
         blocked_score = blocked_chain(set(cars_in_way), board)
 
@@ -89,10 +90,85 @@ def vehicles_before_exit(board):
             car_ids.append(board.board[red_y][index])
     return car_ids
 
-def find_moves(solution_list, new_board):
+def is_v_blocked (new_board, car):
     """
-    Based on boardstrings, find the moves made to get the red car to the destination.
-    These can be used to produce the output file. 
+    Checks whether a vertical orientated car is blocked by other cars
+    """
+    # car is not at the edge
+    if car.y_location > 0 and car.y_location + car.length < new_board.size:
+        # check if car is blocked by cars
+        return new_board.board[car.y_location - 1][car.x_location] != EMPTY and new_board.board[car.y_location + car.length][car.x_location] != EMPTY
+    if car.y_location > 0 and car.y_location + car.length == new_board.size:
+        # check if car is blocked between car and edge
+        return new_board.board[car.y_location - 1][car.x_location] != EMPTY
+    # check if car is blocked between car and edge
+    return new_board.board[car.y_location + car.length][car.x_location] != EMPTY
+
+def is_h_blocked(new_board,car):
+    """
+    Checks whether a horizontal orientated car is blocked by other cars
+    """
+    # check if the car is blocked between two cars
+    if car.x_location > 0 and car.x_location + car.length < new_board.size:
+        return new_board.board[car.y_location][car.x_location - 1] != EMPTY and new_board.board[car.y_location][car.x_location + car.length] != EMPTY
+    # check if the car is blocked between car and edge
+    if car.x_location > 0 and car.x_location + car.length == new_board.size:
+        return new_board.board[car.y_location][car.x_location - 1] != EMPTY
+    # check if the car is blocked between car and edge
+    return new_board.board[car.y_location][car.x_location + car.length] != EMPTY
+
+def blocked_chain(pot_blocked_cars, new_board):
+    """
+        Checks if cars are blocked, and for vertical check if bordering cars are blocked themselves
+        Needs car-id list and board as input
+        Returns the amount of cars blocked
+    """
+    
+    blocked_cars = set()
+    
+    # check for blocked cars as long as there are potential blocked cars 
+    while pot_blocked_cars:
+        for car_id in list(pot_blocked_cars):
+            # the red car does not count for the blocking car score
+            if car_id == 'X':
+                pot_blocked_cars.remove(car_id)
+                continue
+
+            car = new_board.cars_dict[car_id] 
+
+            # if horizontal and blocked add it to the blocked cars
+            if car.horizontal() and is_h_blocked(new_board, car):
+                blocked_cars.add(car.id)
+
+            # if the car is vertical add it to the blocked cars and find bordering cars
+            elif not car.horizontal() and is_v_blocked(new_board, car):
+                # look above the car if car is not at the top edge
+                if car.y_location > 0:
+                    pot_blocked_car = new_board.board[car.y_location - 1][car.x_location]
+                    # only add potential blocked car if the car is not in the blocked cars list
+                    if pot_blocked_car not in blocked_cars:
+                        pot_blocked_cars.add(pot_blocked_car)
+
+                # look below the car if the car is not at the bottom edge
+                if car.y_location + car.length  < new_board.size:
+                    pot_blocked_car = new_board.board[car.y_location + car.length][car.x_location]
+                    # only add potential blocked car if not present in blocked cars
+                    if pot_blocked_car not in blocked_cars:
+                        pot_blocked_cars.add(pot_blocked_car)
+                    # add blocked car
+                    pot_blocked_cars.add(pot_blocked_car)
+                # add the current blocked car
+                blocked_cars.add(car.id)
+            
+            pot_blocked_cars.remove(car_id)
+            
+    return len(blocked_cars)
+
+# ----------- Functions concerning representation of output ----------------------
+def find_solution_moves(solution_list, new_board):
+    """
+    Based on boardstrings, find the moves made to get the red car to the destination
+    These can be used to produce the output file
     """
     moves_list = []
     # iterate over the range of the parent boardstring list
@@ -128,93 +204,25 @@ def find_moves(solution_list, new_board):
 
     return moves_list
 
-def blocked_chain(pot_blocked_cars, new_board, blocked_cars = None):
-    """
-    """
-    #
-    if not blocked_cars:
-        blocked_cars = set()
-    #
-    while pot_blocked_cars:
-        pot_blocked_list = list(pot_blocked_cars)
-        # print(pot_blocked_cars)
-        for car_id in pot_blocked_list:
-            # the red car does not count for the blocking car score
-            if car_id == 'X':
-                pot_blocked_cars.remove(car_id)
-                continue
-
-            car = new_board.cars_dict[car_id] 
-            # if horizontal and blocked add it to the blocked cars
-            if car.horizontal() and is_h_blocked(new_board, car):
-                blocked_cars.add(car.id)
-            # if the car is vertical add it to the blocked cars and find bordering cars
-            elif not car.horizontal() and is_v_blocked(new_board, car):
-                # look above the car if car is not at the top edge
-                if car.y_location > 0:
-                    pot_blocked_car = new_board.board[car.y_location - 1][car.x_location]
-                    # only add potential blocked car if the car is not in the blocked cars list
-                    if pot_blocked_car not in blocked_cars:
-                        pot_blocked_cars.add(pot_blocked_car)
-
-                # look below the car if the car is not at the bottom edge
-                if car.y_location + car.length  < new_board.size:
-                    pot_blocked_car = new_board.board[car.y_location + car.length][car.x_location]
-                    # only add potential blocked car if not present in blocked cars
-                    if pot_blocked_car not in blocked_cars:
-                        pot_blocked_cars.add(pot_blocked_car)
-                    # add blocked car
-                    pot_blocked_cars.add(pot_blocked_car)
-                # add the current blocked car
-                blocked_cars.add(car.id)
-            
-            pot_blocked_cars.remove(car_id)
-        blocked_chain(pot_blocked_cars, new_board, blocked_cars)
-        
-    return len(blocked_cars)
-
-def is_v_blocked (new_board, car):
-    # car is not at the edge
-    if car.y_location > 0 and car.y_location + car.length < new_board.size:
-        # check if car is blocked by cars
-        return new_board.board[car.y_location - 1][car.x_location] != EMPTY and new_board.board[car.y_location + car.length][car.x_location] != EMPTY
-    if car.y_location > 0 and car.y_location + car.length == new_board.size:
-        # check if car is blocked between car and edge
-        return new_board.board[car.y_location - 1][car.x_location] != EMPTY
-    # check if car is blocked between car and edge
-    return new_board.board[car.y_location + car.length][car.x_location] != EMPTY
-
-
-def is_h_blocked(new_board,car):
-    # check if the car is blocked between two cars
-    if car.x_location > 0 and car.x_location + car.length < new_board.size:
-        return new_board.board[car.y_location][car.x_location - 1] != EMPTY and new_board.board[car.y_location][car.x_location + car.length] != EMPTY
-    # check if the car is blocked between car and edge
-    if car.x_location > 0 and car.x_location + car.length == new_board.size:
-        return new_board.board[car.y_location][car.x_location - 1] != EMPTY
-    # check if the car is blocked between car and edge
-    return new_board.board[car.y_location][car.x_location + car.length] != EMPTY
-
-# ----------- Functions concerning representation of output ----------------------
 def output(solution_list, newest_board ):
     """
     Creates a csv file consisting of all necessary moves made, when a solution is found
     """
     # get the list of all the moves that are made
-    moves_list = find_moves(solution_list, newest_board)
+    moves_list = find_solution_moves(solution_list, newest_board)
     fields = ['car', 'move']
     
     # writing the data into the file 
     with open("output/output.csv", 'w') as f: 
         wr = csv.writer(f)
         wr.writerow(fields)
-        wr.writerows(moves_list)        
+        wr.writerows(moves_list)
 
     return f
 
 def generate_output(result, new_board):
     """
-    Handles results of algorithms: BreadthFirst, DepthFirst, BeamSarch
+    Handles results of algorithms: BreadthFirst, DepthFirst, BeamSearch
     """
     newest_board = copy.deepcopy(new_board)
     solution_list = result['solution']
@@ -230,6 +238,5 @@ def generate_output(result, new_board):
     print("solved in: {0:.3f} seconds".format(solve_time), end="")
     print(f' with {len(solution_list)} steps')
     print(f' with {count} children analysed ')
-    # moves_list = helpers.find_moves(solution_list, newest_board)
-    # print(moves_list)
+
     return output(solution_list, newest_board)

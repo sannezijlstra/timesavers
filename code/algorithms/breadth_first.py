@@ -32,7 +32,6 @@ class BreadthFirst():
 
         # initialize the archive
         self.archive[self.default_string] = 0
-
     
     def append_first(self, queue_item):
         """
@@ -40,13 +39,11 @@ class BreadthFirst():
         """
         self.states.appendleft(queue_item)
     
-
     def get_next_state(self):
         """
-        Removes first item out of queue
+        Removes and returns first item out of queue
         """
         return self.states.pop()
-
 
     def build_children(self):
         """
@@ -72,7 +69,6 @@ class BreadthFirst():
                 self.append_first(new_board_string)
 
                 del(new_board)
-
 
     def run(self):
         """
@@ -108,7 +104,6 @@ class BreadthFirst():
             if self.count % 1000 == 0:
                 print(f'children count:{self.count}')
     
-
     def load_solution_strings(self, parent_string):
         """
         Uses recursion to load all the string representations of the parent boards, to count amount of necessary moves

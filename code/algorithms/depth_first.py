@@ -19,7 +19,6 @@ class DepthFirst(BreadthFirst):
         self.states = []
         self.states.append(self.board.string_repr())
 
-
     def append_first(self, queue_item):
         """
         Adds item to stack 
