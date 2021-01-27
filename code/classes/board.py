@@ -127,33 +127,6 @@ class Board():
 
 
 
-    def find_possible_boards(self):
-        """
-        Finds all possible boards going from the current board
-        """
-        possible_boards = []
-        
-        # iterates over the cars in the cars dictionary 
-        for car in self.cars_dict.values():
-
-            move_options = self.check_move(car)
-
-            for move_option in move_options:
-                # print(f'{car} with {move_options}')
-                if move_option != 0:
-                    new_cars_dict = copy.deepcopy(self.cars_dict)
-                    car_to_move = new_cars_dict[car.id]
-                    # print(f'pre move car to move: {car_to_move} with move option: {move_option}')
-
-                    car_to_move.do_move(move_option)
-                    # print(f'after move car to move: {car_to_move}')
-
-                    possible_boards.append(new_cars_dict.values())
-       
-        # print(f'possible_boards {possible_boards}')
-        # print(f'total next possible boards {len(possible_boards)}')
-        # print(f'move count{move_option_count}')
-        return possible_boards
     def is_v_blocked (self, car):
         if car.y_location > 0 and car.y_location + car.length < self.size:
             return self.board[car.y_location - 1][car.x_location] != EMPTY and self.board[car.y_location + car.length][car.x_location] != EMPTY
@@ -241,6 +214,36 @@ class Board():
                 print(f'{item} ', end="")
             print()    
     
+
+    def find_possible_boards(self, alg_random = False):
+        """
+        Finds all possible boards going from the current board
+        """
+        possible_boards = []
+        
+        # iterates over the cars in the cars dictionary 
+        for car in self.cars_dict.values():
+
+            move_options = self.check_move(car)
+
+            for move_option in move_options:
+                # print(f'{car} with {move_options}')
+                if move_option != 0:
+                    if alg_random and move_option > 1 or move_option < -1:
+                        continue
+                    new_cars_dict = copy.deepcopy(self.cars_dict)
+                    car_to_move = new_cars_dict[car.id]
+                    # print(f'pre move car to move: {car_to_move} with move option: {move_option}')
+
+                    car_to_move.do_move(move_option)
+                    # print(f'after move car to move: {car_to_move}')
+
+                    possible_boards.append(new_cars_dict.values())
+       
+        # print(f'possible_boards {possible_boards}')
+        # print(f'total next possible boards {len(possible_boards)}')
+        # print(f'move count{move_option_count}')
+        return possible_boards
 
     def positive_moves(self, car, location, possible_move=0):
         while location + car.length <= self.size -1:

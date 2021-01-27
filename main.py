@@ -137,13 +137,13 @@ if __name__ == "__main__":
     # create initial board 
     algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first, 'beam_search': run_beam_search, 'test_corner': test_corner}
     while True:
-        # try:
-        dict_string = {str(key) for key in algorithm_choices.keys()}
-        alg_choice = input(f'select algorithm from {dict_string} ')
-        algorithm_choices[alg_choice](new_board, cars_list)
-        break
-        # except KeyError:
-        #     print('invalid algorithm selection')
+        try:
+            dict_string = {str(key) for key in algorithm_choices.keys()}
+            alg_choice = input(f'select algorithm from {dict_string} ')
+            algorithm_choices[alg_choice](new_board, cars_list)
+            break
+        except KeyError:
+            print('invalid algorithm selection')
 
 
 
