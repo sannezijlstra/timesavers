@@ -83,35 +83,32 @@ def minimum_cost(board):
     # correcting for board size and red car length
     minimum_red_steps = board.size - 1 - board.cars_dict['X'].x_location - 1
     cars_in_way = vehicles_before_exit(board)
-    print(f'red steps to make to exit{minimum_red_steps}')
+    # print(cars_in_way)
+    # print(f'red steps to make to exit{minimum_red_steps}')
     if not cars_in_way:
         return minimum_red_steps
-    elif len(cars_in_way) == 1:
-        if board.is_blocked(board.cars_dict[cars_in_way[0]]):
-            print(f'car/truck is blocked {minimum_red_steps + 1}')
-            minimum_red_steps += 1
-        print(f'car in front red{ minimum_red_steps + 1}')
-        return (minimum_red_steps + 1)
     else:
         for car_in_way in cars_in_way:
             if board.cars_dict[car_in_way].length < 3:
-                print(f'single one of few cars: {minimum_red_steps + 1}')
                 minimum_red_steps += 1
-                print(f'one of few cars in front {minimum_red_steps + 1} ')
+                # print(f'one of few cars in front {minimum_red_steps + 1} ')
             else:
                 if board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 1:
-                    print(f'one of truck type 1 {minimum_red_steps +1} ')
+                    # print(f'one of truck type 1 {minimum_red_steps +1} ')
                     minimum_red_steps += 2
                 elif board.cars_dict[car_in_way].y_location == board.cars_dict['X'].y_location - 2 and board.size < 9:
-                    print(f'one of truck type 2 {minimum_red_steps +1} ')
+                    # print(f'one of truck type 2 {minimum_red_steps +1} ')
                     minimum_red_steps += 3
                 else:
-                    print(f'one of truck type 3 {minimum_red_steps +1} ')
+                    # print(f'one of truck type 3 {minimum_red_steps +1} ')
                     minimum_red_steps += 1
-            if board.is_blocked(board.cars_dict[car_in_way]):
-                print(f' blocked penalty {minimum_red_steps + 1}')
-                minimum_red_steps += 1
-    return minimum_red_steps
+            # if board.is_blocked(board.cars_dict[car_in_way]):`
+            #     blocked_cars.append(car_in_way)`
+                #print(f' blocked penalty {minimum_red_steps + 1}')
+                #minimum_red_steps += 1
+        
+        blocked_score = board.blocked_chain(set(cars_in_way))
+    return minimum_red_steps + blocked_score
 
 def find_moves(solution_list, new_board):
     """

@@ -125,8 +125,95 @@ class Board():
         # misschien in een keer die berekening returnen?
         return move_list
 
+    def is_v_blocked (self, car):
+        if car.y_location > 0 and car.y_location + car.length < self.size:
+            return self.board[car.y_location - 1][car.x_location] != EMPTY and self.board[car.y_location + car.length][car.x_location] != EMPTY
+        if car.y_location > 0 and car.y_location + car.length == self.size:
+            return self.board[car.y_location][car.x_location - 1] != EMPTY
+        return self.board[car.y_location + car.length][car.x_location] != EMPTY
 
-    def find_possible_boards(self):
+
+    def is_h_blocked(self,car):
+        if car.x_location > 0 and car.x_location + car.length < self.size:
+            return self.board[car.y_location][car.x_location - 1] != EMPTY and self.board[car.y_location][car.x_location + car.length] != EMPTY
+        if car.x_location > 0 and car.x_location + car.length == self.size:
+            return self.board[car.y_location][car.x_location - 1] != EMPTY
+        return self.board[car.y_location][car.x_location + car.length] != EMPTY
+
+    def blocked_chain(self, pot_blocked_cars, blocked_cars = None):
+        if not blocked_cars:
+            blocked_cars = set()
+        while pot_blocked_cars:
+            pot_blocked_list = list(pot_blocked_cars)
+            # print(pot_blocked_cars)
+            for car_id in pot_blocked_list:
+
+                # print(f'current car: {car_id}')
+                if car_id == 'X':
+                    pot_blocked_cars.remove(car_id)
+                    continue
+                car = self.cars_dict[car_id] 
+                if car.horizontal() and self.is_h_blocked(car):
+                    # if car.x_location > 0:
+                        # pot_blocked_car = self.board[car.y_location][car.x_location - 1]
+                        # print(f'potential blocked car: {pot_blocked_car}')
+                        # if pot_blocked_car not in blocked_cars:
+                            # pot_blocked_cars.add(pot_blocked_car)
+                    # for a minimum we don't want to check in both directions of a horizontal blocked car
+
+                    # elif car.x_location + car.length < self.size:
+                        # pot_blocked_car = self.board[car.y_location][car.x_location + car.length]
+                        # print(f'potential blocked car: {pot_blocked_car}')
+
+                        # if pot_blocked_car not in blocked_cars:
+                            # pot_blocked_cars.add(pot_blocked_car)
+                            
+                    blocked_cars.add(car.id)
+                elif not car.horizontal() and self.is_v_blocked(car):
+                    if car.y_location > 0:
+                        pot_blocked_car = self.board[car.y_location - 1][car.x_location]
+                        # print(f'potential blocked car: {pot_blocked_car}')
+
+                        if pot_blocked_car not in blocked_cars:
+                            pot_blocked_cars.add(pot_blocked_car)
+                    if car.y_location + car.length  < self.size:
+                        # print(f'potential blocked car: {pot_blocked_car}')
+
+                        pot_blocked_car = self.board[car.y_location + car.length][car.x_location]
+                        if pot_blocked_car not in blocked_cars:
+                            pot_blocked_cars.add(pot_blocked_car)
+                        pot_blocked_cars.add(pot_blocked_car)
+                        
+                    blocked_cars.add(car.id)
+                # print(pot_blocked_cars)
+                pot_blocked_cars.remove(car_id)
+                # print(pot_blocked_cars)
+            # print(f'blocked cars: {blocked_cars} \n')
+            # print(f'potential blocked cars: {pot_blocked_cars}\n')
+            self.blocked_chain(pot_blocked_cars, blocked_cars)
+            
+        return len(blocked_cars)
+
+
+    def is_won(self):
+        """
+        Checks whether the red car has found the exit, thus the game has been won
+        """
+        return self.cars_dict['X'].x_location + 1 == self.size - 1
+
+    def print_board(self):
+        """
+        Iterate over the board rows and items to print the board
+        """
+        for row in self.board:
+            for item in row:
+                if item != "_":
+                    item = self.cars_dict[item].description
+                print(f'{item} ', end="")
+            print()    
+    
+
+    def find_possible_boards(self, alg_random = False):
         """
         Finds all possible boards going from the current board
         """
@@ -142,6 +229,8 @@ class Board():
                 # print(f'{car} with {move_options}')
                 # TODO WAT GEBEURT HIER? 
                 if move_option != 0:
+                    if alg_random and move_option > 1 or move_option < -1:
+                        continue
                     new_cars_dict = copy.deepcopy(self.cars_dict)
                     car_to_move = new_cars_dict[car.id]
                     # print(f'pre move car to move: {car_to_move} with move option: {move_option}')
@@ -155,39 +244,6 @@ class Board():
         # print(f'total next possible boards {len(possible_boards)}')
         # print(f'move count{move_option_count}')
         return possible_boards
-    
-
-    def is_blocked (self, car):
-        """
-        # TODO!!!
-        Checks whether a car is being blocked by another car or by 
-        """
-        if car.y_location - 1 > 0: 
-            # TODO te lange zin
-            # TODO kan dit niet gewoon door 1 keer != EMPTY te gebruiken? 
-            return self.board[car.y_location - 1][car.x_location] != EMPTY and self.board[car.y_location + car.length][car.x_location] != EMPTY
-        # TODO is onderstaande niet gewoon de else statement, en dan alleen het tweede deel? 
-        return car.y_location - 1 == 0 and self.board[car.y_location + car.length][car.x_location] != EMPTY
-
-
-    def is_won(self):
-        """
-        Checks whether the red car has found the exit, thus the game has been won
-        """
-        return self.cars_dict['X'].x_location + 1 == self.size - 1
-
-
-    def print_board(self):
-        """
-        Iterates over the board rows and items to print the board
-        """
-        for row in self.board:
-            for item in row:
-                if item != "_":
-                    item = self.cars_dict[item].description
-                print(f'{item} ', end="")
-            print()    
-    
 
     def positive_moves(self, car, location, possible_move=0):
         """
