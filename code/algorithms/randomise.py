@@ -20,8 +20,8 @@ def randomise(new_board):
         # if loop_count == 1000000:
         #     break
         
-        # if loop_count % 1000 == 0:
-        #     print(f'count:{loop_count}')
+        if loop_count % 1000 == 0:
+            print(f'count:{loop_count}')
 
         # gives all possible boards from the current board
         possible_boards = new_board.find_possible_boards(alg_random=True)
@@ -45,11 +45,9 @@ def randomise(new_board):
 
         # TODO ONDERSTAANDE ALLEMAAL LATEN STAAN?
         # new_board.print_board()
-        # print()
         loop_count += 1
         # time.sleep(0.1)
-        if loop_count % 1000 == 0:
-            print(f'loop count:{loop_count}')
+
         # end while True loop when game is won and return the number of moves made
         if new_board.is_won():
             print(loop_count)
