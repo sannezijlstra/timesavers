@@ -5,24 +5,30 @@ import queue
 import copy
 import time
 
-#from collections import deque
-
 class BreadthFirst():
+    """
+    The Breadth First algorithm, the search starts in the 'parent' board. 
+    Then, all the 'children' boards (possible boards) are searched, and put into the back of a queue. 
+    This way, the tree is flattened out, as every single 'child' board is searched until finding a solution.
+    """
     def __init__(self, board):
         """
-        Initialize the board 
+        Initialize the board, the queue, the archive, and the string representation of the parent board.
         """
         self.size = board.size
         self.board = copy.deepcopy(board)
         self.count = 0
 
-        # string representation of beginning board
+        # string representation of parent board
         self.default_string = self.board.string_repr()
         self.archive = {}
+        
+        # initialize queue 
         self.states = deque()
         self.solution_strings = []
 
-        # add to queue
+        # add string representation of board to queue
+        # TODO IS HET NOU GOED DAT HIER APPENDLEFT STAAT?
         self.states.appendleft(self.board.string_repr())
 
         # initialize the archive
@@ -30,16 +36,23 @@ class BreadthFirst():
 
 
     def append_first(self, queue_item):
+        """
+        Adds item to queue
+        """
+
         self.states.appendleft(queue_item)
     
+
     def get_next_state(self):
+        """
+        Removes first item out of queue
+        """
         return self.states.pop()
 
     def build_children(self):
         """
         First takes all possible boards, and determines the parent board string representation
         Then iterates over every possible board, creating board objects, turning them into strings, and adding them to the archive
-        Applies different heuristics
         """
         cars_lists = self.board.find_possible_boards()
         parent_board_string = self.board.string_repr()
@@ -56,14 +69,12 @@ class BreadthFirst():
                 continue
             # if board not in archive, add to archive and add to queue
             else:
-
+                # TODO KAN ONDERSTAANDE WEG?
                 # if self.states[0][1] >= new_board.cars_dict['X'].x_location:
                 #     continue
-                # heuristiek mogelijk toepassen, score, hoe goed?
                 self.archive[new_board_string] = parent_board_string 
                 # queue_item = [new_board_string]
                 self.append_first(new_board_string)
-                ############# don't remove #############
 
                 del(new_board)
 
@@ -92,20 +103,20 @@ class BreadthFirst():
                 return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
  
             self.build_children()
-            # resize and sort queue
+            # counts amount of children boards analyzed
             self.count += 1
             if self.count % 1000 == 0:
+                #TODO KAN ONDERSTAANDE WEG?
                 # states_check = [x[0] for x in self.states]
                 # print(f'states {states_check}')
                 print(f'children count:{self.count}')
     
     def load_solution_strings(self, parent_string):
         """
-        Loads all the string representations of the parent boards 
+        Uses recursion to load all the string representations of the parent boards, to count amount of necessary moves
         """
 
         while self.default_string not in self.solution_strings:
             self.solution_strings.append(parent_string)
+            #TODO NOG EEN COMMENT?
             self.load_solution_strings(self.archive[parent_string])
-
-

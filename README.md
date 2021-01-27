@@ -45,6 +45,3 @@ Lastly, you will be asked to choose an algorithm.
 4.	Iterative deepening (?)
 The results will be presented like this: 
 ‘-----’ (eventjes kopieren van resultaten uit terminal) 
-
-
-

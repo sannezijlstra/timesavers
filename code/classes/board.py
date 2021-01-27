@@ -3,6 +3,7 @@ import copy
 
 EMPTY = '_'
 
+#TODO KAN DIT WEG? 
 # CRED = '\033[91m'
 # CEND = '\033[0m'
 
@@ -12,17 +13,24 @@ class Board():
         needs a size and list of cars to generate a new game
     """
     def __init__(self, size, cars_list):
+        """
+        Initialize the board, determine the size, load list of car objects
+        """
         # initialize empty board
         self.board = [list(EMPTY * size) for i in range(size)]
         self.size = size
         self.cars_dict = {}
+        # TODO ZIJN ONDERSTAANDE BEIDEN NODIG?
         self.load_cars_dict(cars_list)
         self.load_cars(self.cars_dict)
         self.won = False
 
     # SOURCE: https://github.com/KaKariki02/rushHour/blob/master/RushClass.py
     def print_board (self):
-        """TODO kijken in git history voor hoe we dit deden met kleur"""
+        """
+        Creates a visual representation of the board
+        """
+
         self.printboard = '\n\n'.join(['      '.join(['{}'.format(item) for item in row]) for row in self.board])
         return self.printboard
     
@@ -146,13 +154,11 @@ class Board():
         # print(f'total next possible boards {len(possible_boards)}')
         # print(f'move count{move_option_count}')
         return possible_boards
-    
     def is_blocked (self, car):
         if car.y_location - 1 > 0: 
             # TODO te lange zin
             return self.board[car.y_location - 1][car.x_location] != EMPTY and self.board[car.y_location + car.length][car.x_location] != EMPTY
         return car.y_location - 1 == 0 and self.board[car.y_location + car.length][car.x_location] != EMPTY
-
 
     def is_won(self):
         """

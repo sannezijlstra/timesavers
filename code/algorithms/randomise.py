@@ -11,6 +11,8 @@ def randomise(new_board):
     """
     new_board = copy.deepcopy(new_board)
     loop_count = 0
+    
+    # starting board has no previous board string yet
     last_board_string = None
 
     while True:
@@ -24,33 +26,14 @@ def randomise(new_board):
         # gives all possible boards from the current board
         possible_boards = new_board.find_possible_boards()
 
-        # if loop_count > 0:
-        #     # iterates over all possible boards 
-        #     for count, cars_list  in enumerate(possible_boards):
-        #         temp = board.Board(new_board.size, cars_list)
-                
-        #         # excludes the last board, so that cars don't jump forward and backward
-        #         if last_board_string == temp.string_repr():
-        #             # print(f'last board:')
-        #             # new_board.decode_str(last_board_string)
-        #             # new_board.print_board()
-        #             # print(f'current board:')
-
-        #             # new_board.decode_str(temp.string_repr())
-        #             # print()
-        #             # new_board.print_board()
-        #             check_pop = possible_boards.pop(count)
-        #     else:
-        #         print('\n no same board found? \n')
-
-        # makes the string representation of the last board
-
-
         # a random board out of the possible boards is chosen  
         next_board = random.choice(possible_boards)
+
+        # a board object is created for the chosen possible board
         next_board = board.Board(new_board.size, next_board)
 
 
+        # if the newly chosen board is the same as the last board, a new random choice is made 
         while next_board.string_repr() == last_board_string:
             next_board = random.choice(possible_boards)
             next_board = board.Board(new_board.size, next_board)
@@ -60,13 +43,14 @@ def randomise(new_board):
         new_board = next_board
         # new board object is made, with next_board
 
+        # TODO ONDERSTAANDE ALLEMAAL LATEN STAAN?
         print(f'active_board:')
         new_board.print_board()
         print()
         loop_count += 1
         time.sleep(0.2)
         
+        # end while True loop when game is won and return the number of moves made
         if new_board.is_won():
             print(loop_count)
             return loop_count
-        
