@@ -1,5 +1,8 @@
 import csv
 import random
+
+# MOETEN WE HIER NOG IETS AAN VERANDEREN? 
+#TODO
 EMPTY = '_'
 COLOURS = [x for x in range(8) if x != 1]
 CBASE = '\033[9'
@@ -10,7 +13,6 @@ class Car():
     """
     Class for creating all car objects
     """
-
     def __init__(self, car_id, orientation, x, y, length):
         """
         Initialize car objects
@@ -37,15 +39,18 @@ class Car():
             self.redcar = True
         else:
             self.redcar = False
+    
+    # TODO DEZE GEBRUIKEN WE DUS WEL TOCH?
     def __repr__(self):
             """
             Returns string representation of car object
             """
             return "'{0}{1}{2}{3}{4}'".format(self.id, self.orientation, self.x_location, self.y_location, self.length)
 
+
     def horizontal(self):
         """
-        Checks whether car is in horizontal orientation
+        Checks whether car has a horizontal orientation
         """
         return self.orientation == 'H'
 
@@ -57,5 +62,3 @@ class Car():
             self.x_location += move
         else:
             self.y_location += move
-
-

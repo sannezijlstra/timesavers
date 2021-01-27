@@ -14,7 +14,6 @@ class BeamSearch(BreadthFirst):
         """
         Initializes the board, takes input to choose the heuristic to apply to the algorithm, and initializes the queue. 
         """
-
         # uses essential parts from the Breadth first algorithm
         super().__init__(board)
         self.states = []
@@ -40,17 +39,13 @@ class BeamSearch(BreadthFirst):
         """
         Sorts the queue, in order of lowest heuristic score to highest heuristic score. 
         """
-
         bisect.insort(self.states, queue_item)
 
 
     def build_children(self):
         """
-        Takes all possible boards, and determines the parent board string representation
-        Then iterates over every possible board, creating board objects, turning them into strings, and adding them to the archive
-        Applies the chosen heuristic score, either using minimum cost, or the combination score (of x-, y-, and redcar score)
+        Creates all possible child-boards and adds them to the queue(states)
         """
-        
         cars_lists = self.board.find_possible_boards()
         parent_board_string = self.board.string_repr()
 
