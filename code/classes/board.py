@@ -156,19 +156,19 @@ class Board():
                     continue
                 car = self.cars_dict[car_id] 
                 if car.horizontal() and self.is_h_blocked(car):
-                    # if car.x_location > 0:
-                        # pot_blocked_car = self.board[car.y_location][car.x_location - 1]
-                        # print(f'potential blocked car: {pot_blocked_car}')
-                        # if pot_blocked_car not in blocked_cars:
-                            # pot_blocked_cars.add(pot_blocked_car)
+                    if car.x_location > 0:
+                        pot_blocked_car = self.board[car.y_location][car.x_location - 1]
+                        print(f'potential blocked car: {pot_blocked_car}')
+                        if pot_blocked_car not in blocked_cars:
+                            pot_blocked_cars.add(pot_blocked_car)
                     # for a minimum we don't want to check in both directions of a horizontal blocked car
 
-                    # elif car.x_location + car.length < self.size:
-                        # pot_blocked_car = self.board[car.y_location][car.x_location + car.length]
-                        # print(f'potential blocked car: {pot_blocked_car}')
+                    elif car.x_location + car.length < self.size:
+                        pot_blocked_car = self.board[car.y_location][car.x_location + car.length]
+                        print(f'potential blocked car: {pot_blocked_car}')
 
-                        # if pot_blocked_car not in blocked_cars:
-                            # pot_blocked_cars.add(pot_blocked_car)
+                        if pot_blocked_car not in blocked_cars:
+                            pot_blocked_cars.add(pot_blocked_car)
                             
                     blocked_cars.add(car.id)
                 elif not car.horizontal() and self.is_v_blocked(car):
