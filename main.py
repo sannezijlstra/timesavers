@@ -13,19 +13,15 @@
 from code.classes import board, cars
 from code.algorithms import randomise, breadth_first, depth_first, beam_search
 from code import helpers
+
 import csv
 import copy
 import time
 import random
 import os
-import sys
-<<<<<<< HEAD
 
 import sys
-sys.setrecursionlimit(500)
-=======
 sys.setrecursionlimit(1500)
->>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
 
 # --------------------------- Random reassignment --------------------------
 def run_random(new_board, cars_list):
@@ -84,7 +80,6 @@ if __name__ == "__main__":
 
         for_6 = random.randint(1,3)
         for_9 = random.randint(4,6)
-        
         
         try:
             if size == 6:

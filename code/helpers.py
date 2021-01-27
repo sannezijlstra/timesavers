@@ -83,6 +83,7 @@ def vehicles_before_exit(board):
     red_x = redcar.x_location
     red_y = redcar.y_location
     car_ids = []
+
     # iterates over the grid spots on the right side of the red car
     for index in range(red_x + 2, board.size):
         # appends to a list when a car is on the right side of the red car
@@ -98,10 +99,12 @@ def is_v_blocked (new_board, car):
     if car.y_location > 0 and car.y_location + car.length < new_board.size:
         # check if car is blocked by cars
         return new_board.board[car.y_location - 1][car.x_location] != EMPTY and new_board.board[car.y_location + car.length][car.x_location] != EMPTY
+    
     if car.y_location > 0 and car.y_location + car.length == new_board.size:
         # check if car is blocked between car and edge
         return new_board.board[car.y_location - 1][car.x_location] != EMPTY
     # check if car is blocked between car and edge
+    
     return new_board.board[car.y_location + car.length][car.x_location] != EMPTY
 
 def is_h_blocked(new_board,car):
@@ -112,9 +115,11 @@ def is_h_blocked(new_board,car):
     if car.x_location > 0 and car.x_location + car.length < new_board.size:
         return new_board.board[car.y_location][car.x_location - 1] != EMPTY and new_board.board[car.y_location][car.x_location + car.length] != EMPTY
     # check if the car is blocked between car and edge
+    
     if car.x_location > 0 and car.x_location + car.length == new_board.size:
         return new_board.board[car.y_location][car.x_location - 1] != EMPTY
     # check if the car is blocked between car and edge
+    
     return new_board.board[car.y_location][car.x_location + car.length] != EMPTY
 
 def blocked_chain(pot_blocked_cars, new_board):
@@ -123,7 +128,6 @@ def blocked_chain(pot_blocked_cars, new_board):
         Needs car-id list and board as input
         Returns the amount of cars blocked
     """
-    
     blocked_cars = set()
     
     # check for blocked cars as long as there are potential blocked cars 
