@@ -1,3 +1,15 @@
+#############################################################
+# Minor programmeren
+#
+# Michael van Gompel, Ahmed Moenna, Sanne Zijlstra
+#
+# Group: Time Savers
+# Rush Hour case
+#
+# Contains logic for multiple algorithms solving Rush Hour 
+# Randomise, breadth first, depth first, beam search 
+#############################################################
+
 from code.classes import board, cars
 from code.algorithms import randomise, breadth_first, depth_first, beam_search
 from code import helpers
@@ -7,43 +19,23 @@ import time
 import random
 import os
 import sys
+<<<<<<< HEAD
 
 import sys
 sys.setrecursionlimit(500)
+=======
+sys.setrecursionlimit(1500)
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
 
-
-# TODO 12x12 grid auto's hebben 2 letterige id????????????
 # --------------------------- Random reassignment --------------------------
 def run_random(new_board, cars_list):
     """
-    Runs the random algorithm, and shows the needed amount of steps to find the solution 
+    Runs the random algorithm, and shows the needed amount of steps to find the solution
     """
-    solution_count = randomise.randomise(new_board)
-    print(f'board {for_6} solved pseudorandomly in {solution_count} steps')
-
-# TODO MOET ONDERSTAANDE BLIJVEN STAAN? WORDT DIT WEL GEBRUIKT BIJ RANDOM? NIET MEER EEN SOORT ALGEMEEN DING?
-def generate_output(result):
-    """
-    """
-    # ONDERSTAANDE TOEGEVOEGD DOOR NAME ERROR: NEWEST BOARD IS NOT DEFINED
-    newest_board = copy.deepcopy(new_board)
-    solution_list = result['solution']
-    solve_time = result['solve_time']
-    count = result['count']
-    for solution in reversed(solution_list):
-        newest_board.decode_str(solution)
-        print()
-        newest_board.print_board()
-        print()
-        time.sleep(0.1)
-
-    print("solved in: {0:.3f} seconds".format(solve_time), end="")
-    print(f' with {len(solution_list)} steps')
-    print(f' with {count} children analysed ')
-    # moves_list = helpers.find_moves(solution_list, newest_board)
-    # print(moves_list)
-    return helpers.output(solution_list, newest_board)
-
+    result = randomise.randomise(new_board)
+    solve_steps = result['loop_count']
+    print("solved pseudorandomly in {0:.3f} seconds: ".format(result['solve_time']), end="")
+    print(f'board {for_6} with {solve_steps} steps')
 
 # --------------------------- Beam Search --------------------------
 def run_beam_search(new_board, cars_list):
@@ -51,51 +43,41 @@ def run_beam_search(new_board, cars_list):
     Runs the beam search algorithm with the heuristic chosen by the user, then generates the output 
     """
     heur_dict = {'min_steps': helpers.minimum_cost, 'combination': helpers.combination_score}
-    heur_choice = input(f'select heuristic: {heur_dict.keys()} ')
+    dict_string = [str(key) for key in heur_dict.keys()]
+    dict_string = ', '.join(dict_string)
+
+    heur_choice = input(f'select heuristic: {dict_string} \n')
     heur_to_use = heur_dict[heur_choice]
-    # alg_to_use(new_board)
     
     beam = beam_search.BeamSearch(new_board, heur_to_use)
     print('begin run')
     result = beam.run()
-    # print(result)
-    newest_board = copy.deepcopy(new_board)
-    generate_output(result)
+    helpers.generate_output(result, new_board)
     
-# --------------------------- Breadth First  --------------------------
+# --------------------------- Breadth First  ------------------------
 def run_breadth_first(new_board, cars_list):
     """
+    Runs Breadth first algorithm and ensures the shortest solution
     """
-    newest_board = copy.deepcopy(new_board)
-    breadth = breadth_first.BreadthFirst(newest_board)
+    breadth = breadth_first.BreadthFirst(new_board)
     result = breadth.run()
-    generate_output(result)
-
-    # print(result)
+    helpers.generate_output(result, new_board)
 
 # --------------------------- Depth First  --------------------------
 def run_depth_first(new_board, cars_list):
-    newest_board = copy.deepcopy(new_board)
+    """ 
+    Runs the depth first algorithm and generates the output
+    """
     depth_obj = depth_first.DepthFirst(new_board)
     result = depth_obj.run()
-    generate_output(result)
+    helpers.generate_output(result, new_board)
 
-    print('begin run')
-    # VERPLAATST NAAR BOVEN!!!
-    #result = depth_obj.run()
-
-def test_corner(new_board, cars_list):
-    minimum_steps = helpers.minimum_cost(new_board)
-    print(f'minimum steps: {minimum_steps}')
-    new_board.print_board()
-
-
-# --------------- User Interface ---------------------
+# ------------------------- User Interface -------------------------
 if __name__ == "__main__":
     # prompt user for data file size and select file from data folder
     while True:
         try:
-            size = int(input("> what size (6, 9 or 12) grid would you like? "))
+            size = int(input("> What size (6, 9 or 12) grid would you like? "))
         except ValueError:
             print("invalid input")
             continue
@@ -103,14 +85,19 @@ if __name__ == "__main__":
         for_6 = random.randint(1,3)
         for_9 = random.randint(4,6)
         
+        
         try:
-            file_nr = int(input("> choose a file number if you'd like "))
+            if size == 6:
+                file_nr = int(input(f"> Choose a file number (1,2,3) if you'd like otherwise a random will be generated "))
+            elif size == 9:
+                file_nr = int(input(f"> Choose a file number (4,5,6) if you'd like, otherwise a random will be generated "))
+
         except ValueError:
             file_nr = None
 
-        # save file path depending on the size
+        # load file path depending on the supplied size
         if size == 6:
-            if file_nr and file_nr in range(1,3):
+            if file_nr and file_nr in range(1,4):
                 for_6 = file_nr
                 print(f'file {for_6} for size {size} is loaded')
             else:
@@ -118,7 +105,7 @@ if __name__ == "__main__":
             file_to_open = f'data/6x6_grids/Rushhour6x6_{for_6}.csv'
             break
         elif size == 9:
-            if file_nr and file_nr in range(4,6):
+            if file_nr and file_nr in range(4,7):
                 for_9 = file_nr
                 print(f'file {for_9} for size {size} is loaded')
             else:
@@ -134,7 +121,7 @@ if __name__ == "__main__":
     
     # create empty list to fill with cars
     cars_list = []
-
+    
     # open data folder to create car objects
     if os.path.isfile(file_to_open) and os.path.getsize(file_to_open) > 0:
         # open csv file consisting of the information of the board
@@ -149,12 +136,13 @@ if __name__ == "__main__":
     new_board = board.Board(size, cars_list)
 
     # create initial board 
-    algorithm_choices = {'run_random': run_random, 'breadth_first': run_breadth_first, 'depth_first': run_depth_first, 'beam_search': run_beam_search, 'test_corner': test_corner}
+    algorithm_choices = {'random': run_random, 'breadth first': run_breadth_first, 'depth first': run_depth_first, 'beam search': run_beam_search}
     while True:
         try:
-            dict_string = {str(key) for key in algorithm_choices.keys()}
-            alg_choice = input(f'select algorithm from {dict_string} ')
+            dict_string = [str(key) for key in algorithm_choices.keys()]
+            dict_string = ', '.join(dict_string)
+            alg_choice = input(f'Select algorithm from: {dict_string} \n')
             algorithm_choices[alg_choice](new_board, cars_list)
             break
         except KeyError:
-            print('invalid algorithm selection')
+            print('Invalid algorithm selection')

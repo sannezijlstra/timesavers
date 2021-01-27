@@ -1,6 +1,10 @@
 from . import cars
 import copy
 
+<<<<<<< HEAD
+=======
+# constant
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
 EMPTY = '_'
 
 #TODO KAN DIT WEG? 
@@ -9,8 +13,14 @@ EMPTY = '_'
 
 class Board():
     """
+<<<<<<< HEAD
         Class for supporting the game of rush hour,
         needs a size and list of cars to generate a new game
+=======
+        Class for supporting the game board of Rush Hour
+        Needs a size and list of cars to generate a new game
+        (De)serializes the board, loads the cars, checks for possible moves, checks if game is won, and prints current board
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
     """
     def __init__(self, size, cars_list):
         """
@@ -20,8 +30,11 @@ class Board():
         self.board = [list(EMPTY * size) for i in range(size)]
         self.size = size
         self.cars_dict = {}
-        # TODO ZIJN ONDERSTAANDE BEIDEN NODIG?
+
+        # loads cars dictionary out of cars list
         self.load_cars_dict(cars_list)
+
+        # loads cars on board using cars dictionary
         self.load_cars(self.cars_dict)
         self.won = False
 
@@ -107,19 +120,24 @@ class Board():
                 if car.length > 2:
                     self.board[car.y_location + 2][car.x_location] = car.id
 
-
-    def check_move(self, car):
+    def check_move(self, car, max_steps = None):
         """
         Creates a list for every car object, consisting of their possible moves
         """
+<<<<<<< HEAD
         
+=======
+        # store relevant location depending on car orientation
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
         if car.horizontal():
             location = car.x_location
         else:
             location = car.y_location
         
+        # find positive and negative moves for the car
         positive_moves = self.positive_moves(car, location)
         negative_moves = self.negative_moves(car, location)
+<<<<<<< HEAD
         
         move_list = list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
         # misschien in een keer die berekening returnen?
@@ -216,6 +234,17 @@ class Board():
     
 
     def find_possible_boards(self):
+=======
+
+        if max_steps:
+            positive_moves = min(max_steps, positive_moves)
+            negative_moves = min(max_steps, negative_moves)
+        
+        # combine and return positive and negative move lists for the car object
+        return list(range(positive_moves + 1)) + list(x for x in range(0,negative_moves -1, -1))
+
+    def find_possible_boards(self, max_steps = None):
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
         """
         Finds all possible boards going from the current board
         """
@@ -223,22 +252,30 @@ class Board():
         
         # iterates over the cars in the cars dictionary 
         for car in self.cars_dict.values():
-
-            move_options = self.check_move(car)
+            
+            # find all possible moves for the current car
+            move_options = self.check_move(car, max_steps)
 
             for move_option in move_options:
+<<<<<<< HEAD
                 # print(f'{car} with {move_options}')
                 if move_option != 0:
                     # if alg_random and move_option > 1 or move_option < -1:
                     #     continue
+=======
+                # if the current move option is valid create new board configurations
+                if move_option != 0:
+                    # create new cars dict to make the move
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
                     new_cars_dict = copy.deepcopy(self.cars_dict)
+
+                    # find the current car in the copied dictionary and make the move
                     car_to_move = new_cars_dict[car.id]
-                    # print(f'pre move car to move: {car_to_move} with move option: {move_option}')
-
                     car_to_move.do_move(move_option)
-                    # print(f'after move car to move: {car_to_move}')
 
+                    # current configuration to the possible boards
                     possible_boards.append(new_cars_dict.values())
+<<<<<<< HEAD
        
         # print(f'possible_boards {possible_boards}')
         # print(f'total next possible boards {len(possible_boards)}')
@@ -246,15 +283,31 @@ class Board():
         return possible_boards
 
     def positive_moves(self, car, location, possible_move=0):
+=======
+        return possible_boards
+
+    def positive_moves(self, car, location, possible_move=0):
+        """
+        Returns all possible moves going either to the right or downwards in the grid 
+
+        """
+        # making sure move does not exceed grid size 
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
         while location + car.length <= self.size -1:
+            # check if the grid location is empty
             if car.horizontal() and self.board[car.y_location][location + car.length] != EMPTY:
                 break
             elif not car.horizontal() and self.board[location + car.length][car.x_location] != EMPTY:
                 break
             possible_move += 1
+            # keep track of the hypothetical car location
             location += 1
+<<<<<<< HEAD
             self.positive_moves(car, location, possible_move)
             # can move right or down
+=======
+            
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
         return possible_move
 
     # while possible_move() == 0 
@@ -264,11 +317,34 @@ class Board():
     def negative_moves(self, car, location, possible_move=0):
 
         while location - 1 >= 0:
+            # check if the grid location is empty
             if car.horizontal() and self.board[car.y_location][location - 1] != EMPTY:
                 break
             elif not car.horizontal() and self.board[location - 1][car.x_location] != EMPTY:
                 break
+<<<<<<< HEAD
+=======
+            
+            # only adding a negative possible move when an empty spot is found
+>>>>>>> de5eae323fb4a9fdd09ea42559a872c30bc56a99
             possible_move -= 1
+            # keep track of the hypothetical car location
             location -= 1
-            self.negative_moves(car, location, possible_move)
         return possible_move
+
+    def is_won(self):
+        """
+        Checks whether the red car has found the exit, thus the game has been won
+        """
+        return self.cars_dict['X'].x_location + 1 == self.size - 1
+
+    def print_board(self):
+        """
+        Iterate over the board rows and items to print the board
+        """
+        for row in self.board:
+            for item in row:
+                if item != "_":
+                    item = self.cars_dict[item].description
+                print(f'{item} ', end="")
+            print()    

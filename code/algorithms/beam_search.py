@@ -18,7 +18,6 @@ class BeamSearch(BreadthFirst):
         super().__init__(board)
         self.states = []
         self.max_length = 10000
-        print(f'empty states? {self.states}')
         # input from user is used to choose heuristic
         self.heuristic = heur_to_use
         
@@ -28,19 +27,18 @@ class BeamSearch(BreadthFirst):
         # first queue item is added to queue list
         self.states.append([self.heuristic_score, self.board.string_repr()])
 
-
-    # ONDERSTAANDE FUNCTIE NODIG? 
     def get_next_state(self):
+        """
+        Get next state from the queue
+        """
         current_state = self.states.pop(0)
         return current_state[1]
-
 
     def insert_on_score(self, queue_item):
         """
         Sorts the queue, in order of lowest heuristic score to highest heuristic score. 
         """
         bisect.insort(self.states, queue_item)
-
 
     def build_children(self):
         """
@@ -65,11 +63,10 @@ class BeamSearch(BreadthFirst):
                 # adds heuristic score to board object
                 self.heuristic_score = self.heuristic(new_board)
 
-                #TODO ??? KLOPT DIT?
-                # adds the board string, which contains the heuristic score, to the queue
+                # builds an item for the queue, connecting the board string and heuristic score
                 queue_item = [self.heuristic_score, new_board_string]
 
-                # sorts the queue in order of least heuristic score to highest heuristic score 
+                # adds item and inserts into queue, maintaining a sorted list
                 self.insert_on_score(queue_item)
 
                 del(new_board)

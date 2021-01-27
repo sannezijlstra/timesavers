@@ -1,8 +1,6 @@
-import csv
 import random
 
-# MOETEN WE HIER NOG IETS AAN VERANDEREN? 
-#TODO
+#constants
 EMPTY = '_'
 COLOURS = [x for x in range(8) if x != 1]
 CBASE = '\033[9'
@@ -40,7 +38,6 @@ class Car():
         else:
             self.redcar = False
     
-    # TODO DEZE GEBRUIKEN WE DUS WEL TOCH?
     def __repr__(self):
             """
             Returns string representation of car object

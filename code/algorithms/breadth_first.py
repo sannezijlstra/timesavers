@@ -28,38 +28,33 @@ class BreadthFirst():
         self.solution_strings = []
 
         # add string representation of board to queue
-        # TODO IS HET NOU GOED DAT HIER APPENDLEFT STAAT?
         self.states.appendleft(self.board.string_repr())
 
         # initialize the archive
         self.archive[self.default_string] = 0
-
-
+    
     def append_first(self, queue_item):
         """
         Adds item to queue
         """
         self.states.appendleft(queue_item)
     
-
     def get_next_state(self):
         """
-        Removes first item out of queue
+        Removes and returns first item out of queue
         """
         return self.states.pop()
 
-
     def build_children(self):
         """
-        First takes all possible boards, and determines the parent board string representation
-        Then iterates over every possible board, creating board objects, turning them into strings, and adding them to the archive
+        Creates all possible child-boards and adds them to the queue(states)
         """
         cars_lists = self.board.find_possible_boards()
         parent_board_string = self.board.string_repr()
 
-        # iterates over every possible board
+        # iterates over every possible board configuration
         for cars_list in cars_lists:
-            # create board object for the possible board
+            # create board object from the configuration
             new_board = board.Board(self.size, cars_list)
             
             # turn board object into string representation
@@ -67,14 +62,13 @@ class BreadthFirst():
 
             if new_board_string in self.archive.keys():
                 continue
+            
             # if board not in archive, add to archive and add to queue
             else:
-     
                 self.archive[new_board_string] = parent_board_string 
                 self.append_first(new_board_string)
 
                 del(new_board)
-
 
     def run(self):
         """
@@ -94,22 +88,27 @@ class BreadthFirst():
             # break out of loop when solution is found
             if self.board.is_won():
                 print("you won")
-                # loads all the strings of the parent boards
+                # backtracks the strings of the parent boards
                 self.load_solution_strings(self.board.string_repr())
-                return {'count': self.count, 'solution': self.solution_strings, 'solve_time': time.time() - start_time, 'steps': len(self.solution_strings)}
- 
+                return {'count': self.count,                
+                    'solution': self.solution_strings, 
+                    'solve_time': time.time() - start_time, 
+                    'steps': len(self.solution_strings)}
+
+            # current board contains no solution so find next generation children boards
             self.build_children()
+
             # counts amount of children boards analyzed
             self.count += 1
+
             if self.count % 1000 == 0:
                 print(f'children count:{self.count}')
     
-
     def load_solution_strings(self, parent_string):
         """
         Uses recursion to load all the string representations of the parent boards, to count amount of necessary moves
         """
         while self.default_string not in self.solution_strings:
             self.solution_strings.append(parent_string)
-            #TODO NOG EEN COMMENT?
+            # use parent string in archive for next function call
             self.load_solution_strings(self.archive[parent_string])
